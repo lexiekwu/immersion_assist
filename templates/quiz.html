@@ -1,0 +1,21 @@
+{% if not last_guess or not last_guess%}
+  <p> Type {{current_card.prompt}} </p>
+
+{% elif last_card.is_correct_guess(last_guess) %}
+  <p> Correct! </p>
+  <p> {{ last_card.study_term.toString() }}</p>
+  <p> Next: </p>
+  <p> Type {{current_card.prompt}} </p>
+
+{% else %}
+  <p> Incorrect. </p>
+  <p> {{ last_card.study_term.toString() }})</p>
+  <p> Type {{current_card.prompt}} to move on. </p>
+{% endif %}
+
+<form action="/quiz" method = "POST">
+    <input type="hidden" name="last_term_id" value="{{current_card.study_term.id}}"/>
+    <input type="hidden" name="quiz_type" value="{{current_card.quiz_type}}" />
+    <p> Answer: <input type = "text" name = "guess" /></p>
+    <p><input type = "submit" value = "Submit" /></p>
+</form>
