@@ -1,0 +1,25 @@
+- get online usage working
+- set up copilot
+- make the css pretty
+- make sure cards don't play back to back
+- investigate why pinyin api is so jank
+- add randomization
+- multi-input cards
+- session summaries
+- logins / different users / email verification
+
+
+much later
+- import CSV for cards
+- export CSV for cards
+- LLM for auto-card-gen
+- more languages than Chinese
+- subscriptions
+
+done
+* move onto correct google project
+* correctly put passwords somewhere else (still need to do google enb)
+* make flashcard a class
+* correctly move stuff onto class for flashcard
+* rename tables
+* make UI code less ugly
