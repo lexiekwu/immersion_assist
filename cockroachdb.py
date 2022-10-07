@@ -5,16 +5,17 @@ import psycopg2.extras
 DB_URL = "".join(
     [
         "postgresql://",
-        environ.get("COCKROACHDB_USER", ""),
+        environ.get("COCKROACHDB_USER"),
         ":",
-        environ.get("COCKROACHDB_PW", ""),
+        environ.get("COCKROACHDB_PW"),
         "@free-tier4.aws-us-west-2.cockroachlabs.cloud:26257/defaultdb?sslmode=verify-full&options=--cluster%3D",
         environ.get("COCKROACHDB_CLUSTER"),
+        #"?sslmode=prefer",
     ]
 )
 
 # init client
-db_conn = psycopg2.connect(DB_URL)
+db_conn = psycopg2.connect(DB_URL, sslmode="prefer")
 db_cursor = db_conn.cursor(cursor_factory=psycopg2.extras.RealDictCursor)
 
 
