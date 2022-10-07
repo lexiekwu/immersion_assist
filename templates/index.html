@@ -17,21 +17,17 @@
 
 <html>
 <head>
-  <title>Datastore and Firebase Auth Example</title>
+  <title>Immersion Assist</title>
   <script src="{{ url_for('static', filename='script.js') }}"></script>
   <link type="text/css" rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
 </head>
 <body>
 
-  <h1>All Your Cards</h1>
-
-  <h2>Next 10 cards up for review</h2>
-  {% for card in cards %}
-    <h4> {{card.study_term.term}} </h4>
-      <p> translation : {{card.study_term.translated_term}} </p>
-      <p> pronunciation : {{card.study_term.pronunciation}} </p>
-      <p> quiz_type : {{card.quiz_type}} </p>
-  {% endfor %}
+  <h1> Welcome to Immersion Assist! </h1>
+  <h3> What would you like to do? </h3>
+  <button onclick="window.location.href = '/quiz';"> study flashcards </button>
+  <button onclick="window.location.href = '/form';"> add a new term </button>
+  <button onclick="window.location.href = '/cards';"> view flashcards </button>
 
 </body>
 </html>

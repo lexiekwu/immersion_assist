@@ -1,8 +1,8 @@
-- set up copilot
 - make the css pretty
-- make sure cards don't play back to back
-- investigate why pinyin api is so jank
 - add randomization
+- make sure cards don't play back to back
+    / fancier study theory
+- investigate why pinyin api is so jank
 - multi-input cards
 - session summaries
 - logins / different users / email verification
@@ -23,3 +23,5 @@ done
 * rename tables
 * make UI code less ugly
 * get online usage working
+* set up copilot
+* add home page

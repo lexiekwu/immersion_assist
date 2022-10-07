@@ -1,0 +1,8 @@
+
+  <h2>Cards upcoming for review</h2>
+  {% for card in cards %}
+    <h4> {{card.study_term.term}} </h4>
+      <p> translation : {{card.study_term.translated_term}} </p>
+      <p> pronunciation : {{card.study_term.pronunciation}} </p>
+      <p> quiz_type : {{card.quiz_type}} </p>
+  {% endfor %}

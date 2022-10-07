@@ -1,2 +1,4 @@
 app.yaml
 __pycache__/*
+.vscode
+.gcloudignore

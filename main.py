@@ -4,14 +4,18 @@ from study_term import StudyTerm
 from flask import Flask, render_template, request
 
 app = Flask(__name__)
+FLASHCARD_LIMIT = 20
 
 
 @app.route("/")
 def root():
-    flashcard_stack = FlashcardStack()
-    cards = flashcard_stack.get_ordered_cards(10)
-    return render_template("index.html", cards=cards)
+    return render_template("index.html")
 
+@app.route("/cards")
+def cards():
+    flashcard_stack = FlashcardStack()
+    cards = flashcard_stack.get_ordered_cards(FLASHCARD_LIMIT)
+    return render_template("cards.html", cards=cards)
 
 @app.route("/form")
 def form():
@@ -56,7 +60,6 @@ def quiz():
         last_card=last_card,
         last_guess=guess,
     )
-
 
 if __name__ == "__main__":
     # This is used when running locally only. When deploying to Google App
