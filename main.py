@@ -17,13 +17,13 @@ def cards():
     cards = flashcard_stack.get_ordered_cards(FLASHCARD_LIMIT)
     return render_template("cards.html", cards=cards)
 
-@app.route("/form")
-def form():
-    return render_template("form.html")
+@app.route("/new_card", methods=["GET"])
+def new_card():
+    return render_template("new_card.html")
 
 
-@app.route("/data/", methods=["POST", "GET"])
-def data():
+@app.route("/add/", methods=["POST"])
+def add():
     if request.method == "GET":
         return (
             f"The URL /data is accessed directly. Try going to '/form' to submit form"
@@ -31,7 +31,7 @@ def data():
     if request.method == "POST":
         term = request.form.get("word")
         study_term = StudyTerm.create_and_save(term)
-        return render_template("data.html", study_term=study_term)
+        return render_template("add.html", study_term=study_term)
 
 
 @app.route("/quiz", methods=["POST", "GET"])

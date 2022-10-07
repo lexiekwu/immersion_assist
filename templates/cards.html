@@ -1,8 +1,16 @@
+<html>
+    <head>
+        <title>Your Flashcards</title>
+        <link type="text/css" rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+    </head>
+    <h2>Cards upcoming for review</h2>
+    {% for card in cards %}
+        <div class="flashcard">
+            <h4> {{card.study_term.term}} </h4>
+            <p> translation : {{card.study_term.translated_term}} </p>
+            <p> pronunciation : {{card.study_term.pronunciation}} </p>
+            <p> quiz_type : {{card.quiz_type}} </p>
+        </div>
+    {% endfor %}
 
-  <h2>Cards upcoming for review</h2>
-  {% for card in cards %}
-    <h4> {{card.study_term.term}} </h4>
-      <p> translation : {{card.study_term.translated_term}} </p>
-      <p> pronunciation : {{card.study_term.pronunciation}} </p>
-      <p> quiz_type : {{card.quiz_type}} </p>
-  {% endfor %}
+</html>

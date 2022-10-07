@@ -18,3 +18,14 @@ body {
   font-family: "helvetica", sans-serif;
   text-align: center;
 }
+
+
+.flashcard {
+  border: 1px solid;
+  width: fit-content;
+  margin: 10px auto;
+  padding: 5px 20px;
+  border-radius: 10px;
+  background: aliceblue;
+  line-height: 3px;
+}

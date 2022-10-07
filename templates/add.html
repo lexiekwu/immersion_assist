@@ -1,0 +1,15 @@
+<head>
+  <title>Card Added</title>
+  <link type="text/css" rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+
+<h2> Card added </h2>
+<div class="flashcard">
+  <h4> {{study_term.term}} </h4>
+  <p> translation : {{study_term.translated_term}} </p>
+  <p> pronunciation : {{study_term.pronunciation}} </p>
+</div>
+
+<button onclick="window.location.href = '/quiz';"> study flashcards </button>
+<button onclick="window.location.href = '/new_card';"> add another term </button>
+<button onclick="window.location.href = '/cards';"> view flashcards </button>
