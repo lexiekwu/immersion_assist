@@ -1,4 +1,3 @@
-- get online usage working
 - set up copilot
 - make the css pretty
 - make sure cards don't play back to back
@@ -23,3 +22,4 @@ done
 * correctly move stuff onto class for flashcard
 * rename tables
 * make UI code less ugly
+* get online usage working
