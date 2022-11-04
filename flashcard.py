@@ -27,11 +27,13 @@ class Flashcard:
             self._update_on_incorrect()
 
     def _update_on_incorrect(self):
+        now = int(time.time())
         db.sql_update(
             f"""
             UPDATE learning_log
             SET
-                knowledge_factor = knowledge_factor / 2
+                knowledge_factor = knowledge_factor / 16,
+                last_review = {now}
             WHERE
                 term_id = '{self.study_term.id}' AND
                 quiz_type = '{self.quiz_type}'

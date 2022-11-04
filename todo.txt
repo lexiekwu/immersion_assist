@@ -1,13 +1,8 @@
 - use classes in frontend
-- make sure cards don't play back to back
-    / fancier study theory
-- investigate why pinyin api is so jank
 - multi-input cards
 - session summaries
 - logins / different users / email verification
-
-
-much later
+- replace translation API
 - import CSV for cards
 - export CSV for cards
 - LLM for auto-card-gen
@@ -26,3 +21,4 @@ done
 * add home page
 * make the css pretty (prettiER)
 * add randomization
+* better study theory - always update last review, make missing penalty larger
