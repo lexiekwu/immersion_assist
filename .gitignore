@@ -2,3 +2,4 @@ app.yaml
 __pycache__/*
 .vscode
 .gcloudignore
+.set_environment_vars.txt

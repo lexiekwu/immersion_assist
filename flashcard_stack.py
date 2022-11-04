@@ -23,7 +23,10 @@ class FlashcardStack:
                     quiz_type,
                     knowledge_factor,
                     last_review,
-                    (1.0 * {now} - 1.0 * last_review) / knowledge_factor AS idx
+                    (RANDOM()::DECIMAL)
+                        * (1.0 * {now} - 1.0 * last_review)
+                        / knowledge_factor
+                    AS idx
                 FROM learning_log
                 ORDER BY 6 DESC
                 LIMIT {limit}

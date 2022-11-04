@@ -1,5 +1,4 @@
 - use classes in frontend
-- add randomization
 - make sure cards don't play back to back
     / fancier study theory
 - investigate why pinyin api is so jank
@@ -25,4 +24,5 @@ done
 * get online usage working
 * set up copilot
 * add home page
-* make the css pretty
+* make the css pretty (prettiER)
+* add randomization

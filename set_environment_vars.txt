@@ -1,0 +1,5 @@
+
+export GCLOUD_PROJECT_ID=immersion-assist
+export COCKROACHDB_USER=lexiekwu
+export COCKROACHDB_PW=MOsoC36ghzmvGBuMH7jeyA
+export COCKROACHDB_CLUSTER=wise-cheetah-3776
