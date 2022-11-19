@@ -1,4 +1,4 @@
-- use classes in frontend
+- move off of google services
 - multi-input cards
 - session summaries
 - logins / different users / email verification
@@ -8,6 +8,7 @@
 - LLM for auto-card-gen
 - more languages than Chinese
 - subscriptions
+- use classes in frontend
 
 done
 * move onto correct google project
