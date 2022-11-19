@@ -6,7 +6,14 @@ import pinyin as pinyin_module
 GCLOUD_PROJECT_PARENT = f"projects/{environ.get('GCLOUD_PROJECT_ID')}"
 TW_CODE = "zh-TW"  # TODO make flexible
 
-translation_client = translate.TranslationServiceClient()
+def _try_build_translation_client():
+    try:
+        return translate.TranslationServiceClient()
+    except Exception:
+        print("issue building translation client. Skipped -- translations will not work." )
+        return None
+
+translation_client = _try_build_translation_client()
 
 
 def get_pronunciation(translated_term, target_language_code):
