@@ -1,8 +1,6 @@
-- move off of google services
 - multi-input cards
 - session summaries
 - logins / different users / email verification
-- replace translation API
 - import CSV for cards
 - export CSV for cards
 - LLM for auto-card-gen
@@ -23,3 +21,4 @@ done
 * make the css pretty (prettiER)
 * add randomization
 * better study theory - always update last review, make missing penalty larger
+* move off of google services
