@@ -3,6 +3,7 @@ import cockroachdb as db
 from study_term import StudyTerm
 from flashcard import Flashcard
 
+MIN_TIME_BETWEEN_REVIEWS_SEC = 60 * 2 # two minutes
 
 class FlashcardStack:
     def __init__(self):
@@ -16,10 +17,20 @@ class FlashcardStack:
         now = int(time.time())
         card_dicts = db.sql_query(
             f"""
-            WITH learning_log_ordered AS (
+            WITH 
+            
+            -- anything in the last MIN_TIME_BETWEEN_REVIEWS_SEC seconds, for any review type
+            very_recently_reviewed_terms AS (
+                SELECT
+                    term_id
+                FROM learning_log
+                WHERE last_review > {now - MIN_TIME_BETWEEN_REVIEWS_SEC} 
+            ), 
+            
+            learning_log_ordered AS (
                 SELECT
                     id,
-                    term_id,
+                    learning_log.term_id,
                     quiz_type,
                     knowledge_factor,
                     last_review,
@@ -28,6 +39,14 @@ class FlashcardStack:
                         / knowledge_factor
                     AS idx
                 FROM learning_log
+                
+                -- exclude very recently reviewed terms
+                LEFT JOIN very_recently_reviewed_terms
+                ON
+                    very_recently_reviewed_terms.term_id = learning_log.term_id
+                WHERE
+                    very_recently_reviewed_terms.term_id IS NULL
+
                 ORDER BY 6 DESC
                 LIMIT {limit}
             )
