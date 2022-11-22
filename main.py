@@ -36,10 +36,11 @@ def add():
 
 @app.route("/quiz", methods=["POST", "GET"])
 def quiz():
-    # case of first load
     flashcard_stack = FlashcardStack()
-    new_card = flashcard_stack.pop_card()
+
+    # case of first load
     if request.method == "GET":
+        new_card = flashcard_stack.pop_card()
         return render_template(
             "quiz.html",
             current_card=new_card,
@@ -53,7 +54,8 @@ def quiz():
         request.form["last_term_id"], request.form["quiz_type"]
     )
     last_card.update_after_guess(guess)
-    current_card = new_card if last_card.is_correct_guess(guess) else last_card
+
+    current_card = flashcard_stack.pop_card() if last_card.is_correct_guess(guess) else last_card
     return render_template(
         "quiz.html",
         current_card=current_card,
