@@ -9,7 +9,9 @@ class Flashcard:
         self.quiz_type = quiz_type
         if self.quiz_type == "translation":
             self.prompt = f'translation of "{study_term.term}"'
-            self.correct_answer = study_term.translated_term
+            self.correct_answer = study_term.translated_term.partition("(")[0]
+            if self.correct_answer[-1] == " ":
+                self.correct_answer = self.correct_answer[:-1]
         elif self.quiz_type == "pronunciation":
             self.prompt = f'pronunciation of "{study_term.term}"'
             self.correct_answer = study_term.pronunciation
