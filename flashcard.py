@@ -1,6 +1,7 @@
 import time
 import cockroachdb as db
 from study_term import StudyTerm
+from daily_stats import DailyStats
 
 
 class Flashcard:
@@ -18,6 +19,9 @@ class Flashcard:
         elif self.quiz_type == "reverse_translation":
             self.prompt = f'translation of "{study_term.translated_term}"'
             self.correct_answer = study_term.term
+
+        # set up stats to update, default to today
+        self.daily_stats = DailyStats.get_for_day()
 
     def is_correct_guess(self, guess):
         return self.correct_answer == guess
@@ -41,6 +45,7 @@ class Flashcard:
                 quiz_type = '{self.quiz_type}'
         """
         )
+        self.daily_stats.update(False)
 
     def _update_on_correct(self):
         now = int(time.time())
@@ -55,6 +60,7 @@ class Flashcard:
                 quiz_type = '{self.quiz_type}'
         """
         )
+        self.daily_stats.update(True)
 
     @classmethod
     def get_by_study_term_id_and_quiz_type(cls, study_term_id, quiz_type):

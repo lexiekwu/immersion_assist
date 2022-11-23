@@ -1,0 +1,23 @@
+<html>
+    <head>
+        <title>Stats</title>
+        <link type="text/css" rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+    </head>
+
+    <table>
+        <tr> 
+            <td>Date</td>
+            <td>Total reviewed</td>
+            <td>Accuracy</td>
+
+        </tr>
+        {% for stats in week_stats %}
+            <tr> 
+                <td>{{stats.dt}} : </td>
+                <td>{{stats.count_correct + stats.count_incorrect}} </td>
+                <td>{{stats.accuracy()}}% </td>
+
+            </tr>
+        {% endfor %}
+    </table>
+</html>

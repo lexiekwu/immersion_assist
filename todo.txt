@@ -1,5 +1,4 @@
 - multi-input cards
-- session summaries
 - logins / different users / email verification
 - import CSV for cards
 - export CSV for cards
@@ -22,3 +21,4 @@ done
 * add randomization
 * better study theory - always update last review, make missing penalty larger
 * move off of google services
+* session summaries

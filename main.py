@@ -1,6 +1,8 @@
 from flashcard import Flashcard
 from flashcard_stack import FlashcardStack
 from study_term import StudyTerm
+from daily_stats import DailyStats
+from datetime import datetime, timedelta
 from flask import Flask, render_template, request
 
 app = Flask(__name__)
@@ -16,6 +18,19 @@ def cards():
     flashcard_stack = FlashcardStack()
     cards = flashcard_stack.get_ordered_cards(FLASHCARD_LIMIT)
     return render_template("cards.html", cards=cards)
+
+@app.route("/stats")
+def stats():
+    today = datetime.today().date()
+    week_days = [today] + [
+        today - timedelta(i)
+        for i in range(1,8)
+    ]
+    week_stats = [
+        DailyStats.get_for_day(dt=str(day))
+        for day in week_days
+    ]
+    return render_template("stats.html", week_stats=week_stats)
 
 @app.route("/new_card", methods=["GET"])
 def new_card():
