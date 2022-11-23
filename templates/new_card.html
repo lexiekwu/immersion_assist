@@ -1,4 +1,12 @@
+<h2>Input a single word to translate and add</h2>
 <form action="/add" method = "POST">
     <p>English word <input type = "text" name = "word" /></p>
+    <p><input type = "submit" value = "Submit" /></p>
+</form>
+
+<h2>Input multiple terms, with translations</h2>
+<form action="/add_multi" method = "POST">
+    <p>Words in form "term pronunciation english"</p>
+    <textarea style="width:100%; height:50%" type = "text" name="terms"></textarea> 
     <p><input type = "submit" value = "Submit" /></p>
 </form>

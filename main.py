@@ -3,9 +3,10 @@ from flashcard_stack import FlashcardStack
 from study_term import StudyTerm
 from daily_stats import DailyStats
 from datetime import datetime, timedelta
-from flask import Flask, render_template, request
+from flask import Flask, render_template, request, flash
 
 app = Flask(__name__)
+app.secret_key = "Test1234"
 FLASHCARD_LIMIT = 20
 
 
@@ -39,14 +40,18 @@ def new_card():
 
 @app.route("/add/", methods=["POST"])
 def add():
-    if request.method == "GET":
-        return (
-            f"The URL /data is accessed directly. Try going to '/form' to submit form"
-        )
-    if request.method == "POST":
-        term = request.form.get("word")
-        study_term = StudyTerm.create_and_save(term)
-        return render_template("add.html", study_term=study_term)
+    term = request.form.get("word")
+    study_term = StudyTerm.create_and_save(term)
+    return render_template("add.html", study_term=study_term)
+
+@app.route("/add_multi/", methods=["POST"])
+def add_multi():
+    terms = request.form.get("terms").split("\r\n")
+    [
+        StudyTerm.create_and_save(term) for term in terms if term
+    ]
+    flash(f"Added {len(terms)} terms.")
+    return render_template("new_card.html")
 
 
 @app.route("/quiz", methods=["POST", "GET"])

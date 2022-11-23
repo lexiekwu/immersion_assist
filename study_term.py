@@ -73,3 +73,29 @@ class StudyTerm:
 
     def toString(self):
         return f"{self.term}: {self.translated_term} ({self.pronunciation})"
+
+    @classmethod
+    def save_from_string(cls, term_str):
+        characters, pinyin, english = _split_term(term_str)
+        cls(
+            uuid.uuid4(),
+            characters,
+            english,
+            pinyin
+        )._save()
+
+
+def _split_term(term):
+    parts = term.split(" ")
+    characters = parts[0]
+    i = 1
+    while (
+        i < len(parts) and
+        len(parts[i]) > 1 and
+        parts[i][0].isalpha() and
+        parts[i][-1].isnumeric()
+    ):
+        i += 1
+    pinyin = " ".join(parts[1:i])
+    english = " ".join(parts[i:])
+    return characters, pinyin, english
