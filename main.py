@@ -3,10 +3,9 @@ from flashcard_stack import FlashcardStack
 from study_term import StudyTerm
 from daily_stats import DailyStats
 from datetime import datetime, timedelta
-from flask import Flask, render_template, request, flash
+from flask import Flask, render_template, request
 
 app = Flask(__name__)
-app.secret_key = "Test1234"
 FLASHCARD_LIMIT = 20
 
 
@@ -50,7 +49,6 @@ def add_multi():
     [
         StudyTerm.create_and_save(term) for term in terms if term
     ]
-    flash(f"Added {len(terms)} terms.")
     return render_template("new_card.html")
 
 
