@@ -1,10 +1,12 @@
 - logins / different users / email verification
-- import CSV for cards
-- export CSV for cards
+- make it like a loooot less ugly
+- add edge case handling for inputs
 - LLM for auto-card-gen
 - more languages than Chinese
 - subscriptions
 - use classes in frontend
+- import CSV for cards
+- export CSV for cards
 
 done
 * move onto correct google project
