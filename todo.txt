@@ -1,5 +1,3 @@
-- different users different stuff
-- add uid info to study tables
 - lint
 - fix replay on db errors
 - lower penalty on miss
@@ -32,3 +30,5 @@ done
 * session summaries
 * multi-input cards
 * logins
+* different users different stuff
+* add uid info to study tables
