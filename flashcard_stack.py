@@ -5,16 +5,26 @@ from flashcard import Flashcard
 from flask import session
 
 MIN_TIME_BETWEEN_REVIEWS_SEC = 60 * 2  # two minutes
+DEFAULT_LIMIT = 10
 
 
 class FlashcardStack:
-    def __init__(self):
-        pass
+    def __init__(self, limit=DEFAULT_LIMIT, existing_stack=[]):
+        self.limit = limit
+        if existing_stack:
+            self.stack = existing_stack
+        else:
+            self.stack = []
+            self._refresh()  # fill cards up to limit
 
     def pop_card(self):
-        return self.get_ordered_cards(1)[0]
+        if len(self.stack) < 1:
+            self._refresh()
+        card = self.stack[0]
+        self.stack = self.stack[1:]
+        return card
 
-    def get_ordered_cards(self, limit):
+    def _refresh(self):
         now = int(time.time())
         card_dicts = db.sql_query(
             f"""
@@ -52,7 +62,7 @@ class FlashcardStack:
                     learning_log.uid = '{session["uid"]}'
 
                 ORDER BY 6 DESC
-                LIMIT {limit}
+                LIMIT {self.limit}
             )
 
             SELECT
@@ -77,5 +87,11 @@ class FlashcardStack:
             )
             flashcard = Flashcard(study_term, card_dict["quiz_type"])
             flashcards.append(flashcard)
+        self.stack = flashcards
 
-        return flashcards
+    def to_dicts(self):
+        return [flashcard.to_dict() for flashcard in self.stack]
+
+    @classmethod
+    def from_dicts(cls, ds):
+        return cls(existing_stack=[Flashcard.from_dict(d) for d in ds])

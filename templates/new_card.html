@@ -5,6 +5,10 @@
 </head>
 
 <body>
+    {% for category, message in get_flashed_messages(with_categories=True) %}
+        <div class="toast {{category}}">{{ message }}</div>
+    {% endfor %}
+
     <h2>Input a single word to translate and add</h2>
     <form action="/add" method = "POST">
         <p>English word <input type = "text" name = "word" /></p>

@@ -81,7 +81,29 @@ class StudyTerm:
     @classmethod
     def save_from_string(cls, term_str):
         characters, pinyin, english = _split_term(term_str)
+        assert (
+            characters and english and pinyin
+        ), f"could not successfully split '{term_str}'"
         cls(uuid.uuid4(), characters, english, pinyin)._save()
+
+    @classmethod
+    def from_dict(cls, d):
+        return cls(
+            d["id"],
+            d["term"],
+            d["translated_term"],
+            d["pronunciation"],
+            d["target_language"],
+        )
+
+    def to_dict(self):
+        return {
+            "id": self.id,
+            "term": self.term,
+            "target_language": self.target_language,
+            "translated_term": self.translated_term,
+            "pronunciation": self.pronunciation,
+        }
 
 
 def _split_term(term):

@@ -4,7 +4,15 @@
         <link type="text/css" rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
         <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
     </head>
+
+    {% for category, message in get_flashed_messages(with_categories=True) %}
+        <div class="toast {{category}}">{{ message }}</div>
+    {% endfor %}
+
     <h2>Cards upcoming for review</h2>
+    {% if not cards %}
+    <div onclick="window.location.href = '/new_card';"> Add some cards to see them here! </div>
+    {% endif %}
     <div style="column-count: 2; column-gap: 0px;">
     {% for card in cards %}
         <div class="flashcard">

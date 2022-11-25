@@ -6,10 +6,14 @@
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
 </head>
 
-{% if not last_guess or not last_guess%}
+{% for category, message in get_flashed_messages(with_categories=True) %}
+<div class="toast {{category}}">{{ message }}</div>
+{% endfor %}
+
+{% if last_card is none %}
   <p> Type {{current_card.prompt}} </p>
 
-{% elif last_card.is_correct_guess(last_guess) %}
+{% elif was_correct %}
   <p> Correct! </p>
   <div class="flashcard">
       <div class="card_title"> {{last_card.study_term.term}} </div>

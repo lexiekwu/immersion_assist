@@ -27,23 +27,17 @@ class Flashcard:
 
     def is_correct_guess(self, guess):
         return (
-            re.sub("[^A-Z]", "", self.correct_answer, 0, re.IGNORECASE).lower()
-            == re.sub("[^A-Z]", "", guess, 0, re.IGNORECASE).lower()
+            re.sub("-|\s", "", self.correct_answer, 0, re.IGNORECASE).lower()
+            == re.sub("-|\s", "", guess, 0, re.IGNORECASE).lower()
         )
 
-    def update_after_guess(self, guess):
-        if self.is_correct_guess(guess):
-            self._update_on_correct()
-        else:
-            self._update_on_incorrect()
-
-    def _update_on_incorrect(self):
+    def update_on_incorrect(self):
         now = int(time.time())
         db.sql_update(
             f"""
             UPDATE learning_log
             SET
-                knowledge_factor = knowledge_factor / 4,
+                knowledge_factor = knowledge_factor / 8,
                 last_review = {now}
             WHERE
                 term_id = '{self.study_term.id}' AND
@@ -53,7 +47,7 @@ class Flashcard:
         )
         self.daily_stats.update(False)
 
-    def _update_on_correct(self):
+    def update_on_correct(self):
         now = int(time.time())
         db.sql_update(
             f"""
@@ -73,3 +67,13 @@ class Flashcard:
     def get_by_study_term_id_and_quiz_type(cls, study_term_id, quiz_type):
         study_term = StudyTerm.get_by_id(study_term_id)
         return cls(study_term, quiz_type)
+
+    def to_dict(self):
+        return {"study_term": self.study_term.to_dict(), "quiz_type": self.quiz_type}
+
+    @classmethod
+    def from_dict(cls, d):
+        return cls(
+            StudyTerm.from_dict(d["study_term"]),
+            d["quiz_type"],
+        )

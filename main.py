@@ -4,12 +4,11 @@ from study_term import StudyTerm
 from daily_stats import DailyStats
 from datetime import datetime, timedelta
 from user import User
-from flask import Flask, render_template, request, session
+from flask import Flask, render_template, request, session, flash
 from os import environ
 
 app = Flask(__name__)
 app.secret_key = environ.get("SESSION_KEY")
-FLASHCARD_LIMIT = 20
 
 
 @app.route("/")
@@ -27,15 +26,18 @@ def login():
     # check if exists, if not, send to signup
     this_user = User.get_by_email(request.form.get("email"))
     if not this_user:
+        flash("No user exists for that email. Please sign up.", "bad")
         return render_template("signup.html")
 
     # incorrect password, try again
     if not this_user.is_correct_password(request.form.get("password")):
+        flash("That password is incorrect. Please try again.", "bad")
         return render_template("login.html")
 
     # correct password, log in
     session["uid"] = this_user.uid
     session["name"] = this_user.name
+    flash("Login successful.", "good")
     return render_template("index.html")
 
 
@@ -43,6 +45,10 @@ def login():
 def signup():
     if request.method == "GET":
         return render_template("signup.html")
+
+    if User.get_by_email(request.form.get("email")):
+        flash("An account already exists for that email. Please log in.", "bad")
+        return render_template("login.html")
 
     this_user = User.new(
         name=request.form.get("name"),
@@ -61,8 +67,7 @@ def cards():
         return render_template("login.html")
 
     flashcard_stack = FlashcardStack()
-    cards = flashcard_stack.get_ordered_cards(FLASHCARD_LIMIT)
-    return render_template("cards.html", cards=cards)
+    return render_template("cards.html", cards=flashcard_stack.stack)
 
 
 @app.route("/stats")
@@ -89,8 +94,13 @@ def add():
     if not session.get("uid"):
         return render_template("login.html")
 
-    term = request.form.get("word")
-    study_term = StudyTerm.create_and_save(term)
+    try:
+        term = request.form.get("word")
+        study_term = StudyTerm.create_and_save(term)
+    except Exception as e:
+        flash(f"Did not successfully create your card. Error was '{str(e)}'", "bad")
+        return render_template("new_card.html")
+
     return render_template("add.html", study_term=study_term)
 
 
@@ -99,8 +109,12 @@ def add_multi():
     if not session.get("uid"):
         return render_template("login.html")
 
-    terms = request.form.get("terms").split("\r\n")
-    [StudyTerm.create_and_save(term) for term in terms if term]
+    try:
+        terms = request.form.get("terms").split("\r\n")
+        [StudyTerm.save_from_string(term) for term in terms if term]
+        flash(f"Successfully added {len(terms)} cards.", "good")
+    except Exception as e:
+        flash(f"Did not successfully create your cards. Error was '{str(e)}'", "bad")
     return render_template("new_card.html")
 
 
@@ -109,42 +123,49 @@ def quiz():
     if not session.get("uid"):
         return render_template("login.html")
 
-    flashcard_stack = FlashcardStack()
+    flashcard_stack = FlashcardStack.from_dicts(session.get("flashcard_stack", []))
 
     # case of first load
     if request.method == "GET":
         new_card = flashcard_stack.pop_card()
+
+        if not new_card:
+            flash(f"No cards available for quizzing. Try adding more.", "good")
+            return render_template("new_card.html")
+
+        session["current_card"] = new_card.to_dict()
+        session["flashcard_stack"] = flashcard_stack.to_dicts()
         return render_template(
             "quiz.html",
             current_card=new_card,
             last_card=None,
-            last_guess=None,
         )
 
     # else
     guess = request.form["guess"]
-    last_card = Flashcard.get_by_study_term_id_and_quiz_type(
-        request.form["last_term_id"], request.form["quiz_type"]
-    )
-    last_card.update_after_guess(guess)
+    last_card = Flashcard.from_dict(session["current_card"])
+    was_correct=last_card.is_correct_guess(guess)
 
-    current_card = (
-        flashcard_stack.pop_card() if last_card.is_correct_guess(guess) else last_card
-    )
+    if was_correct:
+        last_card.update_on_correct()
+        current_card = flashcard_stack.pop_card()
+    else:
+        last_card.update_on_incorrect()
+        current_card = last_card
+
+    if not current_card:
+        flash(f"No cards available for quizzing. Try adding more.", "good")
+        return render_template("new_card.html")
+
+    session["current_card"] = current_card.to_dict()
+    session["flashcard_stack"] = flashcard_stack.to_dicts()
     return render_template(
         "quiz.html",
         current_card=current_card,
         last_card=last_card,
-        last_guess=guess,
+        was_correct=was_correct
     )
 
 
 if __name__ == "__main__":
-    # This is used when running locally only. When deploying to Google App
-    # Engine, a webserver process such as Gunicorn will serve the app. This
-    # can be configured by adding an `entrypoint` to app.yaml.
-    # Flask's development server will automatically serve static files in
-    # the "static" directory. See:
-    # http://flask.pocoo.org/docs/1.0/quickstart/#static-files. Once deployed,
-    # App Engine itself will serve those files as configured in app.yaml.
     app.run(host="127.0.0.1", port=8080, debug=True)

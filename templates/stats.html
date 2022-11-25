@@ -5,6 +5,10 @@
         <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
     </head>
 
+    {% for category, message in get_flashed_messages(with_categories=True) %}
+        <div class="toast {{category}}">{{ message }}</div>
+    {% endfor %}
+
     <table>
         <tr> 
             <td>Date</td>
