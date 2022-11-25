@@ -1,5 +1,6 @@
 import time
 import cockroachdb as db
+import re
 from study_term import StudyTerm
 from daily_stats import DailyStats
 from flask import session
@@ -25,7 +26,10 @@ class Flashcard:
         self.daily_stats = DailyStats.get_for_day()
 
     def is_correct_guess(self, guess):
-        return self.correct_answer == guess
+        return (
+            re.sub("[^A-Z]", "", self.correct_answer, 0, re.IGNORECASE).lower()
+            == re.sub("[^A-Z]", "", guess, 0, re.IGNORECASE).lower()
+        )
 
     def update_after_guess(self, guess):
         if self.is_correct_guess(guess):

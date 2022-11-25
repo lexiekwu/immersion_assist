@@ -28,6 +28,7 @@ def sql_query(sql):
         db_cursor.execute("ROLLBACK")
         raise e
 
+
 def sql_query_single(sql):
     try:
         db_cursor.execute(sql)
@@ -37,7 +38,6 @@ def sql_query_single(sql):
     except psycopg2.Error as e:
         db_cursor.execute("ROLLBACK")
         raise e
-
 
 
 def sql_update(sql):

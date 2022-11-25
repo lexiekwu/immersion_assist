@@ -1,4 +1,3 @@
-- don't be so dang strict about caps/spaces/etc
 - make it like a loooot less ugly
 - add edge case handling for inputs
 - LLM for auto-card-gen
@@ -32,3 +31,4 @@ done
 * remove all the boilerplate text
 * add query single
 * make it like a loooot less ugly
+* don't be so dang strict about caps/spaces/etc

@@ -43,9 +43,7 @@ class DailyStats:
             new_stats_day._save()
             return new_stats_day
 
-        return cls(
-            dt, stats_dict["count_correct"], stats_dict["count_incorrect"]
-        )
+        return cls(dt, stats_dict["count_correct"], stats_dict["count_incorrect"])
 
     def update(self, is_correct):
         self.count_correct += int(is_correct)
