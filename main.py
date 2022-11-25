@@ -3,14 +3,53 @@ from flashcard_stack import FlashcardStack
 from study_term import StudyTerm
 from daily_stats import DailyStats
 from datetime import datetime, timedelta
-from flask import Flask, render_template, request
+from user import User
+from flask import Flask, render_template, request, session
+from os import environ
 
 app = Flask(__name__)
+app.secret_key = environ.get("SESSION_KEY")
 FLASHCARD_LIMIT = 20
 
 
 @app.route("/")
 def root():
+    if not session.get("uid"):
+        return render_template("login.html")
+    return render_template("index.html")
+
+@app.route("/login", methods=["POST", "GET"])
+def login():
+    if request.method == "GET":
+        return render_template("login.html")
+
+    # check if exists, if not, send to signup
+    this_user = User.get_by_email(request.form.get("email"))
+    if not this_user:
+        return render_template("signup.html")
+
+    # incorrect password, try again
+    if not this_user.is_correct_password(request.form.get("password")):
+        return render_template("login.html")
+
+    # correct password, log in
+    session["uid"] = this_user.uid
+    session["name"] = this_user.name
+    return render_template("index.html")
+
+@app.route("/signup", methods=["POST", "GET"])
+def signup():
+    if request.method == "GET":
+        return render_template("signup.html")
+    
+    this_user = User.new(
+        name=request.form.get("name"),
+        email=request.form.get("email"),
+        password=request.form.get("password")
+    )
+
+    session["uid"] = this_user.uid
+    session["name"] = this_user.name
     return render_template("index.html")
 
 @app.route("/cards")

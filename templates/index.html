@@ -23,7 +23,7 @@
 </head>
 <body>
 
-  <h1> Welcome to Immersion Assist! </h1>
+  <h1> Welcome to Immersion Assist, {{ session['name'] }}! </h1>
   <h3> What would you like to do? </h3>
   <button onclick="window.location.href = '/quiz';"> study flashcards </button>
   <button onclick="window.location.href = '/new_card';"> add a new term </button>

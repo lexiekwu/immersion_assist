@@ -1,4 +1,6 @@
-- logins / different users / email verification
+- different users different stuff
+- add uid info to study tables
+- remove all the boilerplate text
 - make it like a loooot less ugly
 - add edge case handling for inputs
 - LLM for auto-card-gen
@@ -24,3 +26,4 @@ done
 * move off of google services
 * session summaries
 * multi-input cards
+* logins

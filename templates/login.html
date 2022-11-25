@@ -1,0 +1,23 @@
+
+<html>
+    <head>
+      <title>Login to Immersion Assist</title>
+      <link type="text/css" rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+    </head>
+    <body>
+    
+      <h1> Welcome to Immersion Assist! </h1>
+      <h3> Please log in </h3>
+      <form action="/login" method = "POST">
+        <p>Email <input type = "text" name = "email" /></p>
+        <p>Password <input name = "password" type="password"/></p>
+        <p><input type = "submit" value = "Submit" /></p>
+        <p>
+          Don't have an account?
+          <a href="/signup"> Sign up here. </a>
+      <p>
+    </form>
+    
+    </body>
+    </html>
+    
