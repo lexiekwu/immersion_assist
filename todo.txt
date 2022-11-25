@@ -1,6 +1,4 @@
-- lint
 - fix replay on db errors
-- lower penalty on miss
 - auto-set keyboard to correct one mobile
 - add query single
 - remove all the boilerplate text
@@ -32,3 +30,5 @@ done
 * logins
 * different users different stuff
 * add uid info to study tables
+* lint
+* lower penalty on miss

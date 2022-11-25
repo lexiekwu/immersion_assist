@@ -39,7 +39,7 @@ class Flashcard:
             f"""
             UPDATE learning_log
             SET
-                knowledge_factor = knowledge_factor / 16,
+                knowledge_factor = knowledge_factor / 4,
                 last_review = {now}
             WHERE
                 term_id = '{self.study_term.id}' AND
