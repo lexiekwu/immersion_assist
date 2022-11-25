@@ -1,4 +1,5 @@
 __pycache__/*
 .vscode
 .gcloudignore
-.set_environment_vars.txt
+vars.txt
+scratchpad.py
