@@ -59,7 +59,7 @@ class StudyTerm:
 
     @classmethod
     def get_by_id(cls, id):
-        card_dict = db.sql_query(
+        card_dict = db.sql_query_single(
             f"""
             SELECT *
             FROM study_term
@@ -67,7 +67,7 @@ class StudyTerm:
                 uid = '{session["uid"]}' AND
                 id = '{id}'
             """
-        )[0]
+        )
         return cls(
             id,
             card_dict["term"],

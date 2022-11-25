@@ -1,6 +1,3 @@
-- fix replay on db errors
-- auto-set keyboard to correct one mobile
-- add query single
 - make it like a loooot less ugly
 - add edge case handling for inputs
 - LLM for auto-card-gen
@@ -32,3 +29,4 @@ done
 * lint
 * lower penalty on miss
 * remove all the boilerplate text
+* add query single

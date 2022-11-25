@@ -25,7 +25,7 @@ class DailyStats:
 
     @classmethod
     def get_for_day(cls, dt=today_dt):
-        stats_dicts = db.sql_query(
+        stats_dict = db.sql_query_single(
             f"""
                 SELECT
                     count_incorrect,
@@ -38,13 +38,13 @@ class DailyStats:
         )
 
         # make a row for this day if there wasn't one
-        if not stats_dicts:
+        if not stats_dict:
             new_stats_day = cls(dt, 0, 0)
             new_stats_day._save()
             return new_stats_day
 
         return cls(
-            dt, stats_dicts[0]["count_correct"], stats_dicts[0]["count_incorrect"]
+            dt, stats_dict["count_correct"], stats_dict["count_incorrect"]
         )
 
     def update(self, is_correct):

@@ -28,6 +28,17 @@ def sql_query(sql):
         db_cursor.execute("ROLLBACK")
         raise e
 
+def sql_query_single(sql):
+    try:
+        db_cursor.execute(sql)
+        db_conn.commit()
+        result = db_cursor.fetchall()
+        return result[0] if result else None
+    except psycopg2.Error as e:
+        db_cursor.execute("ROLLBACK")
+        raise e
+
+
 
 def sql_update(sql):
     try:

@@ -11,18 +11,18 @@ class User:
 
     @classmethod
     def get_by_id(cls, uid):
-        user_dict = db.sql_query(
+        user_dict = db.sql_query_single(
             f"""
             SELECT *
             FROM users
             WHERE uid = '{uid}'
             """
-        )[0]
+        )
         return cls(uid, user_dict["name"], user_dict["email"])
 
     @classmethod
     def get_by_email(cls, email):
-        user_dicts = db.sql_query(
+        user_dict = db.sql_query_single(
             f"""
             SELECT uid, name, email
             FROM users
@@ -30,9 +30,9 @@ class User:
                 email = '{email}'
             """
         )
-        if not user_dicts:
+        if not user_dict:
             return None
-        return cls(user_dicts[0]["uid"], user_dicts[0]["name"], user_dicts[0]["email"])
+        return cls(user_dict["uid"], user_dict["name"], user_dict["email"])
 
     @classmethod
     def new(cls, name, email, password):
@@ -51,13 +51,13 @@ class User:
         return cls(uid, name, email)
 
     def _get_hashed_password(self):
-        return db.sql_query(
+        return db.sql_query_single(
             f"""
             SELECT hashed_password
             FROM users
             WHERE uid = '{self.uid}'
         """
-        )[0]["hashed_password"]
+        )["hashed_password"]
 
     def is_correct_password(self, guessed_password):
         correct_hashed_password = self._get_hashed_password().encode("utf-8")
