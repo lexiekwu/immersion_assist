@@ -1,4 +1,5 @@
 from datetime import datetime
+from flask import session
 import cockroachdb as db
 
 today_dt = str(datetime.today().date())
@@ -24,7 +25,8 @@ class DailyStats:
                     count_correct
                 FROM daily_stats
                 WHERE
-                    dt = '{dt}'
+                    dt = '{dt}' AND
+                    uid = '{session["uid"]}'
             """
         )
 
@@ -47,6 +49,6 @@ class DailyStats:
 
     def _save(self):
         db.sql_update(f"""
-            UPSERT INTO daily_stats (dt, count_correct, count_incorrect)
-            VALUES ('{self.dt}', {self.count_correct}, {self.count_incorrect})
+            UPSERT INTO daily_stats (dt, uid, count_correct, count_incorrect)
+            VALUES ('{self.dt}', '{session["uid"]}', {self.count_correct}, {self.count_incorrect})
         """)

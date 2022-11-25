@@ -54,12 +54,18 @@ def signup():
 
 @app.route("/cards")
 def cards():
+    if not session.get("uid"):
+        return render_template("login.html")
+
     flashcard_stack = FlashcardStack()
     cards = flashcard_stack.get_ordered_cards(FLASHCARD_LIMIT)
     return render_template("cards.html", cards=cards)
 
 @app.route("/stats")
 def stats():
+    if not session.get("uid"):
+        return render_template("login.html")
+
     today = datetime.today().date()
     week_days = [today] + [
         today - timedelta(i)
@@ -73,17 +79,26 @@ def stats():
 
 @app.route("/new_card", methods=["GET"])
 def new_card():
+    if not session.get("uid"):
+        return render_template("login.html")
+
     return render_template("new_card.html")
 
 
 @app.route("/add/", methods=["POST"])
 def add():
+    if not session.get("uid"):
+        return render_template("login.html")
+
     term = request.form.get("word")
     study_term = StudyTerm.create_and_save(term)
     return render_template("add.html", study_term=study_term)
 
 @app.route("/add_multi/", methods=["POST"])
 def add_multi():
+    if not session.get("uid"):
+        return render_template("login.html")
+
     terms = request.form.get("terms").split("\r\n")
     [
         StudyTerm.create_and_save(term) for term in terms if term
@@ -93,6 +108,9 @@ def add_multi():
 
 @app.route("/quiz", methods=["POST", "GET"])
 def quiz():
+    if not session.get("uid"):
+        return render_template("login.html")
+        
     flashcard_stack = FlashcardStack()
 
     # case of first load

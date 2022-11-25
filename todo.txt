@@ -1,5 +1,10 @@
 - different users different stuff
 - add uid info to study tables
+- lint
+- fix replay on db errors
+- lower penalty on miss
+- auto-set keyboard to correct one mobile
+- add query single
 - remove all the boilerplate text
 - make it like a loooot less ugly
 - add edge case handling for inputs

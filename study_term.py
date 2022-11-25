@@ -2,6 +2,7 @@ import uuid
 import time
 import language
 import cockroachdb as db
+from flask import session
 
 TW_CODE = "zh-TW"  # TODO make flexible
 
@@ -31,21 +32,22 @@ class StudyTerm:
     def _save(self):
         now = int(time.time())
         insert_term_sql = f"""
-            UPSERT INTO study_term (id, term, translated_term, pronunciation)
+            UPSERT INTO study_term (id, term, translated_term, pronunciation, uid)
             VALUES
                 (
                     '{self.id}',
                     '{self.term}',
                     '{self.translated_term}',
-                    '{self.pronunciation}'
+                    '{self.pronunciation}',
+                    '{session["uid"]}'
                 )
         """
         insert_learning_log_sql = f"""
-            UPSERT INTO learning_log (id, term_id, quiz_type, knowledge_factor, last_review)
+            UPSERT INTO learning_log (id, term_id, quiz_type, knowledge_factor, last_review, uid)
             VALUES
-                ('{uuid.uuid4()}', '{self.id}', 'pronunciation', 1.0, {now}),
-                ('{uuid.uuid4()}', '{self.id}', 'reverse_translation', 1.0, {now}),
-                ('{uuid.uuid4()}', '{self.id}', 'translation', 1.0, {now})
+                ('{uuid.uuid4()}', '{self.id}', 'pronunciation', 1.0, {now}, '{session["uid"]}'),
+                ('{uuid.uuid4()}', '{self.id}', 'reverse_translation', 1.0, {now}, '{session["uid"]}'),
+                ('{uuid.uuid4()}', '{self.id}', 'translation', 1.0, {now}, '{session["uid"]}')
         """
         db.sql_update_multi([insert_term_sql, insert_learning_log_sql])
 
@@ -61,7 +63,9 @@ class StudyTerm:
             f"""
             SELECT *
             FROM study_term
-            WHERE id = '{id}'
+            WHERE
+                uid = '{session["uid"]}' AND
+                id = '{id}'
             """
         )[0]
         return cls(

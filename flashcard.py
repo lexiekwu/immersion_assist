@@ -2,6 +2,7 @@ import time
 import cockroachdb as db
 from study_term import StudyTerm
 from daily_stats import DailyStats
+from flask import session
 
 
 class Flashcard:
@@ -42,7 +43,8 @@ class Flashcard:
                 last_review = {now}
             WHERE
                 term_id = '{self.study_term.id}' AND
-                quiz_type = '{self.quiz_type}'
+                quiz_type = '{self.quiz_type}' AND
+                uid = '{session["uid"]}'
         """
         )
         self.daily_stats.update(False)
@@ -57,7 +59,8 @@ class Flashcard:
                 last_review = {now}
             WHERE
                 term_id = '{self.study_term.id}' AND
-                quiz_type = '{self.quiz_type}'
+                quiz_type = '{self.quiz_type}' AND
+                uid = '{session["uid"]}'
         """
         )
         self.daily_stats.update(True)
