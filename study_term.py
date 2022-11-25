@@ -81,12 +81,7 @@ class StudyTerm:
     @classmethod
     def save_from_string(cls, term_str):
         characters, pinyin, english = _split_term(term_str)
-        cls(
-            uuid.uuid4(),
-            characters,
-            english,
-            pinyin
-        )._save()
+        cls(uuid.uuid4(), characters, english, pinyin)._save()
 
 
 def _split_term(term):
@@ -94,10 +89,10 @@ def _split_term(term):
     characters = parts[0]
     i = 1
     while (
-        i < len(parts) and
-        len(parts[i]) > 1 and
-        parts[i][0].isalpha() and
-        parts[i][-1].isnumeric()
+        i < len(parts)
+        and len(parts[i]) > 1
+        and parts[i][0].isalpha()
+        and parts[i][-1].isnumeric()
     ):
         i += 1
     pinyin = " ".join(parts[1:i])

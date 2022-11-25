@@ -4,7 +4,8 @@ from study_term import StudyTerm
 from flashcard import Flashcard
 from flask import session
 
-MIN_TIME_BETWEEN_REVIEWS_SEC = 60 * 2 # two minutes
+MIN_TIME_BETWEEN_REVIEWS_SEC = 60 * 2  # two minutes
+
 
 class FlashcardStack:
     def __init__(self):

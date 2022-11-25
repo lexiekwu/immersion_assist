@@ -18,6 +18,7 @@ def root():
         return render_template("login.html")
     return render_template("index.html")
 
+
 @app.route("/login", methods=["POST", "GET"])
 def login():
     if request.method == "GET":
@@ -37,20 +38,22 @@ def login():
     session["name"] = this_user.name
     return render_template("index.html")
 
+
 @app.route("/signup", methods=["POST", "GET"])
 def signup():
     if request.method == "GET":
         return render_template("signup.html")
-    
+
     this_user = User.new(
         name=request.form.get("name"),
         email=request.form.get("email"),
-        password=request.form.get("password")
+        password=request.form.get("password"),
     )
 
     session["uid"] = this_user.uid
     session["name"] = this_user.name
     return render_template("index.html")
+
 
 @app.route("/cards")
 def cards():
@@ -61,21 +64,17 @@ def cards():
     cards = flashcard_stack.get_ordered_cards(FLASHCARD_LIMIT)
     return render_template("cards.html", cards=cards)
 
+
 @app.route("/stats")
 def stats():
     if not session.get("uid"):
         return render_template("login.html")
 
     today = datetime.today().date()
-    week_days = [today] + [
-        today - timedelta(i)
-        for i in range(1,8)
-    ]
-    week_stats = [
-        DailyStats.get_for_day(dt=str(day))
-        for day in week_days
-    ]
+    week_days = [today] + [today - timedelta(i) for i in range(1, 8)]
+    week_stats = [DailyStats.get_for_day(dt=str(day)) for day in week_days]
     return render_template("stats.html", week_stats=week_stats)
+
 
 @app.route("/new_card", methods=["GET"])
 def new_card():
@@ -94,15 +93,14 @@ def add():
     study_term = StudyTerm.create_and_save(term)
     return render_template("add.html", study_term=study_term)
 
+
 @app.route("/add_multi/", methods=["POST"])
 def add_multi():
     if not session.get("uid"):
         return render_template("login.html")
 
     terms = request.form.get("terms").split("\r\n")
-    [
-        StudyTerm.create_and_save(term) for term in terms if term
-    ]
+    [StudyTerm.create_and_save(term) for term in terms if term]
     return render_template("new_card.html")
 
 
@@ -110,7 +108,7 @@ def add_multi():
 def quiz():
     if not session.get("uid"):
         return render_template("login.html")
-        
+
     flashcard_stack = FlashcardStack()
 
     # case of first load
@@ -130,13 +128,16 @@ def quiz():
     )
     last_card.update_after_guess(guess)
 
-    current_card = flashcard_stack.pop_card() if last_card.is_correct_guess(guess) else last_card
+    current_card = (
+        flashcard_stack.pop_card() if last_card.is_correct_guess(guess) else last_card
+    )
     return render_template(
         "quiz.html",
         current_card=current_card,
         last_card=last_card,
         last_guess=guess,
     )
+
 
 if __name__ == "__main__":
     # This is used when running locally only. When deploying to Google App

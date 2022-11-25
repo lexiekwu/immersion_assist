@@ -12,11 +12,11 @@ df = pd.read_csv(CSV_PATH)
 # ,characters,english,pinyin,last_review_date_e2c,knowledge_factor_e2c,
 # last_review_date_c2e,knowledge_factor_c2e,last_review_date_c2p,knowledge_factor_c2p
 
+
 def _to_timestamp(dt):
-    dt = datetime.strptime(
-        dt, "%m/%d/%y"
-    )
+    dt = datetime.strptime(dt, "%m/%d/%y")
     return time.mktime(dt.timetuple())
+
 
 def _insert_csv_row(row, dry_mode=DRY_MODE):
     card_id = uuid.uuid4()
@@ -45,6 +45,7 @@ def _insert_csv_row(row, dry_mode=DRY_MODE):
 
     else:
         db.sql_update_multi([insert_term_sql, insert_learning_log_sql])
+
 
 for row in df.itertuples():
     _insert_csv_row(row)
