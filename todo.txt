@@ -1,7 +1,6 @@
 - fix replay on db errors
 - auto-set keyboard to correct one mobile
 - add query single
-- remove all the boilerplate text
 - make it like a loooot less ugly
 - add edge case handling for inputs
 - LLM for auto-card-gen
@@ -32,3 +31,4 @@ done
 * add uid info to study tables
 * lint
 * lower penalty on miss
+* remove all the boilerplate text

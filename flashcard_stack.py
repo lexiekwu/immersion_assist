@@ -9,7 +9,6 @@ MIN_TIME_BETWEEN_REVIEWS_SEC = 60 * 2  # two minutes
 
 class FlashcardStack:
     def __init__(self):
-        # eventually will take in the user info
         pass
 
     def pop_card(self):
