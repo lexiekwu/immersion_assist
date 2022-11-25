@@ -2,15 +2,25 @@
     <head>
         <title>Your Flashcards</title>
         <link type="text/css" rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+        <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
     </head>
     <h2>Cards upcoming for review</h2>
+    <div style="column-count: 2; column-gap: 0px;">
     {% for card in cards %}
         <div class="flashcard">
-            <h4> {{card.study_term.term}} </h4>
-            <p> translation : {{card.study_term.translated_term}} </p>
-            <p> pronunciation : {{card.study_term.pronunciation}} </p>
-            <p> quiz_type : {{card.quiz_type}} </p>
+            <div class="card_title"> {{card.study_term.term}} </div>
+            <div> translation: {{card.study_term.translated_term}} </div>
+            <div> pronunciation: {{card.study_term.pronunciation}} </div>
         </div>
     {% endfor %}
+    </div>
+
+    <div class="nav_footer">
+        <span class="material-icons" onclick="window.location.href = '/quiz';">school</span>
+        <span class="material-icons" onclick="window.location.href = '/new_card';">add</span>
+        <span class="material-icons" onclick="window.location.href = '/cards';">dashboard</span>
+        <span class="material-icons" onclick="window.location.href = '/stats';">query_stats</span>
+
+    </div>
 
 </html>

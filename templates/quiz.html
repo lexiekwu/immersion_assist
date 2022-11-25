@@ -3,6 +3,7 @@
 <head>
     <title>Quiz</title>
     <link type="text/css" rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
 </head>
 
 {% if not last_guess or not last_guess%}
@@ -11,21 +12,18 @@
 {% elif last_card.is_correct_guess(last_guess) %}
   <p> Correct! </p>
   <div class="flashcard">
-      <h4> {{last_card.study_term.term}} </h4>
-      <p> translation : {{last_card.study_term.translated_term}} </p>
-      <p> pronunciation : {{last_card.study_term.pronunciation}} </p>
-      <p> quiz_type : {{last_card.quiz_type}} </p>
+      <div class="card_title"> {{last_card.study_term.term}} </div>
+      <div> translation: {{last_card.study_term.translated_term}} </div>
+      <div> pronunciation: {{last_card.study_term.pronunciation}} </div>
   </div>
-  <p> Next: </p>
   <p> Type {{current_card.prompt}} </p>
 
 {% else %}
   <p> Incorrect. </p>
   <div class="flashcard">
-    <h4> {{last_card.study_term.term}} </h4>
-    <p> translation : {{last_card.study_term.translated_term}} </p>
-    <p> pronunciation : {{last_card.study_term.pronunciation}} </p>
-    <p> quiz_type : {{last_card.quiz_type}} </p>
+      <div class="card_title"> {{last_card.study_term.term}} </div>
+      <div> translation: {{last_card.study_term.translated_term}} </div>
+      <div> pronunciation: {{last_card.study_term.pronunciation}} </div>
   </div>
   <p> Type {{current_card.prompt}} to move on. </p>
 {% endif %}
@@ -36,5 +34,13 @@
     <p> Answer: <input type = "text" name = "guess" autofocus autocomplete="off"/></p>
     <p><input type = "submit" value = "Submit" /></p>
 </form>
+
+<div class="nav_footer">
+  <span class="material-icons" onclick="window.location.href = '/quiz';">school</span>
+  <span class="material-icons" onclick="window.location.href = '/new_card';">add</span>
+  <span class="material-icons" onclick="window.location.href = '/cards';">dashboard</span>
+  <span class="material-icons" onclick="window.location.href = '/stats';">query_stats</span>
+
+</div>
 
 </html>

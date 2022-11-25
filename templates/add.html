@@ -1,15 +1,20 @@
 <head>
   <title>Card Added</title>
   <link type="text/css" rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+  <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
 </head>
 
 <h2> Card added </h2>
 <div class="flashcard">
-  <h4> {{study_term.term}} </h4>
-  <p> translation : {{study_term.translated_term}} </p>
-  <p> pronunciation : {{study_term.pronunciation}} </p>
+  <div class="card_title"> {{study_term.term}} </div>
+  <div> translation: {{study_term.translated_term}} </div>
+  <div> pronunciation: {{study_term.pronunciation}} </div>
 </div>
 
-<button onclick="window.location.href = '/quiz';"> study flashcards </button>
-<button onclick="window.location.href = '/new_card';"> add another term </button>
-<button onclick="window.location.href = '/cards';"> view flashcards </button>
+<div class="nav_footer">
+  <span class="material-icons" onclick="window.location.href = '/quiz';">school</span>
+  <span class="material-icons" onclick="window.location.href = '/new_card';">add</span>
+  <span class="material-icons" onclick="window.location.href = '/cards';">dashboard</span>
+  <span class="material-icons" onclick="window.location.href = '/stats';">query_stats</span>
+
+</div>

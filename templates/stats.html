@@ -2,6 +2,7 @@
     <head>
         <title>Stats</title>
         <link type="text/css" rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+        <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
     </head>
 
     <table>
@@ -13,11 +14,19 @@
         </tr>
         {% for stats in week_stats %}
             <tr> 
-                <td>{{stats.dt}} : </td>
+                <td>{{stats.dt}}: </td>
                 <td>{{stats.count_correct + stats.count_incorrect}} </td>
                 <td>{{stats.accuracy()}}% </td>
 
             </tr>
         {% endfor %}
     </table>
+
+    <div class="nav_footer">
+        <span class="material-icons" onclick="window.location.href = '/quiz';">school</span>
+        <span class="material-icons" onclick="window.location.href = '/new_card';">add</span>
+        <span class="material-icons" onclick="window.location.href = '/cards';">dashboard</span>
+        <span class="material-icons" onclick="window.location.href = '/stats';">query_stats</span>
+
+    </div>
 </html>

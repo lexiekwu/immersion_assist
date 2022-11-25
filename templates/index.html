@@ -3,14 +3,19 @@
 <head>
   <title>Immersion Assist</title>
   <link type="text/css" rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+  <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
 </head>
 <body>
 
   <h1> Welcome to Immersion Assist, {{ session['name'] }}! </h1>
   <h3> What would you like to do? </h3>
-  <button onclick="window.location.href = '/quiz';"> study flashcards </button>
-  <button onclick="window.location.href = '/new_card';"> add a new term </button>
-  <button onclick="window.location.href = '/cards';"> view flashcards </button>
 
+  <div class="nav_footer">
+      <span class="material-icons" onclick="window.location.href = '/quiz';">school</span>
+      <span class="material-icons" onclick="window.location.href = '/new_card';">add</span>
+      <span class="material-icons" onclick="window.location.href = '/cards';">dashboard</span>
+      <span class="material-icons" onclick="window.location.href = '/stats';">query_stats</span>
+
+  </div>
 </body>
 </html>
