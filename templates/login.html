@@ -5,6 +5,10 @@
       <link type="text/css" rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
     </head>
     <body>
+
+      {% for category, message in get_flashed_messages(with_categories=True) %}
+        <div class="toast {{category}}">{{ message }}</div>
+      {% endfor %}
     
       <h1> Welcome to Immersion Assist! </h1>
       <h3> Please log in </h3>

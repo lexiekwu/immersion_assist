@@ -5,7 +5,11 @@
       <link type="text/css" rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
     </head>
     <body>
-    
+
+      {% for category, message in get_flashed_messages(with_categories=True) %}
+        <div class="toast {{category}}">{{ message }}</div>
+      {% endfor %}
+      
       <h1> Sign Up For Immersion Assist </h1>
       <form action="/signup" method = "POST">
         <p>Email <input type = "text" name = "email" /></p>

@@ -4,6 +4,10 @@
   <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
 </head>
 
+{% for category, message in get_flashed_messages(with_categories=True) %}
+<div class="toast {{category}}">{{ message }}</div>
+{% endfor %}
+
 <h2> Card added </h2>
 <div class="flashcard">
   <div class="card_title"> {{study_term.term}} </div>

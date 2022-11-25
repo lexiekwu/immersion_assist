@@ -81,6 +81,9 @@ class StudyTerm:
     @classmethod
     def save_from_string(cls, term_str):
         characters, pinyin, english = _split_term(term_str)
+        assert (
+            characters and english and pinyin
+        ), f"could not successfully split '{term_str}'"
         cls(uuid.uuid4(), characters, english, pinyin)._save()
 
 

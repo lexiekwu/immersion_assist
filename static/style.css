@@ -65,8 +65,23 @@ td, tr {
   font-size: 6vw;
   cursor: pointer;
   padding: 0px 3vw;
+  margin-top: 2vw;
 }
 
 .nav_footer span:hover{
   color: #5b9cce;
+}
+
+.toast {
+  font-size: 2.5vw;
+  padding: 1vw;
+  border-radius: 1vw;
+}
+
+.good {
+  background-color: rgb(178, 221, 178);
+}
+
+.bad {
+  background-color: rgb(221, 178, 178);
 }

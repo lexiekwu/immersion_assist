@@ -7,6 +7,10 @@
 </head>
 <body>
 
+  {% for category, message in get_flashed_messages(with_categories=True) %}
+    <div class="toast {{category}}">{{ message }}</div>
+  {% endfor %}
+
   <h1> Welcome to Immersion Assist, {{ session['name'] }}! </h1>
   <h3> What would you like to do? </h3>
 

@@ -12,7 +12,8 @@ class FlashcardStack:
         pass
 
     def pop_card(self):
-        return self.get_ordered_cards(1)[0]
+        card = self.get_ordered_cards(1)
+        return card[0] if card else None
 
     def get_ordered_cards(self, limit):
         now = int(time.time())
