@@ -66,7 +66,8 @@ def cards():
     if not session.get("uid"):
         return render_template("login.html")
 
-    flashcard_stack = FlashcardStack()
+    flashcard_stack = FlashcardStack(limit=500)
+    print(len(flashcard_stack.stack), "CARDS")
     return render_template("cards.html", cards=flashcard_stack.stack)
 
 
