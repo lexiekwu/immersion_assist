@@ -27,19 +27,20 @@ class StudyTerm:
         translated_term = language.get_translation(term, target_language)
         pronunciation = language.get_pronunciation(translated_term, target_language)
         id = uuid.uuid4()
-        return cls(id, term, translated_term, pronunciation, target_language)
+        return cls(id, translated_term, term, pronunciation, target_language)
 
     def _save(self):
         now = int(time.time())
         insert_term_sql = f"""
-            UPSERT INTO study_term (id, term, translated_term, pronunciation, uid)
+            UPSERT INTO study_term (id, term, translated_term, pronunciation, uid, time_added)
             VALUES
                 (
                     '{self.id}',
                     '{self.term}',
                     '{self.translated_term}',
                     '{self.pronunciation}',
-                    '{session["uid"]}'
+                    '{session["uid"]}',
+                    '{now}'
                 )
         """
         insert_learning_log_sql = f"""
@@ -147,7 +148,9 @@ def get_term_page(page_number, limit):
         FROM study_term
         WHERE
             uid = '{session["uid"]}'
-        ORDER BY translated_term
+        ORDER BY 
+            time_added DESC, 
+            translated_term ASC
         LIMIT {limit}
         OFFSET {limit * (page_number-1)}
         """
