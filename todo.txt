@@ -1,5 +1,6 @@
-- view all in flashcards
+- add time added, sort by
 - LLM for auto-card-gen
+- better stats
 - more languages than Chinese
 - subscriptions
 - use classes in frontend
@@ -34,3 +35,4 @@ done
 * add edge case handling for inputs
 * store more in session
 * edit flashcards
+* view all in flashcards

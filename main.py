@@ -1,14 +1,16 @@
 from flashcard import Flashcard
 from flashcard_stack import FlashcardStack
-from study_term import StudyTerm
+from study_term import StudyTerm, get_term_page, get_count as get_study_term_count
 from daily_stats import DailyStats
 from datetime import datetime, timedelta
 from user import User
 from flask import Flask, render_template, request, session, flash
 from os import environ
+import math
 
 app = Flask(__name__)
 app.secret_key = environ.get("SESSION_KEY")
+DEFAULT_PAGE_LIMIT = 50
 
 
 @app.route("/")
@@ -61,14 +63,21 @@ def signup():
     return render_template("index.html")
 
 
-@app.route("/cards")
-def cards():
+@app.route("/terms")
+def terms():
     if not session.get("uid"):
         return render_template("login.html")
 
-    flashcard_stack = FlashcardStack(limit=500)
-    print(len(flashcard_stack.stack), "CARDS")
-    return render_template("cards.html", cards=flashcard_stack.stack)
+    page_number = int(request.args.get("page_no", 1))
+    total_count = get_study_term_count()
+    num_pages = math.ceil(total_count * 1.0 / DEFAULT_PAGE_LIMIT)
+    terms = get_term_page(page_number, limit=DEFAULT_PAGE_LIMIT)
+    return render_template(
+        "terms.html",
+        terms=terms,
+        page_number=page_number,
+        num_pages=num_pages,
+    )
 
 
 @app.route("/stats")

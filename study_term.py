@@ -111,7 +111,7 @@ class StudyTerm:
             d["term"],
             d["translated_term"],
             d["pronunciation"],
-            d["target_language"],
+            d.get("target_language", TW_CODE),
         )
 
     def to_dict(self):
@@ -138,3 +138,30 @@ def _split_term(term):
     pinyin = " ".join(parts[1:i])
     english = " ".join(parts[i:])
     return characters, pinyin, english
+
+
+def get_term_page(page_number, limit):
+    ds = db.sql_query(
+        f"""
+        SELECT *
+        FROM study_term
+        WHERE
+            uid = '{session["uid"]}'
+        ORDER BY translated_term
+        LIMIT {limit}
+        OFFSET {limit * (page_number-1)}
+        """
+    )
+    return [StudyTerm.from_dict(d) for d in ds]
+
+
+def get_count():
+    return db.sql_query_single(
+        f"""
+        SELECT 
+            COUNT(*) AS cnt
+        FROM study_term
+        WHERE
+            uid = '{session["uid"]}'
+        """
+    )["cnt"]

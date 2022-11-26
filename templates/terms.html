@@ -9,31 +9,43 @@
         <div class="toast {{category}}">{{ message }}</div>
     {% endfor %}
 
-    <h2>Cards upcoming for review</h2>
+    <h2>Your study terms</h2>
 
-    {% if not cards %}
+    {% if not terms %}
     <div onclick="window.location.href = '/new_card';"> Add some cards to see them here! </div>
     {% endif %}
 
     <div style="column-count: 2; column-gap: 0px;">
-    {% for card in cards %}
+    {% for study_term in terms %}
         <div class="flashcard">
             <span
                 class="edit_button material-icons" 
-                onclick="window.location.href = '/edit?study_term_id_to_edit={{card.study_term.id}}';">
+                onclick="window.location.href = '/edit?study_term_id_to_edit={{study_term.id}}';">
                 edit
             </span>
-            <div class="card_title"> {{card.study_term.term}} </div>
-            <div> translation: {{card.study_term.translated_term}} </div>
-            <div> pronunciation: {{card.study_term.pronunciation}} </div>
+            <div class="card_title"> {{study_term.term}} </div>
+            <div> translation: {{study_term.translated_term}} </div>
+            <div> pronunciation: {{study_term.pronunciation}} </div>
         </div>
     {% endfor %}
     </div>
 
+    <div class="page_nav">
+    {% for n in range(1,num_pages + 1) %}
+        <span 
+            onclick="window.location.href = '/terms?page_no={{n}}';"
+            class="page_no 
+            {% if n == page_number %}
+                active_page
+            {% endif %}"
+        >{{n}}</span>
+    {% endfor %}
+
+
     <div class="nav_footer">
         <span class="material-icons" onclick="window.location.href = '/quiz';">school</span>
         <span class="material-icons" onclick="window.location.href = '/new_card';">add</span>
-        <span class="material-icons" onclick="window.location.href = '/cards';">dashboard</span>
+        <span class="material-icons" onclick="window.location.href = '/terms';">dashboard</span>
         <span class="material-icons" onclick="window.location.href = '/stats';">query_stats</span>
 
     </div>

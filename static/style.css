@@ -97,3 +97,22 @@ td, tr {
 .bad {
   background-color: rgb(221, 178, 178);
 }
+
+.page_nav {
+  color: #65ace4;
+  cursor: pointer;
+}
+
+.active_page {
+  color: #647c8e;
+  text-decoration: underline;
+}
+
+.page_no:hover {
+  color: #5b9cce;
+}
+
+.page_no {
+  padding: 0px;
+  margin: 5px;
+}
