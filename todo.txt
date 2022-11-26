@@ -1,5 +1,4 @@
 - view all in flashcards
-- edit flashcards
 - LLM for auto-card-gen
 - more languages than Chinese
 - subscriptions
@@ -34,3 +33,4 @@ done
 * don't be so dang strict about caps/spaces/etc
 * add edge case handling for inputs
 * store more in session
+* edit flashcards

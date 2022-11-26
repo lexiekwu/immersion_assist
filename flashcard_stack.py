@@ -63,7 +63,7 @@ class FlashcardStack:
 
                 ORDER BY 6 DESC
                 LIMIT {self.limit * 3}
-            )
+            ),
 
             learning_log_ordered_min_idx AS (
                 SELECT

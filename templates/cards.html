@@ -10,12 +10,19 @@
     {% endfor %}
 
     <h2>Cards upcoming for review</h2>
+
     {% if not cards %}
     <div onclick="window.location.href = '/new_card';"> Add some cards to see them here! </div>
     {% endif %}
+
     <div style="column-count: 2; column-gap: 0px;">
     {% for card in cards %}
         <div class="flashcard">
+            <span
+                class="edit_button material-icons" 
+                onclick="window.location.href = '/edit?study_term_id_to_edit={{card.study_term.id}}';">
+                edit
+            </span>
             <div class="card_title"> {{card.study_term.term}} </div>
             <div> translation: {{card.study_term.translated_term}} </div>
             <div> pronunciation: {{card.study_term.pronunciation}} </div>

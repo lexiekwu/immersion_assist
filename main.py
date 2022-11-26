@@ -104,6 +104,41 @@ def add():
     return render_template("add.html", study_term=study_term)
 
 
+@app.route("/edit", methods=["GET"])
+def edit():
+    if not session.get("uid"):
+        return render_template("login.html")
+
+    study_term = StudyTerm.get_by_id(request.args.get("study_term_id_to_edit"))
+
+    if not study_term:
+        flash(
+            f"Could not find the term you're trying to edit. Please try again.", "bad"
+        )
+        render_template("index.html")
+
+    return render_template("edit_card.html", study_term=study_term)
+
+
+@app.route("/update", methods=["POST"])
+def update():
+    if not session.get("uid"):
+        return render_template("login.html")
+
+    try:
+        study_term = StudyTerm.get_by_id(request.form.get("study_term_id_to_edit"))
+        study_term.update(
+            request.form.get("term"),
+            request.form.get("translation"),
+            request.form.get("pronunciation"),
+        )
+    except Exception as e:
+        flash(f"Did not successfully update your card. Error was '{str(e)}'", "bad")
+        return render_template("index.html")
+
+    return render_template("add.html", study_term=study_term)
+
+
 @app.route("/add_multi/", methods=["POST"])
 def add_multi():
     if not session.get("uid"):

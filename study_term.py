@@ -75,6 +75,24 @@ class StudyTerm:
             card_dict["pronunciation"],
         )
 
+    def update(self, term, translated_term, pronunciation):
+        self.term = term
+        self.translated_term = translated_term
+        self.pronunciation = pronunciation
+        db.sql_update(
+            f"""
+            UPSERT INTO study_term (id, term, translated_term, pronunciation, uid)
+            VALUES
+                (
+                    '{self.id}',
+                    '{term}',
+                    '{translated_term}',
+                    '{pronunciation}',
+                    '{session["uid"]}'
+                )
+        """
+        )
+
     def toString(self):
         return f"{self.term}: {self.translated_term} ({self.pronunciation})"
 

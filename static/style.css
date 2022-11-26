@@ -11,10 +11,22 @@ body {
   background: #65ace44f;
   border-radius: 3vw;
   padding: 2vw 3vw;
-  cursor: pointer;
   font-size: inherit;
   margin: 1vw;
   -webkit-column-break-inside: avoid;
+  position: relative;
+}
+
+.edit_button {
+  position: absolute;
+  right: 2vw;
+  top: 2vw;
+  color: #65ace4;
+  cursor: pointer;
+}
+
+.edit_button:hover {
+  color: #5b9cce;
 }
 
 .card_title {
@@ -68,7 +80,7 @@ td, tr {
   margin-top: 2vw;
 }
 
-.nav_footer span:hover{
+.edit_button span:hover{
   color: #5b9cce;
 }
 

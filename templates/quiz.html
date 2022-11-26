@@ -16,6 +16,11 @@
 {% elif was_correct %}
   <p> Correct! </p>
   <div class="flashcard">
+      <span
+          class="edit_button material-icons" 
+          onclick="window.location.href = '/edit?study_term_id_to_edit={{last_card.study_term.id}}';">
+          edit
+      </span>
       <div class="card_title"> {{last_card.study_term.term}} </div>
       <div> translation: {{last_card.study_term.translated_term}} </div>
       <div> pronunciation: {{last_card.study_term.pronunciation}} </div>
