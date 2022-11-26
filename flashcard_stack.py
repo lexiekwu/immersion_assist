@@ -62,7 +62,15 @@ class FlashcardStack:
                     learning_log.uid = '{session["uid"]}'
 
                 ORDER BY 6 DESC
-                LIMIT {self.limit}
+                LIMIT {self.limit * 3}
+            )
+
+            learning_log_ordered_min_idx AS (
+                SELECT
+                    term_id,
+                    MIN(idx) AS idx
+                FROM learning_log_ordered
+                GROUP BY 1
             )
 
             SELECT
@@ -75,6 +83,11 @@ class FlashcardStack:
             INNER JOIN study_term f
             ON
                 f.id = l.term_id
+            INNER JOIN learning_log_ordered_min_idx llom
+            ON
+                l.term_id = llom.term_id AND
+                l.idx = llom.idx
+            LIMIT {self.limit}
             """
         )
         flashcards = []
