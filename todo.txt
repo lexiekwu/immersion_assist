@@ -1,4 +1,3 @@
-- add time added, sort by
 - LLM for auto-card-gen
 - better stats
 - more languages than Chinese
@@ -36,3 +35,4 @@ done
 * store more in session
 * edit flashcards
 * view all in flashcards
+* add time added, sort by
