@@ -144,7 +144,7 @@ def quiz():
     # else
     guess = request.form["guess"]
     last_card = Flashcard.from_dict(session["current_card"])
-    was_correct=last_card.is_correct_guess(guess)
+    was_correct = last_card.is_correct_guess(guess)
 
     if was_correct:
         last_card.update_on_correct()
@@ -163,7 +163,7 @@ def quiz():
         "quiz.html",
         current_card=current_card,
         last_card=last_card,
-        was_correct=was_correct
+        was_correct=was_correct,
     )
 
 

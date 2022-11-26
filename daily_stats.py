@@ -25,6 +25,13 @@ class DailyStats:
 
     @classmethod
     def get_for_day(cls, dt=today_dt):
+        if (
+            session.get("count_correct")
+            and session.get("count_incorrect")
+            and session.get("dt") == dt
+        ):
+            return cls(dt, session.get("count_correct"), session.get("count_incorrect"))
+
         stats_dict = db.sql_query_single(
             f"""
                 SELECT
@@ -43,6 +50,14 @@ class DailyStats:
             new_stats_day._save()
             return new_stats_day
 
+        if dt == today_dt:
+            session.update(
+                {
+                    "dt": dt,
+                    "count_correct": stats_dict["count_correct"],
+                    "count_incorrect": stats_dict["count_incorrect"],
+                }
+            )
         return cls(dt, stats_dict["count_correct"], stats_dict["count_incorrect"])
 
     def update(self, is_correct):
@@ -57,3 +72,11 @@ class DailyStats:
             VALUES ('{self.dt}', '{session["uid"]}', {self.count_correct}, {self.count_incorrect})
         """
         )
+        if self.dt == today_dt:
+            session.update(
+                {
+                    "dt": self.dt,
+                    "count_correct": self.count_correct,
+                    "count_incorrect": self.count_incorrect,
+                }
+            )
