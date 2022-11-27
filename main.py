@@ -6,6 +6,7 @@ from datetime import datetime, timedelta
 from user import User
 from flask import Flask, render_template, request, session, flash
 from os import environ
+from language import segment_text
 import math
 
 app = Flask(__name__)
@@ -97,6 +98,17 @@ def new_card():
         return render_template("login.html")
 
     return render_template("new_card.html")
+
+
+@app.route("/story_time", methods=["GET", "POST"])
+def story_time():
+    if not session.get("uid"):
+        return render_template("login.html")
+
+    raw_story = request.form.get("story", "")
+    segmented_story = segment_text(raw_story)
+
+    return render_template("story_time.html", segmented_story=segmented_story)
 
 
 @app.route("/add/", methods=["POST"])

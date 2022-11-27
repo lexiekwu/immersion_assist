@@ -1,3 +1,4 @@
+- UI for picking terms from translated story
 - LLM for auto-card-gen
 - better stats
 - more languages than Chinese

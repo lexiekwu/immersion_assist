@@ -1,6 +1,7 @@
 from os import environ
 from google.cloud import translate
 import pinyin as pinyin_module
+import jieba
 
 
 GCLOUD_PROJECT_PARENT = f"projects/{environ.get('GCLOUD_PROJECT_ID')}"
@@ -26,3 +27,12 @@ def get_translation(term, target_language_code):
         return translation.translated_text
 
     raise KeyError  # could not find a translation
+
+
+def segment_text(long_text, target_language_code=TW_CODE):
+
+    if target_language_code == TW_CODE:
+        return jieba.lcut(long_text)
+
+    print("No segmentation implemented, defaulting to nothing")
+    return ""

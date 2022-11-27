@@ -116,3 +116,9 @@ td, tr {
   padding: 0px;
   margin: 5px;
 }
+
+.story_word {
+  background-color: #65ade43d;
+  margin: 0.2vw;
+  border-radius: 1vw;
+}
