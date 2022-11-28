@@ -117,8 +117,25 @@ td, tr {
   margin: 5px;
 }
 
-.story_word {
+.story_word input{
+  display:hidden;
+}
+
+input[type="checkbox"]{
+  display: none;
+}
+
+.story_span {
+  margin: -.1vw;
+}
+
+.story_word_span {
   background-color: #65ade43d;
-  margin: 0.2vw;
   border-radius: 1vw;
+  cursor: pointer;
+  padding: .1vw;
+}
+
+.story_word_check:checked + .story_word_span {
+  background-color: #65ace4;
 }

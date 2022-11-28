@@ -8,6 +8,7 @@ from flask import Flask, render_template, request, session, flash
 from os import environ
 from language import segment_text
 import math
+import re
 
 app = Flask(__name__)
 app.secret_key = environ.get("SESSION_KEY")
@@ -105,10 +106,23 @@ def story_time():
     if not session.get("uid"):
         return render_template("login.html")
 
-    raw_story = request.form.get("story", "")
+    if not request.form.get("story"):
+        return render_template("story_time.html", segmented_story=None)
+
+    raw_story = request.form.get("story")
     segmented_story = segment_text(raw_story)
 
     return render_template("story_time.html", segmented_story=segmented_story)
+
+
+@app.route("/save_story_words", methods=["POST"])
+def save_story_words():
+    if not session.get("uid"):
+        return render_template("login.html")
+
+    # TODO do something with the words in request.form
+
+    return render_template("story_time.html", segmented_story=None)
 
 
 @app.route("/add/", methods=["POST"])
