@@ -1,4 +1,7 @@
-- UI for picking terms from translated story
+- allow delete card in UI
+- allow edit without redirect
+- use links for nav
+- better waiting signals
 - LLM for auto-card-gen
 - better stats
 - more languages than Chinese
@@ -37,3 +40,5 @@ done
 * edit flashcards
 * view all in flashcards
 * add time added, sort by
+* UI for picking terms from translated story
+* integrate UI into existing add flow

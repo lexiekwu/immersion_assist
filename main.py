@@ -93,12 +93,12 @@ def stats():
     return render_template("stats.html", week_stats=week_stats)
 
 
-@app.route("/new_card", methods=["GET"])
-def new_card():
+@app.route("/new", methods=["GET"])
+def new():
     if not session.get("uid"):
         return render_template("login.html")
 
-    return render_template("new_card.html")
+    return render_template("new.html")
 
 
 @app.route("/story_time", methods=["GET", "POST"])
@@ -147,8 +147,6 @@ def save_cards():
 
     study_terms = []
 
-    print(request.form)
-
     try:
         if request.form.get("word"):
             study_term = StudyTerm.build_and_save_from_translated_term(
@@ -170,7 +168,7 @@ def save_cards():
 
     except Exception as e:
         flash(f"Did not successfully create your cards. Error was '{str(e)}'", "bad")
-        return render_template("new_card.html")
+        return render_template("new.html")
 
     flash(f"Successfully added {len(study_terms)} terms.", "good")
     return render_template("save_cards.html", study_terms=study_terms)
@@ -224,7 +222,7 @@ def quiz():
 
         if not new_card:
             flash(f"No cards available for quizzing. Try adding more.", "good")
-            return render_template("new_card.html")
+            return render_template("new.html")
 
         session["current_card"] = new_card.to_dict()
         session["flashcard_stack"] = flashcard_stack.to_dicts()
@@ -248,7 +246,7 @@ def quiz():
 
     if not current_card:
         flash(f"No cards available for quizzing. Try adding more.", "good")
-        return render_template("new_card.html")
+        return render_template("new.html")
 
     session["current_card"] = current_card.to_dict()
     session["flashcard_stack"] = flashcard_stack.to_dicts()

@@ -38,12 +38,17 @@ input {
   font-family: inherit;
 }
 
-button, input[type=submit] {
+button, input[type=submit], .button_col_3 {
   color: white;
   background: #65ace4;
   border-radius: 3vw;
   border: 0px;
   padding: 5px 10px;
+}
+
+.button_col_3 {
+  text-decoration: none;
+  padding: 2vw 3vw;
 }
 
 button, input[type=submit] {
@@ -150,4 +155,18 @@ input[type="checkbox"]{
 .story_word_translation {
   display:block;
   font-size: 2vw;
+}
+
+.col_3 {
+  width: 32%;
+  display: inline-block;
+  font-size: 2vw;
+  vertical-align: top;
+}
+
+.new_terms_method {
+    border-radius: 3vw;
+    padding: 3vw;
+    margin-top: 4vw;
+    box-shadow: 0px 0px 3px #777;
 }
