@@ -13,15 +13,19 @@
     {% if segmented_story is not none %}
         <h2> Story </h2>
         <p> Click the words that you want to save, then hit "save." </p>
-        <form action="/save_story_words" method = "POST">
+        <form action="/save_cards" method = "POST">
             {% for segment, is_word in segmented_story %}
                 {% if not is_word %}
                     <span class="story_span">{{segment}}</span>
                 {% else %}
                     <label value="1">
                         <!-- <label class="labelforcheck"> -->
-                        <input type="checkbox" class="story_word_check" name="{{segment}}">
-                        <span class="story_span story_word_span">{{segment}}</span>
+                        <input type="checkbox" class="story_word_check" name="{{segment.id}}">
+                        <span class="story_span story_word_span">
+                            <span>{{segment.term}}</span>
+                            <span class="story_word_pronunciation">{{segment.pronunciation}}</span>
+                            <span class="story_word_translation">{{segment.translated_term}}</span>
+                        </span>
                         <!-- {{word}} -->
                     </label>
                 {% endif %}

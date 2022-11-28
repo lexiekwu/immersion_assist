@@ -1,5 +1,5 @@
 <head>
-  <title>Card Added</title>
+  <title>Cards Saved</title>
   <link type="text/css" rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
   <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
 </head>
@@ -8,12 +8,19 @@
 <div class="toast {{category}}">{{ message }}</div>
 {% endfor %}
 
-<h2> Card Updated </h2>
-<div class="flashcard">
-  <div class="card_title"> {{study_term.term}} </div>
-  <div> translation: {{study_term.translated_term}} </div>
-  <div> pronunciation: {{study_term.pronunciation}} </div>
-</div>
+<h2> Cards Saved </h2>
+{% for study_term in study_terms %}
+  <div class="flashcard">
+    <span
+          class="edit_button material-icons" 
+          onclick="window.location.href = '/edit?study_term_id_to_edit={{ study_term.id }}';">
+          edit
+    </span>
+    <div class="card_title"> {{study_term.term}} </div>
+    <div> translation: {{study_term.translated_term}} </div>
+    <div> pronunciation: {{study_term.pronunciation}} </div>
+  </div>
+{% endfor %}
 
 <div class="nav_footer">
   <span class="material-icons" onclick="window.location.href = '/quiz';">school</span>

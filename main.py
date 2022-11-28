@@ -110,7 +110,22 @@ def story_time():
         return render_template("story_time.html", segmented_story=None)
 
     raw_story = request.form.get("story")
-    segmented_story = segment_text(raw_story)
+    segmented_story = list(segment_text(raw_story))
+
+    # convert words to StudyTerms
+    for i in range(len(segmented_story)):
+        segment, is_word = segmented_story[i]
+        if not is_word:
+            continue
+        study_term = StudyTerm.build_from_term(segment)
+        segmented_story[i] = (study_term, is_word)
+
+    # add id-lookup to session, to save words later
+    session["terms_dict"] = {
+        str(study_term.id): study_term.to_dict()
+        for study_term, is_word in segmented_story
+        if is_word
+    }
 
     return render_template("story_time.html", segmented_story=segmented_story)
 
@@ -125,19 +140,40 @@ def save_story_words():
     return render_template("story_time.html", segmented_story=None)
 
 
-@app.route("/add/", methods=["POST"])
-def add():
+@app.route("/save_cards", methods=["POST"])
+def save_cards():
     if not session.get("uid"):
         return render_template("login.html")
 
+    study_terms = []
+
+    print(request.form)
+
     try:
-        term = request.form.get("word")
-        study_term = StudyTerm.create_and_save(term)
+        if request.form.get("word"):
+            study_term = StudyTerm.build_and_save_from_translated_term(
+                request.form.get("word")
+            )
+            study_terms.append(study_term)
+        elif request.form.get("terms"):
+            terms = request.form.get("terms").split("\r\n")
+            study_terms += [StudyTerm.save_from_string(term) for term in terms if term]
+        elif session.get("terms_dict"):
+            # look for selected keys from story_time
+            form_keys = set(request.form.keys())
+            for form_key in form_keys:
+                term_to_save = session["terms_dict"].get(form_key)
+                if term_to_save:
+                    study_term = StudyTerm.from_dict(term_to_save)
+                    study_term.save()
+                    study_terms.append(study_term)
+
     except Exception as e:
-        flash(f"Did not successfully create your card. Error was '{str(e)}'", "bad")
+        flash(f"Did not successfully create your cards. Error was '{str(e)}'", "bad")
         return render_template("new_card.html")
 
-    return render_template("add.html", study_term=study_term)
+    flash(f"Successfully added {len(study_terms)} terms.", "good")
+    return render_template("save_cards.html", study_terms=study_terms)
 
 
 @app.route("/edit", methods=["GET"])
@@ -172,21 +208,7 @@ def update():
         flash(f"Did not successfully update your card. Error was '{str(e)}'", "bad")
         return render_template("index.html")
 
-    return render_template("add.html", study_term=study_term)
-
-
-@app.route("/add_multi/", methods=["POST"])
-def add_multi():
-    if not session.get("uid"):
-        return render_template("login.html")
-
-    try:
-        terms = request.form.get("terms").split("\r\n")
-        [StudyTerm.save_from_string(term) for term in terms if term]
-        flash(f"Successfully added {len(terms)} cards.", "good")
-    except Exception as e:
-        flash(f"Did not successfully create your cards. Error was '{str(e)}'", "bad")
-    return render_template("new_card.html")
+    return render_template("save_cards.html", study_terms=[study_term])
 
 
 @app.route("/quiz", methods=["POST", "GET"])

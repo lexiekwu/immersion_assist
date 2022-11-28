@@ -134,8 +134,20 @@ input[type="checkbox"]{
   border-radius: 1vw;
   cursor: pointer;
   padding: .1vw;
+  display: inline-block;
 }
 
 .story_word_check:checked + .story_word_span {
   background-color: #65ace4;
+}
+
+.story_word_pronunciation {
+  display:block;
+  font-size: 2vw;
+  color: #777;
+}
+
+.story_word_translation {
+  display:block;
+  font-size: 2vw;
 }

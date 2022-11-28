@@ -1,5 +1,6 @@
 from os import environ
 from google.cloud import translate
+from flask import session
 import pinyin as pinyin_module
 import jieba
 import re
@@ -7,17 +8,35 @@ import re
 
 GCLOUD_PROJECT_PARENT = f"projects/{environ.get('GCLOUD_PROJECT_ID')}"
 TW_CODE = "zh-TW"  # TODO make flexible
+EN_CODE = "en"
 
 
 def get_pronunciation(translated_term, target_language_code):
+    # avoid repeated API calls
+    if session.get("pronunciations", {}).get(translated_term):
+        return session["pronunciations"][translated_term]
+
     if target_language_code == TW_CODE:
-        return pinyin_module.get(translated_term, format="numerical", delimiter=" ")
+        pronunciation = pinyin_module.get(
+            translated_term, format="numerical", delimiter=" "
+        )
+
+        # save to avoid repeated API calls
+        if not session.get("pronunciations"):
+            session["pronunciations"] = {}
+            session["pronunciations"][translated_term] = pronunciation
+        return pronunciation
 
     print("No pronunciation implemented, defaulting to nothing")
     return ""
 
 
 def get_translation(term, target_language_code):
+
+    # avoid repeated API calls
+    if session.get("translations", {}).get(term):
+        return session["translations"][term]
+
     response = translate.TranslationServiceClient().translate_text(
         contents=[term],
         target_language_code=target_language_code,
@@ -25,6 +44,12 @@ def get_translation(term, target_language_code):
     )
 
     for translation in response.translations:
+
+        # save to avoid repeated API calls
+        if not session.get("translations"):
+            session["translations"] = {}
+        session["translations"][term] = translation.translated_text
+
         return translation.translated_text
 
     raise KeyError  # could not find a translation
