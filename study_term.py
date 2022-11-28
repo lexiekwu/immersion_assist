@@ -103,6 +103,21 @@ class StudyTerm:
         """
         )
 
+    def delete(self):
+        delete_term_sql = f"""
+            DELETE FROM study_term
+            WHERE 
+                id = '{self.id}' AND
+                uid = '{session["uid"]}'
+        """
+        delete_learning_log_sql = f"""
+            DELETE FROM learning_log
+            WHERE 
+                term_id = '{self.id}' AND
+                uid = '{session["uid"]}'
+        """
+        db.sql_update_multi([delete_term_sql, delete_learning_log_sql])
+
     def toString(self):
         return f"{self.term}: {self.translated_term} ({self.pronunciation})"
 

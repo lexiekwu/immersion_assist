@@ -1,5 +1,6 @@
 - allow delete card in UI
-- allow edit without redirect
+- allow edit/delete without redirect
+- put less in session for stories
 - use links for nav
 - better waiting signals
 - LLM for auto-card-gen
@@ -42,3 +43,5 @@ done
 * add time added, sort by
 * UI for picking terms from translated story
 * integrate UI into existing add flow
+* allow delete card in UI
+* allow delete card in UI

@@ -16,10 +16,17 @@
 {% elif was_correct %}
   <p> Correct! </p>
   <div class="flashcard">
-      <span
-          class="edit_button material-icons" 
-          onclick="window.location.href = '/edit?study_term_id_to_edit={{last_card.study_term.id}}';">
-          edit
+      <span class="edit_button">
+        <span
+            class="material-icons" 
+            onclick="window.location.href = '/edit?study_term_id_to_edit={{last_card.study_term.id}}';">
+            edit
+        </span>
+        <span
+            class="material-icons" 
+            onclick="window.location.href = '/delete?study_term_id_to_delete={{last_card.study_term.id}}';">
+            delete
+        </span>
       </span>
       <div class="card_title"> {{last_card.study_term.term}} </div>
       <div> translation: {{last_card.study_term.translated_term}} </div>
@@ -30,10 +37,17 @@
 {% else %}
   <p> Incorrect. </p>
   <div class="flashcard">
-      <span
-          class="edit_button material-icons" 
-          onclick="window.location.href = '/edit?study_term_id_to_edit={{last_card.study_term.id}}';">
-          edit
+      <span class="edit_button">
+        <span
+            class="material-icons" 
+            onclick="window.location.href = '/edit?study_term_id_to_edit={{last_card.study_term.id}}';">
+            edit
+        </span>
+        <span
+            class="material-icons" 
+            onclick="window.location.href = '/delete?study_term_id_to_delete={{last_card.study_term.id}}';">
+            delete
+        </span>
       </span>
       <div class="card_title"> {{last_card.study_term.term}} </div>
       <div> translation: {{last_card.study_term.translated_term}} </div>

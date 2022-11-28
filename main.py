@@ -190,6 +190,25 @@ def edit():
     return render_template("edit_card.html", study_term=study_term)
 
 
+@app.route("/delete", methods=["GET"])
+def delete():
+    if not session.get("uid"):
+        return render_template("login.html")
+
+    study_term = StudyTerm.get_by_id(request.args.get("study_term_id_to_delete"))
+
+    if not study_term:
+        flash(
+            f"Could not find the term you're trying to delete. Please try again.", "bad"
+        )
+        render_template("index.html")
+
+    study_term.delete()
+    flash(f"Deleted term {study_term.term}.", "good")
+
+    return render_template("index.html")
+
+
 @app.route("/update", methods=["POST"])
 def update():
     if not session.get("uid"):

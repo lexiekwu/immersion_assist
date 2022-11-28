@@ -20,12 +20,12 @@ body {
 .edit_button {
   position: absolute;
   right: 2vw;
-  top: 2vw;
+  top: 1vw;
   color: #65ace4;
   cursor: pointer;
 }
 
-.edit_button:hover {
+.edit_button > span:hover {
   color: #5b9cce;
 }
 
@@ -83,10 +83,6 @@ td, tr {
   cursor: pointer;
   padding: 0px 3vw;
   margin-top: 2vw;
-}
-
-.edit_button span:hover{
-  color: #5b9cce;
 }
 
 .toast {
