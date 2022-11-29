@@ -45,3 +45,4 @@ done
 * integrate UI into existing add flow
 * allow delete card in UI
 * allow delete card in UI
+* don't store so much in session

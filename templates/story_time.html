@@ -19,14 +19,12 @@
                     <span class="story_span">{{segment}}</span>
                 {% else %}
                     <label value="1">
-                        <!-- <label class="labelforcheck"> -->
-                        <input type="checkbox" class="story_word_check" name="{{segment.id}}">
+                        <input type="checkbox" class="story_word_check" name="{{segment.to_json()}}">
                         <span class="story_span story_word_span">
                             <span>{{segment.term}}</span>
                             <span class="story_word_pronunciation">{{segment.pronunciation}}</span>
                             <span class="story_word_translation">{{segment.translated_term}}</span>
                         </span>
-                        <!-- {{word}} -->
                     </label>
                 {% endif %}
             {% endfor %}

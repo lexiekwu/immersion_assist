@@ -4,7 +4,7 @@ from study_term import StudyTerm, get_term_page, get_count as get_study_term_cou
 from daily_stats import DailyStats
 from datetime import datetime, timedelta
 from user import User
-from flask import Flask, render_template, request, session, flash
+from flask import Flask, render_template, request, session, flash, json
 from os import environ
 from language import segment_text
 import math
@@ -120,24 +120,7 @@ def story_time():
         study_term = StudyTerm.build_from_term(segment)
         segmented_story[i] = (study_term, is_word)
 
-    # add id-lookup to session, to save words later
-    session["terms_dict"] = {
-        str(study_term.id): study_term.to_dict()
-        for study_term, is_word in segmented_story
-        if is_word
-    }
-
     return render_template("story_time.html", segmented_story=segmented_story)
-
-
-@app.route("/save_story_words", methods=["POST"])
-def save_story_words():
-    if not session.get("uid"):
-        return render_template("login.html")
-
-    # TODO do something with the words in request.form
-
-    return render_template("story_time.html", segmented_story=None)
 
 
 @app.route("/save_cards", methods=["POST"])
@@ -156,11 +139,11 @@ def save_cards():
         elif request.form.get("terms"):
             terms = request.form.get("terms").split("\r\n")
             study_terms += [StudyTerm.save_from_string(term) for term in terms if term]
-        elif session.get("terms_dict"):
+        else:
             # look for selected keys from story_time
             form_keys = set(request.form.keys())
             for form_key in form_keys:
-                term_to_save = session["terms_dict"].get(form_key)
+                term_to_save = json.loads(form_key)
                 if term_to_save:
                     study_term = StudyTerm.from_dict(term_to_save)
                     study_term.save()

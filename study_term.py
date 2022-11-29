@@ -2,7 +2,7 @@ import uuid
 import time
 import language
 import cockroachdb as db
-from flask import session
+from flask import session, json
 
 TW_CODE = "zh-TW"  # TODO make flexible
 
@@ -149,6 +149,9 @@ class StudyTerm:
             "translated_term": self.translated_term,
             "pronunciation": self.pronunciation,
         }
+
+    def to_json(self):
+        return json.dumps(self.to_dict())
 
 
 def _split_term(term):
