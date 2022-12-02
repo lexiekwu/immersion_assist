@@ -7,6 +7,8 @@ from user import User
 from flask import Flask, render_template, request, session, flash, json, redirect
 from os import environ
 from language import segment_text
+from urllib.parse import urlparse
+
 import math
 import re
 
@@ -42,6 +44,13 @@ def login():
     session["uid"] = this_user.uid
     session["name"] = this_user.name
     flash("Login successful.", "good")
+
+    # if you came from somewhere within the app, direct
+    # back to what you were trying to do
+    referrer_url = urlparse(request.referrer)
+    if referrer_url.hostname == request.host.split(":")[0]:
+        return redirect(request.referrer)
+    
     return render_template("index.html")
 
 
