@@ -50,7 +50,7 @@ def login():
     referrer_url = urlparse(request.referrer)
     if referrer_url.hostname == request.host.split(":")[0]:
         return redirect(request.referrer)
-    
+
     return render_template("index.html")
 
 

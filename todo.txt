@@ -1,4 +1,4 @@
-- fuzzier matching, allow redo if wrong answer type
+- only count the first time answering in knowledge factor
 - count in session + current streak
 - use links for nav
 - better waiting signals
@@ -48,3 +48,4 @@ done
 * don't store so much in session
 * allow edit/delete redirecting back
 * allow login to redirect back to page you tried
+* show quiz type in preview
