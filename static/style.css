@@ -77,12 +77,13 @@ td, tr {
   padding: 2vw;
 }
 
-.nav_footer span{
+.nav_footer a{
   color: #65ace4;
   font-size: 6vw;
   cursor: pointer;
   padding: 0px 3vw;
   margin-top: 2vw;
+  text-decoration: none;
 }
 
 .toast {
