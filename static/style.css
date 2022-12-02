@@ -166,3 +166,7 @@ input[type="checkbox"]{
     margin-top: 4vw;
     box-shadow: 0px 0px 3px #777;
 }
+
+.stats {
+  font-size: 3vw;
+}

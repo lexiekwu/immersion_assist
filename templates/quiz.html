@@ -14,7 +14,9 @@
   <p> Type {{current_card.prompt}} </p>
 
 {% elif was_correct %}
-  <p> Correct! </p>
+  <p> Correct! 
+    <div class="stats"> Today's stats {{session['count_correct']}}:{{session['count_incorrect']}} correct:incorrect </div>
+  </p>
   <div class="flashcard">
       <span class="edit_button">
         <span
@@ -35,7 +37,9 @@
   <p> Type {{current_card.prompt}} </p>
 
 {% else %}
-  <p> Incorrect. </p>
+  <p> Incorrect. 
+      <div class="stats"> Today's stats {{session['count_correct']}}:{{session['count_incorrect']}} correct:incorrect </div>
+  </p>
   <div class="flashcard">
       <span class="edit_button">
         <span
