@@ -240,22 +240,27 @@ def quiz():
         session["current_card"] = new_card.to_dict()
         session["flashcard_stack"] = flashcard_stack.to_dicts()
         return render_template(
-            "quiz.html",
-            current_card=new_card,
-            last_card=None,
+            "quiz.html", current_card=new_card, last_card=None, is_first_try=True
         )
 
     # else
     guess = request.form["guess"]
     last_card = Flashcard.from_dict(session["current_card"])
     was_correct = last_card.is_correct_guess(guess)
+    is_first_try = request.form.get("is_first_try") == "True"
 
     if was_correct:
-        last_card.update_on_correct()
         current_card = flashcard_stack.pop_card()
+
+        # only update knowledge factor after the first try
+        if is_first_try:
+            last_card.update_on_correct()
     else:
-        last_card.update_on_incorrect()
         current_card = last_card
+
+        # only update knowledge factor after the first try
+        if is_first_try:
+            last_card.update_on_incorrect()
 
     if not current_card:
         flash(f"No cards available for quizzing. Try adding more.", "good")
@@ -268,6 +273,7 @@ def quiz():
         current_card=current_card,
         last_card=last_card,
         was_correct=was_correct,
+        is_first_try=was_correct,
     )
 
 

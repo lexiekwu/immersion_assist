@@ -59,6 +59,7 @@
 <form action="/quiz" method = "POST">
     <input type="hidden" name="last_term_id" value="{{current_card.study_term.id}}"/>
     <input type="hidden" name="quiz_type" value="{{current_card.quiz_type}}" />
+    <input type="hidden" name="is_first_try" value="{{is_first_try}}" />
     <p> Answer: <input type = "text" name = "guess" autofocus 
       placeholder="{{ current_card.quiz_type.replace('_',' ') }}" autocomplete="off"/></p>
     <p><input type = "submit" value = "Submit" /></p>

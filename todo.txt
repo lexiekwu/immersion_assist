@@ -1,4 +1,3 @@
-- only count the first time answering in knowledge factor
 - count in session + current streak
 - use links for nav
 - better waiting signals
@@ -49,3 +48,5 @@ done
 * allow edit/delete redirecting back
 * allow login to redirect back to page you tried
 * show quiz type in preview
+* only count the first time answering in knowledge factor
+
