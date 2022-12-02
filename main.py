@@ -4,7 +4,7 @@ from study_term import StudyTerm, get_term_page, get_count as get_study_term_cou
 from daily_stats import DailyStats
 from datetime import datetime, timedelta
 from user import User
-from flask import Flask, render_template, request, session, flash, json
+from flask import Flask, render_template, request, session, flash, json, redirect
 from os import environ
 from language import segment_text
 import math
@@ -168,8 +168,9 @@ def edit():
         flash(
             f"Could not find the term you're trying to edit. Please try again.", "bad"
         )
-        render_template("index.html")
+        return render_template("index.html")
 
+    session["next"] = request.referrer
     return render_template("edit_card.html", study_term=study_term)
 
 
@@ -189,7 +190,7 @@ def delete():
     study_term.delete()
     flash(f"Deleted term {study_term.term}.", "good")
 
-    return render_template("index.html")
+    return redirect(request.referrer or "/")
 
 
 @app.route("/update", methods=["POST"])
@@ -204,11 +205,12 @@ def update():
             request.form.get("translation"),
             request.form.get("pronunciation"),
         )
+        flash(f"Updated term {study_term.term}.", "good")
     except Exception as e:
         flash(f"Did not successfully update your card. Error was '{str(e)}'", "bad")
         return render_template("index.html")
 
-    return render_template("save_cards.html", study_terms=[study_term])
+    return redirect(session.get("next") or "/")
 
 
 @app.route("/quiz", methods=["POST", "GET"])
