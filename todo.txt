@@ -1,7 +1,7 @@
-- better waiting signals
-- side by side story translate flow
 - prepopulated decks
 - LLM for auto-card-gen
+- sticky footer everywhere
+- better waiting signals
 - better stats
 - more languages than Chinese
 - subscriptions
@@ -50,3 +50,4 @@ done
 * only count the first time answering in knowledge factor
 * count in session
 * use links for nav
+* side by side story translate flow

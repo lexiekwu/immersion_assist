@@ -10,29 +10,40 @@
         <div class="toast {{category}}">{{ message }}</div>
     {% endfor %}
 
-    {% if segmented_story is not none %}
-        <h2> Story </h2>
-        <p> Click the words that you want to save, then hit "save." </p>
-        <form action="/save_cards" method = "POST">
-            {% for segment, is_word in segmented_story %}
-                {% if not is_word %}
-                    <span class="story_span">{{segment}}</span>
-                {% else %}
-                    <label value="1">
-                        <input type="checkbox" class="story_word_check" name="{{segment.to_json()}}">
-                        <span class="story_span story_word_span">
-                            <span>{{segment.term}}</span>
-                            <span class="story_word_pronunciation">{{segment.pronunciation}}</span>
-                            <span class="story_word_translation">{{segment.translated_term}}</span>
-                        </span>
-                    </label>
-                {% endif %}
-            {% endfor %}
-            <p><input type = "submit" value = "Save" /></p>
-        </form>
-    {% endif %}
+    <div style="height: 10vh">
+        <h2 style="font-size: 4vh; margin: 1vh 0vh"> Story </h2>
+        <div style="font-size: 2.5vh; margin-bottom: 1vh"> Click the words that you want to save, then hit "save." </div>
+    </div>
+    <form action="/save_cards" method = "POST" style="margin:0">
+        <div class="story_col">
+        {% for story_term in story.story_terms %}
+            {% if not story_term.is_word %}
+                <span class="story_span">{{story_term.term}}</span>
+            {% else %}
+                <label>
+                    <input type="checkbox" class="story_word_check" name="{{story_term.to_json()}}">
+                    <span class="story_span story_word_span">
+                        <span>{{story_term.term}}</span>
+                        <span class="story_word_pronunciation">{{story_term.pronunciation}}</span>
+                    </span>
+                </label>
+            {% endif %}
+        {% endfor %}
+        </div>
+        <div class="story_col story_col_r">
+            {{story.translation}}
+        </div>
+        <input style="
+            position: absolute;
+            bottom: 5vh;
+            font-size: 3vh;
+            padding: 1.5vh;
+            left: 35vw;
+            right: 35vw;
+        " type = "submit" value = "Save"/>
+    </form>
 
-    <div class="nav_footer">
+    <div class="nav_footer nav_footer_sticky">
         <a class="material-icons" href = "/quiz">school</a>
         <a class="material-icons" href = "/new">add</a>
         <a class="material-icons" href = "/terms">dashboard</a>

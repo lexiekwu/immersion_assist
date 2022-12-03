@@ -23,9 +23,9 @@ class StudyTerm:
         self.pronunciation = pronunciation
 
     @classmethod
-    def build_from_term(cls, term):
+    def build_from_term(cls, term, pronunciation=None):
         translated_term = language.get_translation(term, language.EN_CODE)
-        pronunciation = language.get_pronunciation(term, language.TW_CODE)
+        pronunciation = pronunciation or language.get_pronunciation(term, language.TW_CODE)
         id = uuid.uuid4()
         return cls(id, term, translated_term, pronunciation)
 
@@ -149,9 +149,6 @@ class StudyTerm:
             "translated_term": self.translated_term,
             "pronunciation": self.pronunciation,
         }
-
-    def to_json(self):
-        return json.dumps(self.to_dict())
 
 
 def _split_term(term):

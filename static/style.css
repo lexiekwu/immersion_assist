@@ -79,11 +79,18 @@ td, tr {
 
 .nav_footer a{
   color: #65ace4;
-  font-size: 6vw;
+  font-size: 4vh;
   cursor: pointer;
-  padding: 0px 3vw;
-  margin-top: 2vw;
+  padding: 0px 2vh;
+  margin-top: 1.5vh;
   text-decoration: none;
+}
+
+.nav_footer_sticky {
+  position: absolute;
+  bottom: 0vh;
+  width: 100%;
+  font-size: 4vh;
 }
 
 .toast {
@@ -137,6 +144,7 @@ input[type="checkbox"]{
   cursor: pointer;
   padding: .1vw;
   display: inline-block;
+  text-align: center;
 }
 
 .story_word_check:checked + .story_word_span {
@@ -149,16 +157,21 @@ input[type="checkbox"]{
   color: #777;
 }
 
-.story_word_translation {
-  display:block;
-  font-size: 2vw;
+.story_col {
+  top: 13vh;
+  bottom: 13vh;
+  overflow: scroll;
+  position: absolute;
+  left: 0vw;
+  right: 50vw;
+  width: 48vw;
+  text-align: left;
+  padding: 2vw;
 }
 
-.col_3 {
-  width: 32%;
-  display: inline-block;
-  font-size: 2vw;
-  vertical-align: top;
+.story_col_r {
+  left: 50vw;
+  right: 100vw;
 }
 
 .new_terms_method {

@@ -30,6 +30,16 @@ def get_pronunciation(translated_term, target_language_code):
     print("No pronunciation implemented, defaulting to nothing")
     return ""
 
+def get_pronunciation_dict(translated_sentence, target_language_code):
+    if target_language_code == TW_CODE:
+        filtered_characters = re.sub(r"[^\u4e00-\u9fa5]", "", translated_sentence)
+        pronunciation = pinyin_module.get(
+            filtered_characters, format="numerical", delimiter=" "
+        ).split(" ")
+        return {char: p for char, p in zip(filtered_characters, pronunciation)}
+
+    print("No pronunciation implemented, defaulting to nothing")
+    return ""
 
 def get_translation(term, target_language_code):
 
@@ -48,9 +58,11 @@ def get_translation(term, target_language_code):
         # save to avoid repeated API calls
         if not session.get("translations"):
             session["translations"] = {}
-        session["translations"][term] = translation.translated_text
 
-        return translation.translated_text
+        fixed_translation = _fix_translation_characters(translation.translated_text)
+        session["translations"][term] = fixed_translation
+
+        return fixed_translation
 
     raise KeyError  # could not find a translation
 
@@ -66,3 +78,7 @@ def segment_text(long_text, target_language_code=TW_CODE):
 
     print("No segmentation implemented, defaulting to nothing")
     return ""
+
+
+def _fix_translation_characters(translated_text):
+    return translated_text.replace('&#39;',"'")

@@ -4,9 +4,9 @@ from study_term import StudyTerm, get_term_page, get_count as get_study_term_cou
 from daily_stats import DailyStats
 from datetime import datetime, timedelta
 from user import User
+from story import Story
 from flask import Flask, render_template, request, session, flash, json, redirect
 from os import environ
-from language import segment_text
 from urllib.parse import urlparse
 
 import math
@@ -115,21 +115,10 @@ def story_time():
     if not session.get("uid"):
         return render_template("login.html")
 
-    if not request.form.get("story"):
-        return render_template("story_time.html", segmented_story=None)
-
     raw_story = request.form.get("story")
-    segmented_story = list(segment_text(raw_story))
+    story = Story.build(raw_story)
 
-    # convert words to StudyTerms
-    for i in range(len(segmented_story)):
-        segment, is_word = segmented_story[i]
-        if not is_word:
-            continue
-        study_term = StudyTerm.build_from_term(segment)
-        segmented_story[i] = (study_term, is_word)
-
-    return render_template("story_time.html", segmented_story=segmented_story)
+    return render_template("story_time.html", story=story)
 
 
 @app.route("/save_cards", methods=["POST"])
@@ -154,7 +143,10 @@ def save_cards():
             for form_key in form_keys:
                 term_to_save = json.loads(form_key)
                 if term_to_save:
-                    study_term = StudyTerm.from_dict(term_to_save)
+                    study_term = StudyTerm.build_from_term(
+                        term_to_save["term"],
+                        term_to_save["pronunciation"]
+                    )
                     study_term.save()
                     study_terms.append(study_term)
 
