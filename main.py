@@ -130,8 +130,8 @@ def select_words():
     try:
         keyword = request.form.get("keyword")
         number = int(request.form.get("number"))
-        if number > 50:
-            raise Exception("{number} is too many: try <50.")
+        if number > 500:
+            raise Exception("{number} is too many: try <500.")
         words = [keyword] + get_related_words(keyword, number)
     except Exception as e:
         flash(f"Could not successfully generate words. Error was '{str(e)}'", "bad")
