@@ -1,13 +1,14 @@
-- prepopulated decks
+- prepopulated decks (this API https://www.datamuse.com/api/)
 - LLM for auto-card-gen
 - sticky footer everywhere
 - better waiting signals
 - better stats
+- tests LOL
 - more languages than Chinese
+- export CSV for cards
 - subscriptions
 - use classes in frontend
 - import CSV for cards
-- export CSV for cards
 
 done
 * move onto correct google project
