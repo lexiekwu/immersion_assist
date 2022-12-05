@@ -1,6 +1,7 @@
 import language
 from flask import json
 
+
 class Story:
     def __init__(self, story_terms, translation):
         self.story_terms = story_terms
@@ -9,7 +10,9 @@ class Story:
     @classmethod
     def build(cls, raw_story):
         segmented_story = list(language.segment_text(raw_story))
-        pronunciation_lookup = language.get_pronunciation_dict(raw_story, language.TW_CODE)
+        pronunciation_lookup = language.get_pronunciation_dict(
+            raw_story, language.TW_CODE
+        )
         translated_story = language.get_translation(raw_story, language.EN_CODE)
 
         def _get_segment_pronunciation(segment, is_word):

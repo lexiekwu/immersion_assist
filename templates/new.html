@@ -10,9 +10,10 @@
     {% endfor %}
 
     <h2>Add Terms 3 Ways</h2>
-    <a class="button_col_3" href="#single_word">Single Word</a>
-    <a class="button_col_3" href="#story">Story</a>
-    <a class="button_col_3" href="#bulk">Bulk</a>
+    <a class="button_col_4" href="#single_word">Single Word</a>
+    <a class="button_col_4" href="#story">Story</a>
+    <a class="button_col_4" href="#bulk">Bulk</a>
+    <a class="button_col_4" href="#related">By Topic</a>
 
     <div class="new_terms_method">
         <h3 id="single_word">Input a Single Word</h3>
@@ -36,6 +37,16 @@
         <form action="/save_cards" method = "POST">
             <p>Words in form "term pronunciation english"</p>
             <textarea style="width:100%; height:30%" type = "text" name="terms"></textarea> 
+            <p><input type = "submit" value = "Submit" /></p>
+        </form>
+    </div>
+
+    <div class="new_terms_method">
+        <h3 id="related">By Topic</h3>
+        <form action="/select_words" method = "POST">
+            <p>Generate words related to a keyword or topic, select words to study on the next screen</p>
+            <p>Keyword in English <input style="width: 40%" type = "text" name = "keyword" /></p>
+            <p>Number to generate <input style="width: 20%" type = "number" name = "number" /></p>
             <p><input type = "submit" value = "Submit" /></p>
         </form>
     </div>

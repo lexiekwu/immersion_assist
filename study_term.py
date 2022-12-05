@@ -25,7 +25,9 @@ class StudyTerm:
     @classmethod
     def build_from_term(cls, term, pronunciation=None):
         translated_term = language.get_translation(term, language.EN_CODE)
-        pronunciation = pronunciation or language.get_pronunciation(term, language.TW_CODE)
+        pronunciation = pronunciation or language.get_pronunciation(
+            term, language.TW_CODE
+        )
         id = uuid.uuid4()
         return cls(id, term, translated_term, pronunciation)
 

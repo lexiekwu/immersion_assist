@@ -38,7 +38,7 @@ input {
   font-family: inherit;
 }
 
-button, input[type=submit], .button_col_3 {
+button, input[type=submit], .button_col_4 {
   color: white;
   background: #65ace4;
   border-radius: 3vw;
@@ -46,7 +46,7 @@ button, input[type=submit], .button_col_3 {
   padding: 5px 10px;
 }
 
-.button_col_3 {
+.button_col_4 {
   text-decoration: none;
   padding: 2vw 3vw;
 }

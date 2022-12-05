@@ -1,0 +1,37 @@
+<head>
+    <title>Pick Words to Add </title>
+    <link type="text/css" rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+</head>
+
+<body>
+
+    {% for category, message in get_flashed_messages(with_categories=True) %}
+        <div class="toast {{category}}">{{ message }}</div>
+    {% endfor %}
+
+    <h2 > Pick Words to Add </h2>
+    <p> Click the words that you want to save, then hit "save." </p>
+    
+    <form action="/save_cards" method = "POST" style="margin:0">
+        <p>
+        {% for word in words %}
+            <label>
+                <input type="checkbox" class="story_word_check" name="{{word}}">
+                <span style="margin:.5vw" class="story_span story_word_span">
+                    <span>{{word}}</span>
+                </span>
+            </label>
+        {% endfor %}
+        </p>
+        <input type = "submit" value = "Save"/>
+    </form>
+
+    <div class="nav_footer">
+        <a class="material-icons" href = "/quiz">school</a>
+        <a class="material-icons" href = "/new">add</a>
+        <a class="material-icons" href = "/terms">dashboard</a>
+        <a class="material-icons" href = "/stats">query_stats</a>
+
+    </div>
+</body>

@@ -8,6 +8,7 @@ from story import Story
 from flask import Flask, render_template, request, session, flash, json, redirect
 from os import environ
 from urllib.parse import urlparse
+from language import get_related_words
 
 import math
 import re
@@ -121,7 +122,25 @@ def story_time():
     return render_template("story_time.html", story=story)
 
 
-@app.route("/save_cards", methods=["POST"])
+@app.route("/select_words", methods=["GET", "POST"])
+def select_words():
+    if not session.get("uid"):
+        return render_template("login.html")
+
+    try:
+        keyword = request.form.get("keyword")
+        number = int(request.form.get("number"))
+        if number > 50:
+            raise Exception("{number} is too many: try <50.")
+        words = [keyword] + get_related_words(keyword, number)
+    except Exception as e:
+        flash(f"Could not successfully generate words. Error was '{str(e)}'", "bad")
+        return render_template("new.html")
+
+    return render_template("select_words.html", words=words)
+
+
+@app.route("/save_cards", methods=["POST", "GET"])
 def save_cards():
     if not session.get("uid"):
         return render_template("login.html")
@@ -138,24 +157,39 @@ def save_cards():
             terms = request.form.get("terms").split("\r\n")
             study_terms += [StudyTerm.save_from_string(term) for term in terms if term]
         else:
-            # look for selected keys from story_time
+
+            def _is_json(maybe_json):
+                try:
+                    json.loads(maybe_json)
+                except ValueError as e:
+                    return False
+                return True
+
+            # look for selected keys from story_time or select_words
             form_keys = set(request.form.keys())
             for form_key in form_keys:
-                term_to_save = json.loads(form_key)
-                if term_to_save:
-                    study_term = StudyTerm.build_from_term(
-                        term_to_save["term"],
-                        term_to_save["pronunciation"]
-                    )
-                    study_term.save()
-                    study_terms.append(study_term)
+
+                # case of story_time
+                if _is_json(form_key):
+                    term_to_save = json.loads(form_key)
+                    if term_to_save:
+                        study_term = StudyTerm.build_from_term(
+                            term_to_save["term"], term_to_save["pronunciation"]
+                        )
+                        study_term.save()
+
+                # case of select_words
+                else:
+                    study_term = StudyTerm.build_and_save_from_translated_term(form_key)
+
+                study_terms.append(study_term)
 
     except Exception as e:
         flash(f"Did not successfully create your cards. Error was '{str(e)}'", "bad")
         return render_template("new.html")
 
     flash(f"Successfully added {len(study_terms)} terms.", "good")
-    return render_template("save_cards.html", study_terms=study_terms)
+    return redirect("/terms")
 
 
 @app.route("/edit", methods=["GET"])

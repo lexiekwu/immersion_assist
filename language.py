@@ -4,6 +4,7 @@ from flask import session
 import pinyin as pinyin_module
 import jieba
 import re
+import datamuse
 
 
 GCLOUD_PROJECT_PARENT = f"projects/{environ.get('GCLOUD_PROJECT_ID')}"
@@ -19,16 +20,18 @@ def get_pronunciation(translated_term, target_language_code):
     if target_language_code == TW_CODE:
         pronunciation = pinyin_module.get(
             translated_term, format="numerical", delimiter=" "
-        )
+        ).replace("5", "0")
 
         # save to avoid repeated API calls
         if not session.get("pronunciations"):
             session["pronunciations"] = {}
             session["pronunciations"][translated_term] = pronunciation
+
         return pronunciation
 
     print("No pronunciation implemented, defaulting to nothing")
     return ""
+
 
 def get_pronunciation_dict(translated_sentence, target_language_code):
     if target_language_code == TW_CODE:
@@ -40,6 +43,7 @@ def get_pronunciation_dict(translated_sentence, target_language_code):
 
     print("No pronunciation implemented, defaulting to nothing")
     return ""
+
 
 def get_translation(term, target_language_code):
 
@@ -81,4 +85,11 @@ def segment_text(long_text, target_language_code=TW_CODE):
 
 
 def _fix_translation_characters(translated_text):
-    return translated_text.replace('&#39;',"'")
+    return translated_text.replace("&#39;", "'")
+
+
+def get_related_words(keyword, limit):
+    words_puller = datamuse.Datamuse()
+    scored_words = words_puller.words(rel_trg=keyword, max=limit)
+    scored_sorted_words = sorted(scored_words, key=lambda d: -d["score"])
+    return [d["word"] for d in scored_sorted_words]
