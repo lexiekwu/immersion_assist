@@ -2,7 +2,7 @@ from os import environ
 from google.cloud import translate
 from flask import session
 import pinyin as pinyin_module
-import jieba
+import thulac
 import re
 import datamuse
 
@@ -74,7 +74,10 @@ def get_translation(term, target_language_code):
 def segment_text(long_text, target_language_code=TW_CODE):
     "Splits into words and punctuation, returning [(segment, is_word),]."
     if target_language_code == TW_CODE:
-        segments = jieba.lcut(long_text)
+        segmenter = thulac.thulac()
+        segments = [
+            segment for segment, _ in segmenter.cut(long_text)
+        ]  # returns (word, part of speech)
         is_words = [
             bool(re.findall(r"[\u4e00-\u9fff]+", segment)) for segment in segments
         ]

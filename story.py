@@ -19,7 +19,9 @@ class Story:
             if not is_word:
                 return ""
 
-            return " ".join([pronunciation_lookup[c] for c in segment])
+            return " ".join(
+                [pronunciation_lookup[c] for c in segment if c in pronunciation_lookup]
+            )
 
         story_terms = [
             StoryTerm(segment, is_word, _get_segment_pronunciation(segment, is_word))
