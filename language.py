@@ -85,7 +85,7 @@ def segment_text(long_text, target_language_code=TW_CODE):
 
 
 def _fix_translation_characters(translated_text):
-    return translated_text.replace("&#39;", "'")
+    return translated_text.replace("&#39;", "'").replace("&quot;", '"')
 
 
 def get_related_words(keyword, limit):
