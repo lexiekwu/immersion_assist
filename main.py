@@ -9,6 +9,7 @@ from flask import Flask, render_template, request, session, flash, json, redirec
 from os import environ
 from urllib.parse import urlparse
 from language import get_related_words
+from chatbot import ChatBot, INITIAL_PROMPT
 
 import math
 import re
@@ -301,6 +302,27 @@ def quiz():
         was_correct=was_correct,
         is_first_try=was_correct,
     )
+
+
+@app.route("/chat", methods=["POST", "GET"])
+def chat():
+    if not session.get("uid"):
+        return render_template("login.html")
+
+    return render_template("chat.html", initial_prompt=INITIAL_PROMPT)
+
+
+chatbot = ChatBot()
+
+
+@app.route("/chatbot_response", methods=["GET", "POST"])
+def chatbot_response():
+    msg = request.form["msg"]
+    response = chatbot.get_response(msg)
+    return {
+        "textResponse": response,
+        "runningCost": chatbot.get_cost(),
+    }
 
 
 if __name__ == "__main__":

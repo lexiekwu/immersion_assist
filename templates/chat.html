@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='style.css')}}" />
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+</head>
+
+<body>
+    <div class="row_5 header">Chat and Learn</div>
+    <form>
+        <div id="chatbox">
+            <div class="ml-auto mr-auto">
+                <p class="botText chatText"><span>
+                    {{initial_prompt}}
+                </span></p>
+            </div>
+        </div>
+        <div id="userInput" class="row row_5">
+            <div>
+                <div>cost so far: <span id="cost"></span></div>
+                <input id="text" type="text" name="msg" placeholder="Message" class="form-control">
+                <button type="submit" id="send">Send</button>
+            </div>
+        </div>
+    </form>
+
+<script>
+    $(document).ready(function() {
+        var chatId = 0;
+        $("form").on("submit", function(event) {
+            chatId = chatId + 1;
+            console.log(chatId);
+            var rawText = $("#text").val();
+            var userHtml = '<p class="userText chatText"><span>' + rawText + "</span></p>";
+            $("#text").val("");
+            $("#chatbox").append(userHtml);
+            document.getElementById("userInput").scrollIntoView({
+                block: "start",
+                behavior: "smooth",
+            });
+            $.ajax({
+                data: {
+                    msg: rawText,
+                },
+                type: "POST",
+                url: "/chatbot_response",
+            }).done(function(data) {
+                var botHtml = '<p id="chatId-'
+                    + chatId
+                    + '" class="botText chatText"><span>'
+                    + data.textResponse + "</span></p>";
+                $("#chatbox").append($.parseHTML(botHtml));
+                $("#cost").text(data.runningCost)
+                document.getElementById("chatId-"+chatId).scrollIntoView({
+                    block: "start",
+                    behavior: "smooth",
+                });
+            });
+            event.preventDefault();
+        });
+    });
+</script>
+</body>
+
+</html>
