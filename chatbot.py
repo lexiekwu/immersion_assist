@@ -43,7 +43,6 @@ class ChatBot:
             speaker = "Friend" if i % 2 == 0 else "You"
             formatted += f"\n{speaker}: {response}"
         formatted += "\nFriend:"
-        print("FORMATTED AS", formatted)
         return formatted
 
     def get_cost(self):

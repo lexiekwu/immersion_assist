@@ -1,4 +1,4 @@
-- LLM for auto-card-gen
+- toggle translations and pinyin in chatbot
 - size most things based on vh instead of vw
 - sticky footer everywhere
 - better waiting signals
@@ -55,3 +55,4 @@ done
 * allow word entry by keyword
 * fix &quot; == "
 * use a more reliable segmenter
+* LLM for auto-card-gen

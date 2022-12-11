@@ -1,5 +1,5 @@
 import language
-from flask import json
+from flask import json, escape
 
 
 class Story:
@@ -30,6 +30,12 @@ class Story:
 
         return cls(story_terms, translated_story)
 
+    def to_dict(self):
+        return {
+            "terms_html": "".join([term.to_html() for term in self.story_terms]),
+            "translation": self.translation,
+        }
+
 
 class StoryTerm:
     def __init__(self, term, is_word, pronunciation):
@@ -37,5 +43,26 @@ class StoryTerm:
         self.is_word = is_word
         self.pronunciation = pronunciation
 
+    def to_dict(self):
+        return {
+            "term": self.term,
+            "pronunciation": self.pronunciation,
+            "is_word": self.is_word,
+        }
+
     def to_json(self):
-        return json.dumps({"term": self.term, "pronunciation": self.pronunciation})
+        return json.dumps(self.to_dict())
+
+    def to_html(self):
+        if self.is_word:
+            return f"""
+                <label>
+                    <input type="checkbox" class="story_word_check" name="{escape(self.to_json())}">
+                    <span class="story_span story_word_span">
+                        <span>{self.term}</span>
+                        <span class="story_word_pronunciation">{self.pronunciation}</span>
+                    </span>
+                </label>
+            """
+        else:
+            return f"""<span class="story_span">{self.term}</span>"""

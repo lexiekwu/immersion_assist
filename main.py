@@ -171,6 +171,9 @@ def save_cards():
             for form_key in form_keys:
 
                 # case of story_time
+                if form_key == "msg":
+                    continue  # ignore
+
                 if _is_json(form_key):
                     term_to_save = json.loads(form_key)
                     if term_to_save:
@@ -309,7 +312,9 @@ def chat():
     if not session.get("uid"):
         return render_template("login.html")
 
-    return render_template("chat.html", initial_prompt=INITIAL_PROMPT)
+    initial_prompt_html = Story.build(INITIAL_PROMPT).to_dict()["terms_html"]
+
+    return render_template("chat.html", initial_prompt_html=initial_prompt_html)
 
 
 chatbot = ChatBot()
@@ -319,9 +324,10 @@ chatbot = ChatBot()
 def chatbot_response():
     msg = request.form["msg"]
     response = chatbot.get_response(msg)
+    story = Story.build(response)
     return {
-        "textResponse": response,
         "runningCost": chatbot.get_cost(),
+        "story": story.to_dict(),
     }
 
 

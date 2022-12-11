@@ -7,20 +7,22 @@
 </head>
 
 <body>
-    <div class="row_5 header">Chat and Learn</div>
-    <form>
+    <form id="chat-form" action="/save_cards" method = "POST">
         <div id="chatbox">
+            <h2>Chat and Learn</h2>
+            <p> Click any terms you don't know, then when you're finished, click "save terms" to add all of them to your study terms.
             <div class="ml-auto mr-auto">
-                <p class="botText chatText"><span>
-                    {{initial_prompt}}
+                <p class="botText"><span class="chatText botTextOuterSpan">
+                    {{initial_prompt_html | safe}}
                 </span></p>
             </div>
         </div>
         <div id="userInput" class="row row_5">
             <div>
-                <div>cost so far: <span id="cost"></span></div>
-                <input id="text" type="text" name="msg" placeholder="Message" class="form-control">
-                <button type="submit" id="send">Send</button>
+                <div>cost of conversation: <span id="cost">$0.00</span></div>
+                <input id="text" type="text" name="msg" placeholder="Message" class="form-control" autocomplete="off">
+                <button id="send">Send</button>
+                <button id="save" type="submit">Save Terms</button>
             </div>
         </div>
     </form>
@@ -28,11 +30,20 @@
 <script>
     $(document).ready(function() {
         var chatId = 0;
-        $("form").on("submit", function(event) {
+
+        $("#save").click(function(){
+            $(this).data('clicked', true);
+        });
+
+        $("#chat-form").on("submit", function(event) {
+
+            if($('#save').data('clicked')) {
+                return;
+            }
+
             chatId = chatId + 1;
-            console.log(chatId);
             var rawText = $("#text").val();
-            var userHtml = '<p class="userText chatText"><span>' + rawText + "</span></p>";
+            var userHtml = '<p id="userInput" class="userText"><span class="chatText">' + rawText + "</span></p>";
             $("#text").val("");
             $("#chatbox").append(userHtml);
             document.getElementById("userInput").scrollIntoView({
@@ -48,8 +59,8 @@
             }).done(function(data) {
                 var botHtml = '<p id="chatId-'
                     + chatId
-                    + '" class="botText chatText"><span>'
-                    + data.textResponse + "</span></p>";
+                    + '" class="botText"><span class="chatText botTextOuterSpan">'
+                    + data.story.terms_html + "</span></p>";
                 $("#chatbox").append($.parseHTML(botHtml));
                 $("#cost").text(data.runningCost)
                 document.getElementById("chatId-"+chatId).scrollIntoView({
@@ -59,6 +70,8 @@
             });
             event.preventDefault();
         });
+
+
     });
 </script>
 </body>

@@ -3,6 +3,7 @@
   --hover-medium-blue: #5b9cce;
   --medium-grey: #647c8e;
   --light-blue: #65ade43d;
+  --light-grey: #f5f5f5;
 }
 
 body {
@@ -13,7 +14,7 @@ body {
 
 
 .flashcard {
-  background: var(--medium-blue)4f;
+  background: var(--light-blue);
   border-radius: 3vw;
   padding: 2vw 3vw;
   font-size: inherit;
@@ -211,8 +212,7 @@ input[type="checkbox"]{
   text-align: right !important;
 }
 
-.chatText span{
-  color: white;
+.chatText{
   padding: 1vh 1.5vw;
   border-radius: 1vh;
   max-width: 75vw;
@@ -221,7 +221,7 @@ input[type="checkbox"]{
 }
 
 .userText span {
-  background-color: var(--medium-blue);
+  background-color: var(--light-blue);
   margin-left: auto;
   margin-right: 0px;
 }
@@ -230,8 +230,8 @@ input[type="checkbox"]{
   text-align: left;
 }
 
-.botText span {
-  background-color: var(--medium-grey);
+.botTextOuterSpan {
+  background-color: var(--light-grey);
 }
 
 .row_5 {
