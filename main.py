@@ -116,7 +116,7 @@ def new():
 def story_time():
     if not session.get("uid"):
         return render_template("login.html")
-        
+
     try:
         raw_story = request.form.get("story")
         story = Story.build(raw_story)

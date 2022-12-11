@@ -5,7 +5,7 @@ import pinyin as pinyin_module
 import thulac
 import re
 import datamuse
-
+import jieba
 
 GCLOUD_PROJECT_PARENT = f"projects/{environ.get('GCLOUD_PROJECT_ID')}"
 TW_CODE = "zh-TW"  # TODO make flexible
@@ -74,10 +74,18 @@ def get_translation(term, target_language_code):
 def segment_text(long_text, target_language_code=TW_CODE):
     "Splits into words and punctuation, returning [(segment, is_word),]."
     if target_language_code == TW_CODE:
-        segmenter = thulac.thulac()
-        segments = [
-            segment for segment, _ in segmenter.cut(long_text)
-        ]  # returns (word, part of speech)
+
+        # use thulac if specifically told to
+        if environ.get("CHINESE_SEGMENTER") == "thulac":
+            segmenter = thulac.thulac()
+            segments = [
+                segment for segment, _ in segmenter.cut(long_text)
+            ]  # returns (word, part of speech)
+
+        # otherwise jieba
+        else:
+            segments = jieba.lcut(long_text)
+
         is_words = [
             bool(re.findall(r"[\u4e00-\u9fff]+", segment)) for segment in segments
         ]
