@@ -243,3 +243,16 @@ input[type="checkbox"]{
   font-size: 20px;
   font-weight: bold;
 }
+
+.content_toggles {
+  font-size: 1.5vh;
+  color: var(--medium-blue);
+  text-align: right;
+  margin-right: 3vw;
+  cursor: pointer;
+}
+
+.translation {
+  display: inline-block;
+  font-size: 2vh;
+}

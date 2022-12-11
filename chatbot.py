@@ -3,6 +3,7 @@ from os import environ
 
 openai.api_key = environ.get("OPENAI_KEY")
 INITIAL_PROMPT = "你好！我是你的學習夥伴。我可以幫你練習聊天。你今天想討論什麼？"
+EN_INITIAL_PROMPT = "Hi! I am your study buddy. I can help you practice chatting. What would you like to discuss today?"
 COST_PER_TOKEN = 0.02 / 1000
 
 
@@ -23,7 +24,7 @@ class ChatBot:
             model="text-davinci-003",
             prompt=prompt,
             temperature=0.5,
-            max_tokens=50,
+            max_tokens=100,
             top_p=1.0,
             frequency_penalty=0.5,
             presence_penalty=0.0,

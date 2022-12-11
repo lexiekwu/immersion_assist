@@ -14,8 +14,15 @@
             <div class="ml-auto mr-auto">
                 <p class="botText"><span class="chatText botTextOuterSpan">
                     {{initial_prompt_html | safe}}
+                    <span class="translation" style="display:none">
+                        {{initial_prompt_translation}}
+                    </span>
                 </span></p>
             </div>
+        </div>
+        <div class="content_toggles">
+            <a id="toggle_pronunciation">Toggle pronunciation</a>
+            <a id="toggle_translation">Toggle translation</a>
         </div>
         <div id="userInput" class="row row_5">
             <div>
@@ -34,6 +41,14 @@
         $("#save").click(function(){
             $(this).data('clicked', true);
         });
+
+        $("#toggle_pronunciation").click(function(){
+            $(".story_word_pronunciation").toggle();
+        })
+
+        $("#toggle_translation").click(function(){
+            $(".translation").toggle();
+        })
 
         $("#chat-form").on("submit", function(event) {
 
@@ -60,7 +75,10 @@
                 var botHtml = '<p id="chatId-'
                     + chatId
                     + '" class="botText"><span class="chatText botTextOuterSpan">'
-                    + data.story.terms_html + "</span></p>";
+                    + data.story.terms_html
+                    + '<span class="translation" style="display:none">'
+                    + data.story.translation
+                    + "</span></span></p>";
                 $("#chatbox").append($.parseHTML(botHtml));
                 $("#cost").text(data.runningCost)
                 document.getElementById("chatId-"+chatId).scrollIntoView({

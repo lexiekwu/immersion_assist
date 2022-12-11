@@ -9,7 +9,7 @@ from flask import Flask, render_template, request, session, flash, json, redirec
 from os import environ
 from urllib.parse import urlparse
 from language import get_related_words
-from chatbot import ChatBot, INITIAL_PROMPT
+from chatbot import ChatBot, INITIAL_PROMPT, EN_INITIAL_PROMPT
 
 import math
 import re
@@ -314,7 +314,11 @@ def chat():
 
     initial_prompt_html = Story.build(INITIAL_PROMPT).to_dict()["terms_html"]
 
-    return render_template("chat.html", initial_prompt_html=initial_prompt_html)
+    return render_template(
+        "chat.html",
+        initial_prompt_html=initial_prompt_html,
+        initial_prompt_translation=EN_INITIAL_PROMPT,
+    )
 
 
 chatbot = ChatBot()
