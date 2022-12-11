@@ -116,9 +116,13 @@ def new():
 def story_time():
     if not session.get("uid"):
         return render_template("login.html")
-
-    raw_story = request.form.get("story")
-    story = Story.build(raw_story)
+        
+    try:
+        raw_story = request.form.get("story")
+        story = Story.build(raw_story)
+    except Exception as e:
+        flash(f"Could not successfully generate story. Error was '{str(e)}'", "bad")
+        return render_template("new.html")
 
     return render_template("story_time.html", story=story)
 
