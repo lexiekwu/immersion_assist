@@ -1,5 +1,5 @@
+- sticky header
 - size most things based on vh instead of vw
-- sticky footer everywhere
 - better waiting signals
 - better stats
 - tests LOL
@@ -56,3 +56,4 @@ done
 * use a more reliable segmenter
 * LLM for auto-card-gen
 * toggle translations and pinyin in chatbot
+* sticky footer everywhere

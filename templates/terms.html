@@ -11,6 +11,8 @@
 
     <h2>Your study terms</h2>
 
+    <body>
+
     {% if not terms %}
     <div href = "/new"> Add some cards to see them here! </div>
     {% endif %}
@@ -47,7 +49,9 @@
             {% endif %}"
         >{{n}}</span>
     {% endfor %}
+    </div>
 
+    </body>
 
     <div class="nav_footer">
         <a class="material-icons" href = "/quiz">school</a>

@@ -3,6 +3,7 @@
 
 <head>
     <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='style.css')}}" />
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
 </head>
 
@@ -24,12 +25,12 @@
             <a id="toggle_pronunciation">Toggle pronunciation</a>
             <a id="toggle_translation">Toggle translation</a>
         </div>
-        <div id="userInput" class="row row_5">
+        <div id="userInput" class="above_footer">
             <div>
                 <div>cost of conversation: <span id="cost">$0.00</span></div>
                 <input id="text" type="text" name="msg" placeholder="Message" class="form-control" autocomplete="off">
                 <button id="send">Send</button>
-                <button id="save" type="submit">Save Terms</button>
+                <button id="save" type="submit">Save</button>
             </div>
         </div>
     </form>
@@ -93,5 +94,13 @@
     });
 </script>
 </body>
+
+<div class="nav_footer">
+    <a class="material-icons" href = "/quiz">school</a>
+    <a class="material-icons" href = "/new">add</a>
+    <a class="material-icons" href = "/terms">dashboard</a>
+    <a class="material-icons" href = "/stats">query_stats</a>
+
+</div>
 
 </html>

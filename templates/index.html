@@ -5,21 +5,23 @@
   <link type="text/css" rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
   <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
 </head>
-<body>
 
   {% for category, message in get_flashed_messages(with_categories=True) %}
     <div class="toast {{category}}">{{ message }}</div>
   {% endfor %}
 
   <h1> Welcome to Immersion Assist, {{ session['name'] }}! </h1>
+
+  <body>
   <h3> What would you like to do? </h3>
 
-  <div class="nav_footer">
-      <a class="material-icons" href = "/quiz">school</a>
-      <a class="material-icons" href = "/new">add</a>
-      <a class="material-icons" href = "/terms">dashboard</a>
-      <a class="material-icons" href = "/stats">query_stats</a>
-
-  </div>
 </body>
+
+<div class="nav_footer">
+  <a class="material-icons" href = "/quiz">school</a>
+  <a class="material-icons" href = "/new">add</a>
+  <a class="material-icons" href = "/terms">dashboard</a>
+  <a class="material-icons" href = "/stats">query_stats</a>
+
+</div>
 </html>

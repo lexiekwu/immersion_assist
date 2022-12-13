@@ -6,6 +6,8 @@
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
 </head>
 
+<body>
+
 {% for category, message in get_flashed_messages(with_categories=True) %}
 <div class="toast {{category}}">{{ message }}</div>
 {% endfor %}
@@ -68,6 +70,8 @@
       placeholder="{{ current_card.quiz_type.replace('_',' ') }}" autocomplete="off"/></p>
     <p><input type = "submit" value = "Submit" /></p>
 </form>
+
+</body>
 
 <div class="nav_footer">
   <a class="material-icons" href = "/quiz">school</a>

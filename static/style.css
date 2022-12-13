@@ -10,6 +10,7 @@ body {
   font-family: "helvetica", sans-serif;
   text-align: center;
   font-size: 5vw;
+  margin-bottom: 7vh;
 }
 
 
@@ -85,18 +86,20 @@ td, tr {
 
 .nav_footer a{
   color: var(--medium-blue);
-  font-size: 4vh;
+  font-size: 5vh;
   cursor: pointer;
   padding: 0px 2vh;
   margin-top: 1.5vh;
   text-decoration: none;
 }
 
-.nav_footer_sticky {
-  position: absolute;
-  bottom: 0vh;
+.nav_footer {
+  position: fixed;
+  bottom: 0;
   width: 100%;
-  font-size: 4vh;
+  padding: 0;
+  background-color: white;
+  height: 7vh;
 }
 
 .toast {
@@ -234,9 +237,10 @@ input[type="checkbox"]{
   background-color: var(--light-grey);
 }
 
-.row_5 {
-  height: 5vh;
-  font-size: 3vh;
+.above_footer {
+  position: fixed;
+  bottom: 7vh;
+  width: 100%;
 }
 
 .header {
