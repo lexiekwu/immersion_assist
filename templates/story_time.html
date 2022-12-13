@@ -1,50 +1,58 @@
 <head>
-    <title>Add Cards </title>
-    <link type="text/css" rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
-    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+  <title>Add Cards</title>
+  <link
+    type="text/css"
+    rel="stylesheet"
+    href="{{ url_for('static', filename='style.css') }}"
+  />
+  <link
+    href="https://fonts.googleapis.com/icon?family=Material+Icons"
+    rel="stylesheet"
+  />
 </head>
 
 <body>
+  {% for category, message in get_flashed_messages(with_categories=True) %}
+  <div class="toast {{category}}">{{ message }}</div>
+  {% endfor %}
 
-    {% for category, message in get_flashed_messages(with_categories=True) %}
-        <div class="toast {{category}}">{{ message }}</div>
-    {% endfor %}
-
-    <div style="height: 10vh">
-        <h2 style="font-size: 4vh; margin: 1vh 0vh"> Story </h2>
-        <div style="font-size: 2.5vh; margin-bottom: 1vh"> Click the words that you want to save, then hit "save." </div>
+  <div style="height: 10vh">
+    <h2 style="font-size: 4vh; margin: 1vh 0vh">Story</h2>
+    <div style="font-size: 2.5vh; margin-bottom: 1vh">
+      Click the words that you want to save, then hit "save."
     </div>
-    <form action="/save_cards" method = "POST" style="margin:0">
-        <div class="story_col">
-        {% for story_term in story.story_terms %}
-            {% if not story_term.is_word %}
-                <span class="story_span">{{story_term.term}}</span>
-            {% else %}
-                <label>
-                    <input type="checkbox" class="story_word_check" name="{{story_term.to_json()}}">
-                    <span class="story_span story_word_span">
-                        <span>{{story_term.term}}</span>
-                        <span class="story_word_pronunciation">{{story_term.pronunciation}}</span>
-                    </span>
-                </label>
-            {% endif %}
-        {% endfor %}
-        </div>
-        <div class="story_col story_col_r">
-            {{story.translation}}
-        </div>
-
-        <div class="above_footer">
-            <input type = "submit" value = "Save"/>
-        </div>
-    </form>
-
-    </body>
-
-    <div class="nav_footer">
-        <a class="material-icons" href = "/quiz">school</a>
-        <a class="material-icons" href = "/new">add</a>
-        <a class="material-icons" href = "/terms">dashboard</a>
-        <a class="material-icons" href = "/stats">query_stats</a>
-
+  </div>
+  <form action="/save_cards" method="POST" style="margin: 0">
+    <div class="story_col">
+      {% for story_term in story.story_terms %} {% if not story_term.is_word %}
+      <span class="story_span">{{story_term.term}}</span>
+      {% else %}
+      <label>
+        <input
+          type="checkbox"
+          class="story_word_check"
+          name="{{story_term.to_json()}}"
+        />
+        <span class="story_span story_word_span">
+          <span>{{story_term.term}}</span>
+          <span class="story_word_pronunciation"
+            >{{story_term.pronunciation}}</span
+          >
+        </span>
+      </label>
+      {% endif %} {% endfor %}
     </div>
+    <div class="story_col story_col_r">{{story.translation}}</div>
+
+    <div class="above_footer">
+      <input type="submit" value="Save" />
+    </div>
+  </form>
+</body>
+
+<div class="nav_footer">
+  <a class="material-icons" href="/quiz">school</a>
+  <a class="material-icons" href="/new">add</a>
+  <a class="material-icons" href="/terms">dashboard</a>
+  <a class="material-icons" href="/stats">query_stats</a>
+</div>

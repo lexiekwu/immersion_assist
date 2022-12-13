@@ -1,27 +1,32 @@
-<!doctype html>
+<!DOCTYPE html>
 <html>
-<head>
-  <title>Immersion Assist</title>
-  <link type="text/css" rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
-  <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
-</head>
+  <head>
+    <title>Immersion Assist</title>
+    <link
+      type="text/css"
+      rel="stylesheet"
+      href="{{ url_for('static', filename='style.css') }}"
+    />
+    <link
+      href="https://fonts.googleapis.com/icon?family=Material+Icons"
+      rel="stylesheet"
+    />
+  </head>
 
   {% for category, message in get_flashed_messages(with_categories=True) %}
-    <div class="toast {{category}}">{{ message }}</div>
+  <div class="toast {{category}}">{{ message }}</div>
   {% endfor %}
 
-  <h1> Welcome to Immersion Assist, {{ session['name'] }}! </h1>
+  <h1>Welcome to Immersion Assist, {{ session['name'] }}!</h1>
 
   <body>
-  <h3> What would you like to do? </h3>
+    <h3>What would you like to do?</h3>
+  </body>
 
-</body>
-
-<div class="nav_footer">
-  <a class="material-icons" href = "/quiz">school</a>
-  <a class="material-icons" href = "/new">add</a>
-  <a class="material-icons" href = "/terms">dashboard</a>
-  <a class="material-icons" href = "/stats">query_stats</a>
-
-</div>
+  <div class="nav_footer">
+    <a class="material-icons" href="/quiz">school</a>
+    <a class="material-icons" href="/new">add</a>
+    <a class="material-icons" href="/terms">dashboard</a>
+    <a class="material-icons" href="/stats">query_stats</a>
+  </div>
 </html>

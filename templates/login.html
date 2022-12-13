@@ -1,27 +1,29 @@
-
 <html>
-    <head>
-      <title>Login to Immersion Assist</title>
-      <link type="text/css" rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
-    </head>
-    <body>
+  <head>
+    <title>Login to Immersion Assist</title>
+    <link
+      type="text/css"
+      rel="stylesheet"
+      href="{{ url_for('static', filename='style.css') }}"
+    />
+  </head>
+  <body>
+    {% for category, message in get_flashed_messages(with_categories=True) %}
+    <div class="toast {{category}}">{{ message }}</div>
+    {% endfor %}
 
-      {% for category, message in get_flashed_messages(with_categories=True) %}
-        <div class="toast {{category}}">{{ message }}</div>
-      {% endfor %}
-    
-      <h1> Welcome to Immersion Assist! </h1>
-      <h3> Please log in </h3>
-      <form action="/login" method = "POST">
-        <p>Email <input type = "text" name = "email" /></p>
-        <p>Password <input name = "password" type="password"/></p>
-        <p><input type = "submit" value = "Submit" /></p>
-        <p>
-          Don't have an account?
-          <a href="/signup"> Sign up here. </a>
+    <h1>Welcome to Immersion Assist!</h1>
+    <h3>Please log in</h3>
+    <form action="/login" method="POST">
+      <p>Email <input type="text" name="email" /></p>
+      <p>Password <input name="password" type="password" /></p>
+      <p><input type="submit" value="Submit" /></p>
       <p>
+        Don't have an account?
+        <a href="/signup"> Sign up here. </a>
+      </p>
+
+      <p></p>
     </form>
-    
-    </body>
-    </html>
-    
+  </body>
+</html>

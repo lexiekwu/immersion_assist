@@ -1,60 +1,86 @@
 <head>
-    <title>Add Terms </title>
-    <link type="text/css" rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
-    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+  <title>Add Terms</title>
+  <link
+    type="text/css"
+    rel="stylesheet"
+    href="{{ url_for('static', filename='style.css') }}"
+  />
+  <link
+    href="https://fonts.googleapis.com/icon?family=Material+Icons"
+    rel="stylesheet"
+  />
 </head>
 
 <body>
-    {% for category, message in get_flashed_messages(with_categories=True) %}
-        <div class="toast {{category}}">{{ message }}</div>
-    {% endfor %}
+  {% for category, message in get_flashed_messages(with_categories=True) %}
+  <div class="toast {{category}}">{{ message }}</div>
+  {% endfor %}
 
-    <h2>Add Terms 3 Ways</h2>
-    <a class="button_col_4" href="#single_word">Single Word</a>
-    <a class="button_col_4" href="#story">Story</a>
-    <a class="button_col_4" href="#bulk">Bulk</a>
-    <a class="button_col_4" href="#related">By Topic</a>
+  <h2>Add Terms 3 Ways</h2>
+  <a class="button_col_4" href="#single_word">Single Word</a>
+  <a class="button_col_4" href="#story">Story</a>
+  <a class="button_col_4" href="#bulk">Bulk</a>
+  <a class="button_col_4" href="#related">By Topic</a>
 
-    <div class="new_terms_method">
-        <h3 id="single_word">Input a Single Word</h3>
-        <form action="/save_cards" method = "POST">
-            <p>English word <input type = "text" name = "word" /></p>
-            <p><input type = "submit" value = "Submit" /></p>
-        </form>
-    </div>
+  <div class="new_terms_method">
+    <h3 id="single_word">Input a Single Word</h3>
+    <form action="/save_cards" method="POST">
+      <p>English word <input type="text" name="word" /></p>
+      <p><input type="submit" value="Submit" /></p>
+    </form>
+  </div>
 
-    <div class="new_terms_method">
-        <h3 id="story">Input a Story</h3>
-        <form action="/story_time" method = "POST">
-            <p>Input a story in the target language, select words to study on the next screen</p>
-            <textarea style="width:100%; height:30%" type = "text" name="story"></textarea> 
-            <p><input type = "submit" value = "Submit" /></p>
-        </form>
-    </div>
+  <div class="new_terms_method">
+    <h3 id="story">Input a Story</h3>
+    <form action="/story_time" method="POST">
+      <p>
+        Input a story in the target language, select words to study on the next
+        screen
+      </p>
+      <textarea
+        style="width: 100%; height: 30%"
+        type="text"
+        name="story"
+      ></textarea>
+      <p><input type="submit" value="Submit" /></p>
+    </form>
+  </div>
 
-    <div class="new_terms_method">
-        <h3 id="bulk">Bulk Add Words</h3>
-        <form action="/save_cards" method = "POST">
-            <p>Words in form "term pronunciation english"</p>
-            <textarea style="width:100%; height:30%" type = "text" name="terms"></textarea> 
-            <p><input type = "submit" value = "Submit" /></p>
-        </form>
-    </div>
+  <div class="new_terms_method">
+    <h3 id="bulk">Bulk Add Words</h3>
+    <form action="/save_cards" method="POST">
+      <p>Words in form "term pronunciation english"</p>
+      <textarea
+        style="width: 100%; height: 30%"
+        type="text"
+        name="terms"
+      ></textarea>
+      <p><input type="submit" value="Submit" /></p>
+    </form>
+  </div>
 
-    <div class="new_terms_method">
-        <h3 id="related">By Topic</h3>
-        <form action="/select_words" method = "POST">
-            <p>Generate words related to a keyword or topic, select words to study on the next screen</p>
-            <p>Keyword in English <input style="width: 40%" type = "text" name = "keyword" /></p>
-            <p>Number to generate <input style="width: 20%" type = "number" name = "number" /></p>
-            <p><input type = "submit" value = "Submit" /></p>
-        </form>
-    </div>
+  <div class="new_terms_method">
+    <h3 id="related">By Topic</h3>
+    <form action="/select_words" method="POST">
+      <p>
+        Generate words related to a keyword or topic, select words to study on
+        the next screen
+      </p>
+      <p>
+        Keyword in English
+        <input style="width: 40%" type="text" name="keyword" />
+      </p>
+      <p>
+        Number to generate
+        <input style="width: 20%" type="number" name="number" />
+      </p>
+      <p><input type="submit" value="Submit" /></p>
+    </form>
+  </div>
 </body>
-    <div class="nav_footer">
-        <a class="material-icons" href = "/quiz">school</a>
-        <a class="material-icons" href = "/new">add</a>
-        <a class="material-icons" href = "/terms">dashboard</a>
-        <a class="material-icons" href = "/stats">query_stats</a>
-
-    </div>
+<div class="nav_footer">
+  <a class="material-icons" href="/quiz">school</a>
+  <a class="material-icons" href="/new">add</a>
+  <a class="material-icons" href="/terms">dashboard</a>
+  <a class="material-icons" href="/stats">query_stats</a>
+</div>

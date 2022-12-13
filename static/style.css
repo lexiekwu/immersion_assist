@@ -13,7 +13,6 @@ body {
   margin-bottom: 7vh;
 }
 
-
 .flashcard {
   background: var(--light-blue);
   border-radius: 3vw;
@@ -45,7 +44,9 @@ input {
   font-family: inherit;
 }
 
-button, input[type=submit], .button_col_4 {
+button,
+input[type="submit"],
+.button_col_4 {
   color: white;
   background: var(--medium-blue);
   border-radius: 3vw;
@@ -58,7 +59,8 @@ button, input[type=submit], .button_col_4 {
   padding: 2vw 3vw;
 }
 
-button, input[type=submit] {
+button,
+input[type="submit"] {
   color: white;
   background: var(--medium-blue);
   border-radius: 3vw;
@@ -69,7 +71,8 @@ button, input[type=submit] {
   margin: 1vw;
 }
 
-button:hover, input[type=submit]:hover {
+button:hover,
+input[type="submit"]:hover {
   background: var(--hover-medium-blue);
 }
 
@@ -79,12 +82,13 @@ table {
   border-collapse: collapse;
 }
 
-td, tr {
+td,
+tr {
   border: 1px solid;
   padding: 2vw;
 }
 
-.nav_footer a{
+.nav_footer a {
   color: var(--medium-blue);
   font-size: 5vh;
   cursor: pointer;
@@ -135,23 +139,23 @@ td, tr {
   margin: 5px;
 }
 
-.story_word input{
-  display:hidden;
+.story_word input {
+  display: hidden;
 }
 
-input[type="checkbox"]{
+input[type="checkbox"] {
   display: none;
 }
 
 .story_span {
-  margin: -.1vw;
+  margin: -0.1vw;
 }
 
 .story_word_span {
   background-color: var(--light-blue);
   border-radius: 1vw;
   cursor: pointer;
-  padding: .1vw;
+  padding: 0.1vw;
   display: inline-block;
   text-align: center;
 }
@@ -161,7 +165,7 @@ input[type="checkbox"]{
 }
 
 .story_word_pronunciation {
-  display:block;
+  display: block;
   font-size: 2vw;
   color: var(--medium-grey);
 }
@@ -184,10 +188,10 @@ input[type="checkbox"]{
 }
 
 .new_terms_method {
-    border-radius: 3vw;
-    padding: 3vw;
-    margin-top: 4vw;
-    box-shadow: 0px 0px 3px var(--medium-grey);
+  border-radius: 3vw;
+  padding: 3vw;
+  margin-top: 4vw;
+  box-shadow: 0px 0px 3px var(--medium-grey);
 }
 
 .stats {
@@ -198,11 +202,11 @@ input[type="checkbox"]{
   font-size: inherit;
 }
 
-.ml-auto{
-  margin-left:auto !important;
+.ml-auto {
+  margin-left: auto !important;
 }
-.mr-auto{
-  margin-right:auto !important;
+.mr-auto {
+  margin-right: auto !important;
 }
 
 #chatbox {
@@ -215,7 +219,7 @@ input[type="checkbox"]{
   text-align: right !important;
 }
 
-.chatText{
+.chatText {
   padding: 1vh 1.5vw;
   border-radius: 1vh;
   max-width: 75vw;

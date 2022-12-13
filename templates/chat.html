@@ -1,106 +1,123 @@
 <!DOCTYPE html>
 <html>
-
-<head>
-    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='style.css')}}" />
-    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+  <head>
+    <link
+      rel="stylesheet"
+      type="text/css"
+      href="{{ url_for('static', filename='style.css')}}"
+    />
+    <link
+      href="https://fonts.googleapis.com/icon?family=Material+Icons"
+      rel="stylesheet"
+    />
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
-</head>
+  </head>
 
-<body>
-    <form id="chat-form" action="/save_cards" method = "POST">
-        <div id="chatbox">
-            <h2>Chat and Learn</h2>
-            <p> Click any terms you don't know, then when you're finished, click "save terms" to add all of them to your study terms.
-            <div class="ml-auto mr-auto">
-                <p class="botText"><span class="chatText botTextOuterSpan">
-                    {{initial_prompt_html | safe}}
-                    <span class="translation" style="display:none">
-                        {{initial_prompt_translation}}
-                    </span>
-                </span></p>
-            </div>
+  <body>
+    <form id="chat-form" action="/save_cards" method="POST">
+      <div id="chatbox">
+        <h2>Chat and Learn</h2>
+        <p>
+          Click any terms you don't know, then when you're finished, click "save
+          terms" to add all of them to your study terms.
+        </p>
+        <div class="ml-auto mr-auto">
+          <p class="botText">
+            <span class="chatText botTextOuterSpan">
+              {{initial_prompt_html | safe}}
+              <span class="translation" style="display: none">
+                {{initial_prompt_translation}}
+              </span>
+            </span>
+          </p>
         </div>
-        <div class="content_toggles">
-            <a id="toggle_pronunciation">Toggle pronunciation</a>
-            <a id="toggle_translation">Toggle translation</a>
+      </div>
+      <div class="content_toggles">
+        <a id="toggle_pronunciation">Toggle pronunciation</a>
+        <a id="toggle_translation">Toggle translation</a>
+      </div>
+      <div id="userInput" class="above_footer">
+        <div>
+          <div>cost of conversation: <span id="cost">$0.00</span></div>
+          <input
+            id="text"
+            type="text"
+            name="msg"
+            placeholder="Message"
+            class="form-control"
+            autocomplete="off"
+          />
+          <button id="send">Send</button>
+          <button id="save" type="submit">Save</button>
         </div>
-        <div id="userInput" class="above_footer">
-            <div>
-                <div>cost of conversation: <span id="cost">$0.00</span></div>
-                <input id="text" type="text" name="msg" placeholder="Message" class="form-control" autocomplete="off">
-                <button id="send">Send</button>
-                <button id="save" type="submit">Save</button>
-            </div>
-        </div>
+      </div>
     </form>
 
-<script>
-    $(document).ready(function() {
+    <script>
+      $(document).ready(function () {
         var chatId = 0;
 
-        $("#save").click(function(){
-            $(this).data('clicked', true);
+        $("#save").click(function () {
+          $(this).data("clicked", true);
         });
 
-        $("#toggle_pronunciation").click(function(){
-            $(".story_word_pronunciation").toggle();
-        })
-
-        $("#toggle_translation").click(function(){
-            $(".translation").toggle();
-        })
-
-        $("#chat-form").on("submit", function(event) {
-
-            if($('#save').data('clicked')) {
-                return;
-            }
-
-            chatId = chatId + 1;
-            var rawText = $("#text").val();
-            var userHtml = '<p id="userInput" class="userText"><span class="chatText">' + rawText + "</span></p>";
-            $("#text").val("");
-            $("#chatbox").append(userHtml);
-            document.getElementById("userInput").scrollIntoView({
-                block: "start",
-                behavior: "smooth",
-            });
-            $.ajax({
-                data: {
-                    msg: rawText,
-                },
-                type: "POST",
-                url: "/chatbot_response",
-            }).done(function(data) {
-                var botHtml = '<p id="chatId-'
-                    + chatId
-                    + '" class="botText"><span class="chatText botTextOuterSpan">'
-                    + data.story.terms_html
-                    + '<span class="translation" style="display:none">'
-                    + data.story.translation
-                    + "</span></span></p>";
-                $("#chatbox").append($.parseHTML(botHtml));
-                $("#cost").text(data.runningCost)
-                document.getElementById("chatId-"+chatId).scrollIntoView({
-                    block: "start",
-                    behavior: "smooth",
-                });
-            });
-            event.preventDefault();
+        $("#toggle_pronunciation").click(function () {
+          $(".story_word_pronunciation").toggle();
         });
 
+        $("#toggle_translation").click(function () {
+          $(".translation").toggle();
+        });
 
-    });
-</script>
-</body>
+        $("#chat-form").on("submit", function (event) {
+          if ($("#save").data("clicked")) {
+            return;
+          }
 
-<div class="nav_footer">
-    <a class="material-icons" href = "/quiz">school</a>
-    <a class="material-icons" href = "/new">add</a>
-    <a class="material-icons" href = "/terms">dashboard</a>
-    <a class="material-icons" href = "/stats">query_stats</a>
+          chatId = chatId + 1;
+          var rawText = $("#text").val();
+          var userHtml =
+            '<p id="userInput" class="userText"><span class="chatText">' +
+            rawText +
+            "</span></p>";
+          $("#text").val("");
+          $("#chatbox").append(userHtml);
+          document.getElementById("userInput").scrollIntoView({
+            block: "start",
+            behavior: "smooth",
+          });
+          $.ajax({
+            data: {
+              msg: rawText,
+            },
+            type: "POST",
+            url: "/chatbot_response",
+          }).done(function (data) {
+            var botHtml =
+              '<p id="chatId-' +
+              chatId +
+              '" class="botText"><span class="chatText botTextOuterSpan">' +
+              data.story.terms_html +
+              '<span class="translation" style="display:none">' +
+              data.story.translation +
+              "</span></span></p>";
+            $("#chatbox").append($.parseHTML(botHtml));
+            $("#cost").text(data.runningCost);
+            document.getElementById("chatId-" + chatId).scrollIntoView({
+              block: "start",
+              behavior: "smooth",
+            });
+          });
+          event.preventDefault();
+        });
+      });
+    </script>
+  </body>
 
-</div>
-
+  <div class="nav_footer">
+    <a class="material-icons" href="/quiz">school</a>
+    <a class="material-icons" href="/new">add</a>
+    <a class="material-icons" href="/terms">dashboard</a>
+    <a class="material-icons" href="/stats">query_stats</a>
+  </div>
 </html>

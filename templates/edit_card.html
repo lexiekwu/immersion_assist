@@ -1,38 +1,54 @@
 <head>
-    <title>Card Added</title>
-    <link type="text/css" rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
-    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
-  </head>
+  <title>Card Added</title>
+  <link
+    type="text/css"
+    rel="stylesheet"
+    href="{{ url_for('static', filename='style.css') }}"
+  />
+  <link
+    href="https://fonts.googleapis.com/icon?family=Material+Icons"
+    rel="stylesheet"
+  />
+</head>
 
-  <body>
-  
+<body>
   {% for category, message in get_flashed_messages(with_categories=True) %}
   <div class="toast {{category}}">{{ message }}</div>
   {% endfor %}
-  
-  <h2> Edit Card </h2>
-  <form class="flashcard" action="/update" method="POST">
-    <input type="hidden" name="study_term_id_to_edit" value="{{study_term.id}}"/>
-    <div class="card_title"> 
-        <input type = "text" name = "term" value="{{study_term.term}}" /> 
-    </div>
-    <div> translation: 
-        <input type = "text" name = "translation" value="{{study_term.translated_term}}" /> 
-    </div>
-    <div> 
-        pronunciation:
-        <input type = "text" name = "pronunciation" value="{{study_term.pronunciation}}" />
-    </div>
-    <input type = "submit" value = "Submit" />
- </form>
 
- </body>
-  
-  <div class="nav_footer">
-    <a class="material-icons" href = "/quiz">school</a>
-    <a class="material-icons" href = "/new">add</a>
-    <a class="material-icons" href = "/terms">dashboard</a>
-    <a class="material-icons" href = "/stats">query_stats</a>
-  
-  </div>
-  
+  <h2>Edit Card</h2>
+  <form class="flashcard" action="/update" method="POST">
+    <input
+      type="hidden"
+      name="study_term_id_to_edit"
+      value="{{study_term.id}}"
+    />
+    <div class="card_title">
+      <input type="text" name="term" value="{{study_term.term}}" />
+    </div>
+    <div>
+      translation:
+      <input
+        type="text"
+        name="translation"
+        value="{{study_term.translated_term}}"
+      />
+    </div>
+    <div>
+      pronunciation:
+      <input
+        type="text"
+        name="pronunciation"
+        value="{{study_term.pronunciation}}"
+      />
+    </div>
+    <input type="submit" value="Submit" />
+  </form>
+</body>
+
+<div class="nav_footer">
+  <a class="material-icons" href="/quiz">school</a>
+  <a class="material-icons" href="/new">add</a>
+  <a class="material-icons" href="/terms">dashboard</a>
+  <a class="material-icons" href="/stats">query_stats</a>
+</div>

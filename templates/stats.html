@@ -1,39 +1,42 @@
 <html>
-    <head>
-        <title>Stats</title>
-        <link type="text/css" rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
-        <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
-    </head>
+  <head>
+    <title>Stats</title>
+    <link
+      type="text/css"
+      rel="stylesheet"
+      href="{{ url_for('static', filename='style.css') }}"
+    />
+    <link
+      href="https://fonts.googleapis.com/icon?family=Material+Icons"
+      rel="stylesheet"
+    />
+  </head>
 
-    {% for category, message in get_flashed_messages(with_categories=True) %}
-        <div class="toast {{category}}">{{ message }}</div>
-    {% endfor %}
+  {% for category, message in get_flashed_messages(with_categories=True) %}
+  <div class="toast {{category}}">{{ message }}</div>
+  {% endfor %}
 
-    <body>
-
+  <body>
     <table>
-        <tr> 
-            <td>Date</td>
-            <td>Total reviewed</td>
-            <td>Accuracy</td>
-
-        </tr>
-        {% for stats in week_stats %}
-            <tr> 
-                <td>{{stats.dt}}: </td>
-                <td>{{stats.count_correct + stats.count_incorrect}} </td>
-                <td>{{stats.accuracy()}}% </td>
-
-            </tr>
-        {% endfor %}
+      <tr>
+        <td>Date</td>
+        <td>Total reviewed</td>
+        <td>Accuracy</td>
+      </tr>
+      {% for stats in week_stats %}
+      <tr>
+        <td>{{stats.dt}}:</td>
+        <td>{{stats.count_correct + stats.count_incorrect}}</td>
+        <td>{{stats.accuracy()}}%</td>
+      </tr>
+      {% endfor %}
     </table>
-    </body>
+  </body>
 
-    <div class="nav_footer">
-        <a class="material-icons" href = "/quiz">school</a>
-        <a class="material-icons" href = "/new">add</a>
-        <a class="material-icons" href = "/terms">dashboard</a>
-        <a class="material-icons" href = "/stats">query_stats</a>
-
-    </div>
+  <div class="nav_footer">
+    <a class="material-icons" href="/quiz">school</a>
+    <a class="material-icons" href="/new">add</a>
+    <a class="material-icons" href="/terms">dashboard</a>
+    <a class="material-icons" href="/stats">query_stats</a>
+  </div>
 </html>
