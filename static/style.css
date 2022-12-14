@@ -9,30 +9,26 @@
 body {
   font-family: "helvetica", sans-serif;
   text-align: center;
-  font-size: 1em;
+  font-size: 5vw;
   margin-bottom: 7vh;
 }
 
 .flashcard {
   background: var(--light-blue);
-  border-radius: 1em;
-  padding: 1em;
+  border-radius: 3vw;
+  padding: 2vw 3vw;
   font-size: inherit;
-  margin: 0.4em 0.2em;
+  margin: 1vw;
   -webkit-column-break-inside: avoid;
   position: relative;
 }
 
 .edit_button {
   position: absolute;
-  right: 0.5em;
-  top: 0.5em;
+  right: 2vw;
+  top: 1vw;
   color: var(--medium-blue);
   cursor: pointer;
-}
-
-.edit_button span {
-  font-size: 1.2em;
 }
 
 .edit_button > span:hover {
@@ -53,21 +49,26 @@ input[type="submit"],
 .button_col_4 {
   color: white;
   background: var(--medium-blue);
-  border-radius: 0.7em;
+  border-radius: 3vw;
   border: 0px;
   padding: 5px 10px;
+}
+
+.button_col_4 {
   text-decoration: none;
+  padding: 2vw 3vw;
 }
 
 button,
 input[type="submit"] {
   color: white;
   background: var(--medium-blue);
-  border-radius: 0.7em;
+  border-radius: 3vw;
   border: 0px;
+  padding: 2vw 3vw;
   cursor: pointer;
   font-size: inherit;
-  margin: 0.2em;
+  margin: 1vw;
 }
 
 button:hover,
@@ -84,15 +85,15 @@ table {
 td,
 tr {
   border: 1px solid;
-  padding: 0.4em;
+  padding: 2vw;
 }
 
 .nav_footer a {
   color: var(--medium-blue);
   font-size: 5vh;
   cursor: pointer;
+  padding: 0px 2vh;
   margin-top: 1.5vh;
-  width: 18%;
   text-decoration: none;
 }
 
@@ -103,13 +104,12 @@ tr {
   padding: 0;
   background-color: white;
   height: 7vh;
-  margin-left: -8px;
 }
 
 .toast {
-  font-size: inherit;
-  padding: 0.4em;
-  border-radius: 0.7em;
+  font-size: 2.5vw;
+  padding: 1vw;
+  border-radius: 1vw;
 }
 
 .good {
@@ -147,14 +147,17 @@ input[type="checkbox"] {
   display: none;
 }
 
+.story_span {
+  margin: -0.1vw;
+}
+
 .story_word_span {
   background-color: var(--light-blue);
-  border-radius: 0.5em;
+  border-radius: 1vw;
   cursor: pointer;
-  padding: 0.2em;
+  padding: 0.1vw;
   display: inline-block;
   text-align: center;
-  margin-bottom: 0.2em;
 }
 
 .story_word_check:checked + .story_word_span {
@@ -163,7 +166,7 @@ input[type="checkbox"] {
 
 .story_word_pronunciation {
   display: block;
-  font-size: 0.7em;
+  font-size: 2vw;
   color: var(--medium-grey);
 }
 
@@ -185,10 +188,14 @@ input[type="checkbox"] {
 }
 
 .new_terms_method {
-  border-radius: 1em;
-  padding: 1em;
-  margin-top: 1em;
+  border-radius: 3vw;
+  padding: 3vw;
+  margin-top: 4vw;
   box-shadow: 0px 0px 3px var(--medium-grey);
+}
+
+.stats {
+  font-size: 3vw;
 }
 
 .textarea {
@@ -204,6 +211,7 @@ input[type="checkbox"] {
 
 #chatbox {
   height: 75vh;
+  padding: 2vh 2vw;
   overflow-y: scroll;
 }
 
@@ -212,8 +220,8 @@ input[type="checkbox"] {
 }
 
 .chatText {
-  padding: 0.4em;
-  border-radius: 0.7em;
+  padding: 1vh 1.5vw;
+  border-radius: 1vh;
   max-width: 75vw;
   width: fit-content;
   display: block;
@@ -245,14 +253,14 @@ input[type="checkbox"] {
 }
 
 .content_toggles {
-  font-size: 0.5em;
+  font-size: 1.5vh;
   color: var(--medium-blue);
   text-align: right;
-  margin-right: 1em;
+  margin-right: 3vw;
   cursor: pointer;
 }
 
 .translation {
   display: inline-block;
-  font-size: 0.7em;
+  font-size: 2vh;
 }
