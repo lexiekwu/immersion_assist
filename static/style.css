@@ -9,24 +9,24 @@
 body {
   font-family: "helvetica", sans-serif;
   text-align: center;
-  font-size: 5vw;
+  font-size: min(5vw, 50px);
   margin-bottom: 7vh;
 }
 
 .flashcard {
   background: var(--light-blue);
-  border-radius: 3vw;
-  padding: 2vw 3vw;
+  border-radius: .6em;
+  padding: .4em .6em;
   font-size: inherit;
-  margin: 1vw;
+  margin: .2em;
   -webkit-column-break-inside: avoid;
   position: relative;
 }
 
 .edit_button {
   position: absolute;
-  right: 2vw;
-  top: 1vw;
+  right: .4em;
+  top: .2em;
   color: var(--medium-blue);
   cursor: pointer;
 }
@@ -49,26 +49,26 @@ input[type="submit"],
 .button_col_4 {
   color: white;
   background: var(--medium-blue);
-  border-radius: 3vw;
+  border-radius: .6em;
   border: 0px;
   padding: 5px 10px;
 }
 
 .button_col_4 {
   text-decoration: none;
-  padding: 2vw 3vw;
+  padding: .4em .6em;
 }
 
 button,
 input[type="submit"] {
   color: white;
   background: var(--medium-blue);
-  border-radius: 3vw;
+  border-radius: .6em;
   border: 0px;
-  padding: 2vw 3vw;
+  padding: .4em .6em;
   cursor: pointer;
   font-size: inherit;
-  margin: 1vw;
+  margin: .2em;
 }
 
 button:hover,
@@ -85,7 +85,7 @@ table {
 td,
 tr {
   border: 1px solid;
-  padding: 2vw;
+  padding: .4em;
 }
 
 .nav_footer a {
@@ -107,9 +107,9 @@ tr {
 }
 
 .toast {
-  font-size: 2.5vw;
-  padding: 1vw;
-  border-radius: 1vw;
+  font-size: .5em;
+  padding: .2em;
+  border-radius: .2em;
 }
 
 .good {
@@ -148,14 +148,14 @@ input[type="checkbox"] {
 }
 
 .story_span {
-  margin: -0.1vw;
+  margin: -0.02em;
 }
 
 .story_word_span {
   background-color: var(--light-blue);
-  border-radius: 1vw;
+  border-radius: .2em;
   cursor: pointer;
-  padding: 0.1vw;
+  padding: 0.02em;
   display: inline-block;
   text-align: center;
 }
@@ -166,7 +166,7 @@ input[type="checkbox"] {
 
 .story_word_pronunciation {
   display: block;
-  font-size: 2vw;
+  font-size: .4em;
   color: var(--medium-grey);
 }
 
@@ -179,7 +179,7 @@ input[type="checkbox"] {
   right: 50vw;
   width: 48vw;
   text-align: left;
-  padding: 2vw;
+  padding: .4em;
 }
 
 .story_col_r {
@@ -188,14 +188,14 @@ input[type="checkbox"] {
 }
 
 .new_terms_method {
-  border-radius: 3vw;
-  padding: 3vw;
+  border-radius: .6em;
+  padding: .6em;
   margin-top: 4vw;
   box-shadow: 0px 0px 3px var(--medium-grey);
 }
 
 .stats {
-  font-size: 3vw;
+  font-size: .6em;
 }
 
 .textarea {
@@ -211,7 +211,7 @@ input[type="checkbox"] {
 
 #chatbox {
   height: 75vh;
-  padding: 2vh 2vw;
+  padding: 2vh .4em;
   overflow-y: scroll;
 }
 
@@ -253,14 +253,14 @@ input[type="checkbox"] {
 }
 
 .content_toggles {
-  font-size: 1.5vh;
+  font-size: .2em;
   color: var(--medium-blue);
   text-align: right;
-  margin-right: 3vw;
+  margin-right: .6em;
   cursor: pointer;
 }
 
 .translation {
   display: inline-block;
-  font-size: 2vh;
+  font-size: .4em;
 }
