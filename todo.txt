@@ -1,6 +1,4 @@
-- better waiting signals
 - better stats
-- tests LOL
 - more languages than Chinese
 - export CSV for cards
 - subscriptions
@@ -56,3 +54,4 @@ done
 * toggle translations and pinyin in chatbot
 * sticky footer everywhere
 * size most things based on vh instead of vw
+* tests LOL

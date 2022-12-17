@@ -1,8 +1,8 @@
 import time
-import cockroachdb as db
+import third_party.cockroachdb as db
 import re
-from study_term import StudyTerm
-from daily_stats import DailyStats
+from .study_term import StudyTerm
+from .daily_stats import DailyStats
 from flask import session
 
 

@@ -1,7 +1,7 @@
 import time
-import cockroachdb as db
-from study_term import StudyTerm
-from flashcard import Flashcard
+import third_party.cockroachdb as db
+from .study_term import StudyTerm
+from .flashcard import Flashcard
 from flask import session
 
 MIN_TIME_BETWEEN_REVIEWS_SEC = 60 * 2  # two minutes

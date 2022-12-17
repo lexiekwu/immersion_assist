@@ -1,15 +1,15 @@
-from flashcard import Flashcard
-from flashcard_stack import FlashcardStack
-from study_term import StudyTerm, get_term_page, get_count as get_study_term_count
-from daily_stats import DailyStats
+from model.flashcard import Flashcard
+from model.flashcard_stack import FlashcardStack
+from model.study_term import StudyTerm, get_term_page, get_count as get_study_term_count
+from model.daily_stats import DailyStats
 from datetime import datetime, timedelta
-from user import User
-from story import Story
+from model.user import User
+from model.story import Story
 from flask import Flask, render_template, request, session, flash, json, redirect
 from os import environ
 from urllib.parse import urlparse
-from language import get_related_words
-from chatbot import ChatBot, INITIAL_PROMPT, EN_INITIAL_PROMPT
+from third_party.language import get_related_words
+from third_party.chatbot import ChatBot, INITIAL_PROMPT, EN_INITIAL_PROMPT
 
 import math
 import re

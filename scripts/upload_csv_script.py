@@ -2,7 +2,7 @@ import pandas as pd
 from datetime import datetime
 import uuid
 import time
-import cockroachdb as db
+import third_party.cockroachdb as db
 
 CSV_PATH = "../flashcards.csv"
 DRY_MODE = True
