@@ -1,5 +1,5 @@
 import time
-import third_party.cockroachdb as db
+import a.third_party.cockroachdb as db
 import re
 from .study_term import StudyTerm
 from .daily_stats import DailyStats

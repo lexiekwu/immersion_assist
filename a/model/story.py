@@ -1,4 +1,4 @@
-import third_party.language as language
+import a.third_party.language as language
 from flask import json, escape
 
 

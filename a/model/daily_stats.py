@@ -1,6 +1,6 @@
 from datetime import datetime
 from flask import session
-import third_party.cockroachdb as db
+from a.third_party import cockroachdb as db
 
 today_dt = str(datetime.today().date())
 

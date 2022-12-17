@@ -1,7 +1,7 @@
 import uuid
 import time
-import third_party.language as language
-import third_party.cockroachdb as db
+import a.third_party.language as language
+import a.third_party.cockroachdb as db
 from flask import session
 
 TW_CODE = "zh-TW"  # TODO make flexible

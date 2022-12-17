@@ -1,5 +1,5 @@
 import time
-import third_party.cockroachdb as db
+import a.third_party.cockroachdb as db
 from .study_term import StudyTerm
 from .flashcard import Flashcard
 from flask import session

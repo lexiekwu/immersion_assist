@@ -1,4 +1,4 @@
-import third_party.cockroachdb as db
+import a.third_party.cockroachdb as db
 import uuid
 import bcrypt
 
