@@ -1,6 +1,7 @@
 import a.third_party.cockroachdb as db
 import uuid
 import bcrypt
+from a.third_party import session_storage
 
 
 class User:
@@ -67,3 +68,13 @@ class User:
 
         # Use conditions to compare the authenticating password with the stored one:
         return bcrypt.checkpw(guessed_password, correct_hashed_password)
+
+    def delete_all_data(self):
+        db.sql_update_multi(
+            f"DELETE FROM {table} WHERE uid = '{self.uid}'"
+            for table in ["daily_stats", "learning_log", "study_term", "users"]
+        )
+
+    def login(self, guessed_password):
+        if self.is_correct_password(guessed_password):
+            session_storage.set("uid", self.uid)

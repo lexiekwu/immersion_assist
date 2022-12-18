@@ -1,6 +1,6 @@
 from datetime import datetime
-from flask import session
 from a.third_party import cockroachdb as db
+from a.third_party import session_storage
 
 today_dt = str(datetime.today().date())
 
@@ -11,7 +11,7 @@ class DailyStats:
         self.count_correct = count_correct
         self.count_incorrect = count_incorrect
 
-    def accuracy(self):
+    def get_accuracy(self):
         return (
             round(
                 self.count_correct
@@ -26,11 +26,15 @@ class DailyStats:
     @classmethod
     def get_for_day(cls, dt=today_dt):
         if (
-            session.get("count_correct")
-            and session.get("count_incorrect")
-            and session.get("dt") == dt
+            session_storage.get("count_correct")
+            and session_storage.get("count_incorrect")
+            and session_storage.get("dt") == dt
         ):
-            return cls(dt, session.get("count_correct"), session.get("count_incorrect"))
+            return cls(
+                dt,
+                session_storage.get("count_correct"),
+                session_storage.get("count_incorrect"),
+            )
 
         stats_dict = db.sql_query_single(
             f"""
@@ -40,7 +44,7 @@ class DailyStats:
                 FROM daily_stats
                 WHERE
                     dt = '{dt}' AND
-                    uid = '{session["uid"]}'
+                    uid = '{session_storage.logged_in_user()}'
             """
         )
 
@@ -51,7 +55,7 @@ class DailyStats:
             return new_stats_day
 
         if dt == today_dt:
-            session.update(
+            session_storage.update(
                 {
                     "dt": dt,
                     "count_correct": stats_dict["count_correct"],
@@ -69,11 +73,11 @@ class DailyStats:
         db.sql_update(
             f"""
             UPSERT INTO daily_stats (dt, uid, count_correct, count_incorrect)
-            VALUES ('{self.dt}', '{session["uid"]}', {self.count_correct}, {self.count_incorrect})
+            VALUES ('{self.dt}', '{session_storage.logged_in_user()}', {self.count_correct}, {self.count_incorrect})
         """
         )
         if self.dt == today_dt:
-            session.update(
+            session_storage.update(
                 {
                     "dt": self.dt,
                     "count_correct": self.count_correct,
