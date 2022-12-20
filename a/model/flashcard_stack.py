@@ -1,8 +1,7 @@
 import time
-import a.third_party.cockroachdb as db
+from a.third_party import cockroachdb as db, session_storage
 from .study_term import StudyTerm
 from .flashcard import Flashcard
-from flask import session
 
 MIN_TIME_BETWEEN_REVIEWS_SEC = 60 * 2  # two minutes
 DEFAULT_LIMIT = 10
@@ -37,7 +36,7 @@ class FlashcardStack:
                 FROM learning_log
                 WHERE
                     last_review > {now - MIN_TIME_BETWEEN_REVIEWS_SEC} AND
-                    uid = '{session["uid"]}'
+                    uid = '{session_storage.logged_in_user()}'
             ), 
             
             learning_log_ordered AS (
@@ -59,7 +58,7 @@ class FlashcardStack:
                     very_recently_reviewed_terms.term_id = learning_log.term_id
                 WHERE
                     very_recently_reviewed_terms.term_id IS NULL AND
-                    learning_log.uid = '{session["uid"]}'
+                    learning_log.uid = '{session_storage.logged_in_user()}'
 
                 ORDER BY 6 DESC
                 LIMIT {self.limit * 3}
