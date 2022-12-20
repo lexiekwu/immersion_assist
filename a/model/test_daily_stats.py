@@ -1,8 +1,7 @@
 from datetime import datetime
 from a.model import daily_stats, user
-from a.third_party import cockroachdb as db
 
-# placeholder
+
 class TestDailyStats:
     def setup_method(self):
         self.test_dt = str(datetime(1989, 9, 19).date())

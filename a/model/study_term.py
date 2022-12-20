@@ -1,10 +1,7 @@
 import uuid
 import time
-import a.third_party.language as language
-import a.third_party.cockroachdb as db
-from flask import session
-
-TW_CODE = "zh-TW"  # TODO make flexible
+from a.third_party import session_storage, cockroachdb as db
+import a
 
 
 class StudyTerm:
@@ -14,7 +11,7 @@ class StudyTerm:
         term,
         translated_term,
         pronunciation,
-        target_language=TW_CODE,
+        target_language=a.third_party.language.TW_CODE,
     ):
         self.id = id
         self.term = term
@@ -24,21 +21,24 @@ class StudyTerm:
 
     @classmethod
     def build_from_term(cls, term, pronunciation=None):
-        translated_term = language.get_translation(term, language.EN_CODE)
-        pronunciation = pronunciation or language.get_pronunciation(
-            term, language.TW_CODE
+        translated_term = a.third_party.language.get_translation(
+            term, a.third_party.language.EN_CODE
+        )
+        pronunciation = pronunciation or a.third_party.language.get_pronunciation(
+            term, a.third_party.language.TW_CODE
         )
         id = uuid.uuid4()
         return cls(id, term, translated_term, pronunciation)
 
     @classmethod
     def _build_from_translated_term(cls, translated_term, target_language):
-        term = language.get_translation(translated_term, target_language)
-        pronunciation = language.get_pronunciation(term, target_language)
+        term = a.third_party.language.get_translation(translated_term, target_language)
+        pronunciation = a.third_party.language.get_pronunciation(term, target_language)
         id = uuid.uuid4()
         return cls(id, term, translated_term, pronunciation, target_language)
 
     def save(self):
+        logged_in_user = session_storage.logged_in_user()
         now = int(time.time())
         insert_term_sql = f"""
             UPSERT INTO study_term (id, term, translated_term, pronunciation, uid, time_added)
@@ -48,22 +48,22 @@ class StudyTerm:
                     '{self.term}',
                     '{self.translated_term}',
                     '{self.pronunciation}',
-                    '{session["uid"]}',
+                    '{logged_in_user}',
                     '{now}'
                 )
         """
         insert_learning_log_sql = f"""
             UPSERT INTO learning_log (id, term_id, quiz_type, knowledge_factor, last_review, uid)
             VALUES
-                ('{uuid.uuid4()}', '{self.id}', 'pronunciation', 1.0, {now}, '{session["uid"]}'),
-                ('{uuid.uuid4()}', '{self.id}', 'reverse_translation', 1.0, {now}, '{session["uid"]}'),
-                ('{uuid.uuid4()}', '{self.id}', 'translation', 1.0, {now}, '{session["uid"]}')
+                ('{uuid.uuid4()}', '{self.id}', 'pronunciation', 1.0, {now}, '{logged_in_user}'),
+                ('{uuid.uuid4()}', '{self.id}', 'reverse_translation', 1.0, {now}, '{logged_in_user}'),
+                ('{uuid.uuid4()}', '{self.id}', 'translation', 1.0, {now}, '{logged_in_user}')
         """
         db.sql_update_multi([insert_term_sql, insert_learning_log_sql])
 
     @classmethod
     def build_and_save_from_translated_term(
-        cls, translated_term, target_language=TW_CODE
+        cls, translated_term, target_language=a.third_party.language.TW_CODE
     ):
         term = cls._build_from_translated_term(translated_term, target_language)
         term.save()
@@ -76,10 +76,13 @@ class StudyTerm:
             SELECT *
             FROM study_term
             WHERE
-                uid = '{session["uid"]}' AND
+                uid = '{session_storage.logged_in_user()}' AND
                 id = '{id}'
             """
         )
+        if not card_dict:
+            return None
+
         return cls(
             id,
             card_dict["term"],
@@ -100,28 +103,26 @@ class StudyTerm:
                     '{term}',
                     '{translated_term}',
                     '{pronunciation}',
-                    '{session["uid"]}'
+                    '{session_storage.logged_in_user()}'
                 )
         """
         )
 
     def delete(self):
+        logged_in_user = session_storage.logged_in_user()
         delete_term_sql = f"""
             DELETE FROM study_term
             WHERE 
                 id = '{self.id}' AND
-                uid = '{session["uid"]}'
+                uid = '{logged_in_user}'
         """
         delete_learning_log_sql = f"""
             DELETE FROM learning_log
             WHERE 
                 term_id = '{self.id}' AND
-                uid = '{session["uid"]}'
+                uid = '{logged_in_user}'
         """
         db.sql_update_multi([delete_term_sql, delete_learning_log_sql])
-
-    def toString(self):
-        return f"{self.term}: {self.translated_term} ({self.pronunciation})"
 
     @classmethod
     def save_from_string(cls, term_str):
@@ -140,7 +141,7 @@ class StudyTerm:
             d["term"],
             d["translated_term"],
             d["pronunciation"],
-            d.get("target_language", TW_CODE),
+            d.get("target_language", a.third_party.language.TW_CODE),
         )
 
     def to_dict(self):
@@ -151,6 +152,22 @@ class StudyTerm:
             "translated_term": self.translated_term,
             "pronunciation": self.pronunciation,
         }
+
+    def __eq__(self, other: object) -> bool:
+        return type(self) == type(other) and (
+            self.term,
+            self.translated_term,
+            self.pronunciation,
+            self.target_language,
+        ) == (
+            other.term,
+            other.translated_term,
+            other.pronunciation,
+            other.target_language,
+        )
+
+    def __repr__(self):
+        return f"{self.term}: {self.translated_term} {self.pronunciation}"
 
 
 def _split_term(term):
@@ -175,7 +192,7 @@ def get_term_page(page_number, limit):
         SELECT *
         FROM study_term
         WHERE
-            uid = '{session["uid"]}'
+            uid = '{session_storage.logged_in_user()}'
         ORDER BY 
             time_added DESC, 
             translated_term ASC
@@ -193,6 +210,6 @@ def get_count():
             COUNT(*) AS cnt
         FROM study_term
         WHERE
-            uid = '{session["uid"]}'
+            uid = '{session_storage.logged_in_user()}'
         """
     )["cnt"]
