@@ -1,5 +1,5 @@
 import time
-import a.third_party.cockroachdb as db
+from a.third_party import cockroachdb as db, session_storage
 import re
 from .study_term import StudyTerm
 from .daily_stats import DailyStats
@@ -10,25 +10,32 @@ class Flashcard:
     def __init__(self, study_term, quiz_type):
         self.study_term = study_term
         self.quiz_type = quiz_type
-        if self.quiz_type == "translation":
-            self.prompt = f'translation of "{study_term.term}"'
-            self.correct_answer = study_term.translated_term.partition("(")[0]
-            if self.correct_answer[-1] == " ":
-                self.correct_answer = self.correct_answer[:-1]
-        elif self.quiz_type == "pronunciation":
-            self.prompt = f'pronunciation of "{study_term.term}"'
-            self.correct_answer = study_term.pronunciation
-        elif self.quiz_type == "reverse_translation":
-            self.prompt = f'translation of "{study_term.translated_term}"'
-            self.correct_answer = study_term.term
 
         # set up stats to update, default to today
         self.daily_stats = DailyStats.get_for_day()
 
+    def get_prompt(self):
+        if self.quiz_type == "translation":
+            return f'translation of "{self.study_term.term}"'
+        elif self.quiz_type == "pronunciation":
+            return f'pronunciation of "{self.study_term.term}"'
+        elif self.quiz_type == "reverse_translation":
+            return f'translation of "{self.study_term.translated_term}"'
+
     def is_correct_guess(self, guess):
+        correct_answer = ""
+        if self.quiz_type == "translation":
+            correct_answer = self.study_term.translated_term.partition("(")[0]
+            if correct_answer[-1] == " ":
+                correct_answer = correct_answer[:-1]
+        elif self.quiz_type == "pronunciation":
+            correct_answer = self.study_term.pronunciation
+        elif self.quiz_type == "reverse_translation":
+            correct_answer = self.study_term.term
+
         return (
-            re.sub("-|\s", "", self.correct_answer, 0, re.IGNORECASE).lower()
-            == re.sub("-|\s", "", guess, 0, re.IGNORECASE).lower()
+            re.sub("-| ", "", correct_answer, 0, re.IGNORECASE).lower()
+            == re.sub("-| ", "", guess, 0, re.IGNORECASE).lower()
         )
 
     def update_on_incorrect(self):
@@ -37,12 +44,12 @@ class Flashcard:
             f"""
             UPDATE learning_log
             SET
-                knowledge_factor = knowledge_factor / 8,
+                knowledge_factor = knowledge_factor / 4,
                 last_review = {now}
             WHERE
                 term_id = '{self.study_term.id}' AND
                 quiz_type = '{self.quiz_type}' AND
-                uid = '{session["uid"]}'
+                uid = '{session_storage.logged_in_user()}'
         """
         )
         self.daily_stats.update(False)
@@ -58,7 +65,7 @@ class Flashcard:
             WHERE
                 term_id = '{self.study_term.id}' AND
                 quiz_type = '{self.quiz_type}' AND
-                uid = '{session["uid"]}'
+                uid = '{session_storage.logged_in_user()}'
         """
         )
         self.daily_stats.update(True)
@@ -76,4 +83,10 @@ class Flashcard:
         return cls(
             StudyTerm.from_dict(d["study_term"]),
             d["quiz_type"],
+        )
+
+    def __eq__(self, other):
+        return type(self) == type(other) and (self.study_term, self.quiz_type) == (
+            other.study_term,
+            other.quiz_type,
         )
