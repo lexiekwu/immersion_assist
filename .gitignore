@@ -4,3 +4,4 @@ __pycache__/*
 .gcloudignore
 vars.txt
 scratchpad.py
+.coverage
