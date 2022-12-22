@@ -1,4 +1,3 @@
-- better failure states for db
 - update if term exists
 - better stats
 - more languages than Chinese
@@ -57,3 +56,4 @@ done
 * sticky footer everywhere
 * size most things based on vh instead of vw
 * tests LOL
+* more graceful db failures maybe

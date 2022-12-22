@@ -1,8 +1,7 @@
 from a.model import user
 import uuid
 from a.third_party import session_storage
-
-# import pytest
+import pytest
 
 
 class TestUser:
@@ -16,10 +15,9 @@ class TestUser:
             u.uid is not None and u.name == "Testley" and u.email == "testley@aol.com"
         )
 
-        # TODO fix db so this doesn't cause other failures
-        # # don't allow same email
-        # with pytest.raises(Exception):
-        #     user.User.new("Jen", "testley@aol.com", "iLikeTests2")
+        # don't allow same email
+        with pytest.raises(Exception):
+            user.User.new("Jen", "testley@aol.com", "iLikeTests2")
 
     def test_get_by_id(self):
         u = user.User.new("Testley", "testley@aol.com", "iLikeTests")
@@ -41,6 +39,7 @@ class TestUser:
         assert not u.is_correct_password("")
 
     def test_login(self):
+        session_storage.set("uid", None)
         u = user.User.new("Testley", "testley@aol.com", "iLikeTests")
         self.test_users.append(u)
         assert session_storage.logged_in_user() is None

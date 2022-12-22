@@ -14,46 +14,46 @@ DB_URL = "".join(
 )
 
 # init client
-db_conn = psycopg2.connect(DB_URL, sslmode="prefer")
-db_cursor = db_conn.cursor(cursor_factory=psycopg2.extras.RealDictCursor)
+conn = psycopg2.connect(DB_URL, sslmode="prefer")
+
+
+def _get_cur():
+    return conn.cursor(cursor_factory=psycopg2.extras.RealDictCursor)
 
 
 def sql_query(sql):
-    try:
-        db_cursor.execute(sql)
-        db_conn.commit()
-        result = db_cursor.fetchall()
-        return result
-    except psycopg2.Error as e:
-        db_cursor.execute("ROLLBACK")
-        raise e
+    with _get_cur() as cur:
+        try:
+            cur.execute(sql)
+            conn.commit()
+            result = cur.fetchall()
+            return result
+        except Exception as e:
+            conn.rollback()
+            raise e
 
 
 def sql_query_single(sql):
-    try:
-        db_cursor.execute(sql)
-        db_conn.commit()
-        result = db_cursor.fetchall()
-        return result[0] if result else None
-    except psycopg2.Error as e:
-        db_cursor.execute("ROLLBACK")
-        raise e
+    result = sql_query(sql)
+    return result[0] if result else None
 
 
 def sql_update(sql):
-    try:
-        db_cursor.execute(sql)
-        db_conn.commit()
-    except psycopg2.Error as e:
-        db_cursor.execute("ROLLBACK")
-        raise e
+    with _get_cur() as cur:
+        try:
+            cur.execute(sql)
+            conn.commit()
+        except Exception as e:
+            conn.rollback()
+            raise e
 
 
 def sql_update_multi(sql_list):
-    try:
-        for sql in sql_list:
-            db_cursor.execute(sql)
-        db_conn.commit()
-    except psycopg2.Error as e:
-        db_cursor.execute("ROLLBACK")
-        raise e
+    with _get_cur() as cur:
+        try:
+            for sql in sql_list:
+                cur.execute(sql)
+            conn.commit()
+        except Exception as e:
+            conn.rollback()
+            raise e
