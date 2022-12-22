@@ -86,4 +86,4 @@ class TestFlashcardStack:
         assert flashcard_stack.FlashcardStack.from_dicts(dicts).stack == fcs.stack
 
     def teardown_method(self):
-        self.test_user.delete_all_data()
+        self.test_user.delete_all_data_TESTS_ONLY()

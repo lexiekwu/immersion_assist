@@ -19,6 +19,8 @@ class User:
             WHERE uid = '{uid}'
             """
         )
+        if not user_dict:
+            return None
         return cls(uid, user_dict["name"], user_dict["email"])
 
     @classmethod
@@ -69,12 +71,22 @@ class User:
         # Use conditions to compare the authenticating password with the stored one:
         return bcrypt.checkpw(guessed_password, correct_hashed_password)
 
-    def delete_all_data(self):
+    def login(self, guessed_password):
+        if self.is_correct_password(guessed_password):
+            session_storage.set("uid", self.uid)
+
+    def __eq__(self, other):
+        return type(self) == type(other) and (str(self.uid), self.name, self.email) == (
+            str(other.uid),
+            other.name,
+            other.email,
+        )
+
+    def __repr__(self):
+        return f"\n{self.uid}\n{self.name}\n{self.email}"
+
+    def delete_all_data_TESTS_ONLY(self):
         db.sql_update_multi(
             f"DELETE FROM {table} WHERE uid = '{self.uid}'"
             for table in ["daily_stats", "learning_log", "study_term", "users"]
         )
-
-    def login(self, guessed_password):
-        if self.is_correct_password(guessed_password):
-            session_storage.set("uid", self.uid)

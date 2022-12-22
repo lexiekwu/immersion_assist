@@ -162,4 +162,4 @@ class TestFlashcard:
         assert f.to_dict() == dct
 
     def teardown_method(self):
-        self.test_user.delete_all_data()
+        self.test_user.delete_all_data_TESTS_ONLY()

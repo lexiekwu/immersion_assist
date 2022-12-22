@@ -153,4 +153,4 @@ class TestStudyTerm:
         assert study_term.get_count() == 3
 
     def teardown_method(self):
-        self.test_user.delete_all_data()
+        self.test_user.delete_all_data_TESTS_ONLY()

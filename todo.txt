@@ -1,3 +1,5 @@
+- better failure states for db
+- update if term exists
 - better stats
 - more languages than Chinese
 - export CSV for cards

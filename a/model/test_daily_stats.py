@@ -67,4 +67,4 @@ class TestDailyStats:
         assert (ds.count_correct, ds.count_incorrect) == (4, 4)
 
     def teardown_method(self):
-        self.test_user.delete_all_data()
+        self.test_user.delete_all_data_TESTS_ONLY()
