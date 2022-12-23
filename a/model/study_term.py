@@ -20,22 +20,24 @@ class StudyTerm:
         self.pronunciation = pronunciation
 
     @classmethod
-    def build_from_term(cls, term, pronunciation=None):
-        translated_term = a.third_party.language.get_translation(
-            term, a.third_party.language.EN_CODE
-        )
+    def build(cls, term=None, translated_term=None, pronunciation=None):
+        assert (
+            term or translated_term
+        ), "Cannot build a study term without either a term or a translated term given"
+
+        if not term:
+            term = a.third_party.language.get_translation(
+                translated_term, a.third_party.language.TW_CODE
+            )
+        if not translated_term:
+            translated_term = a.third_party.language.get_translation(
+                term, a.third_party.language.EN_CODE
+            )
         pronunciation = pronunciation or a.third_party.language.get_pronunciation(
             term, a.third_party.language.TW_CODE
         )
         id = uuid.uuid4()
         return cls(id, term, translated_term, pronunciation)
-
-    @classmethod
-    def _build_from_translated_term(cls, translated_term, target_language):
-        term = a.third_party.language.get_translation(translated_term, target_language)
-        pronunciation = a.third_party.language.get_pronunciation(term, target_language)
-        id = uuid.uuid4()
-        return cls(id, term, translated_term, pronunciation, target_language)
 
     def save(self):
         logged_in_user = session_storage.logged_in_user()
@@ -60,14 +62,6 @@ class StudyTerm:
                 ('{uuid.uuid4()}', '{self.id}', 'translation', 1.0, {now}, '{logged_in_user}')
         """
         db.sql_update_multi([insert_term_sql, insert_learning_log_sql])
-
-    @classmethod
-    def build_and_save_from_translated_term(
-        cls, translated_term, target_language=a.third_party.language.TW_CODE
-    ):
-        term = cls._build_from_translated_term(translated_term, target_language)
-        term.save()
-        return term
 
     @classmethod
     def get_by_id(cls, id):
@@ -125,13 +119,12 @@ class StudyTerm:
         db.sql_update_multi([delete_term_sql, delete_learning_log_sql])
 
     @classmethod
-    def save_from_string(cls, term_str):
+    def from_string(cls, term_str):
         characters, pinyin, english = _split_term(term_str)
         assert (
             characters and english and pinyin
         ), f"could not successfully split '{term_str}'"
         study_term = cls(uuid.uuid4(), characters, english, pinyin)
-        study_term.save()
         return study_term
 
     @classmethod

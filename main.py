@@ -7,7 +7,6 @@ import math
 
 app = Flask(__name__)
 app.secret_key = environ.get("SESSION_KEY")
-DEFAULT_PAGE_LIMIT = 50
 
 
 @app.route("/")
@@ -72,9 +71,8 @@ def terms():
         return render_template("login.html")
 
     page_number = int(request.args.get("page_no", 1))
-    total_count = a.model.study_term.get_count()
-    num_pages = math.ceil(total_count * 1.0 / DEFAULT_PAGE_LIMIT)
-    terms = a.model.study_term.get_term_page(page_number, limit=DEFAULT_PAGE_LIMIT)
+    terms, num_pages = a.controller.study_term.get_term_page_and_num_pages(page_number)
+
     return render_template(
         "terms.html",
         terms=terms,
@@ -139,58 +137,38 @@ def select_words():
 
 @app.route("/save_cards", methods=["POST", "GET"])
 def save_cards():
+    _reserved_keys = ["bulk_terms", "translated_term", "msg"]
+
     if not session.get("uid"):
         return render_template("login.html")
 
-    study_terms = []
-
     try:
-        if request.form.get("word"):
-            study_term = (
-                a.model.study_term.StudyTerm.build_and_save_from_translated_term(
-                    request.form.get("word")
-                )
-            )
-            study_terms.append(study_term)
-        elif request.form.get("terms"):
-            terms = request.form.get("terms").split("\r\n")
-            study_terms += [
-                a.model.study_term.StudyTerm.save_from_string(term)
-                for term in terms
-                if term
-            ]
-        else:
+        translated_terms = []
+        term_dicts = []
 
-            def _is_json(maybe_json):
-                try:
-                    json.loads(maybe_json)
-                except ValueError as e:
-                    return False
-                return True
+        if request.form.get("translated_term"):
+            translated_terms.append(request.form.get("translated_term"))
 
-            # look for selected keys from story_time or select_words
-            form_keys = set(request.form.keys())
-            for form_key in form_keys:
+        # look for selected keys from story_time or select_words
+        form_keys = set(request.form.keys())
+        for form_key in form_keys:
 
-                # case of story_time
-                if form_key == "msg":
-                    continue  # ignore
+            if form_key in _reserved_keys:
+                continue  # ignore
 
-                if _is_json(form_key):
-                    term_to_save = json.loads(form_key)
-                    if term_to_save:
-                        study_term = a.model.study_term.StudyTerm.build_from_term(
-                            term_to_save["term"], term_to_save["pronunciation"]
-                        )
-                        study_term.save()
+            elif _is_json(form_key):
+                term_dict = json.loads(form_key)
+                term_dicts.append(term_dict)
 
-                # case of select_words
-                else:
-                    study_term = a.model.study_term.StudyTerm.build_and_save_from_translated_term(
-                        form_key
-                    )
+            # case of select_words
+            else:
+                translated_terms.append(form_key)
 
-                study_terms.append(study_term)
+        study_terms = a.controller.study_term.save(
+            translated_terms=translated_terms,
+            bulk_terms=request.form.get("bulk_terms"),
+            term_dicts=term_dicts,
+        )
 
     except Exception as e:
         flash(f"Did not successfully create your cards. Error was '{str(e)}'", "bad")
@@ -347,6 +325,14 @@ def chatbot_response():
         "runningCost": chatbot.get_cost(),
         "story": story.to_dict(),
     }
+
+
+def _is_json(maybe_json):
+    try:
+        json.loads(maybe_json)
+    except ValueError as e:
+        return False
+    return True
 
 
 if __name__ == "__main__":

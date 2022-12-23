@@ -10,26 +10,38 @@ class TestStudyTerm:
         )
         self.test_user.login("iLikeTests")
 
-    def test_build_from_term(self, mocker):
+    def test_build(self, mocker):
 
         mocker.patch("a.third_party.language.get_translation", return_value="hello")
         mocker.patch(
             "a.third_party.language.get_pronunciation", return_value="ni3 hao3"
         )
 
-        st = study_term.StudyTerm.build_from_term("你好")
+        st = study_term.StudyTerm.build(term="你好")
         assert (
             st.term,
             st.translated_term,
             st.pronunciation,
         ) == ("你好", "hello", "ni3 hao3")
 
-        st = study_term.StudyTerm.build_from_term("你好", pronunciation="ni2 hao3")
+        st = study_term.StudyTerm.build(term="你好", pronunciation="ni2 hao3")
         assert (
             st.term,
             st.translated_term,
             st.pronunciation,
         ) == ("你好", "hello", "ni2 hao3")
+
+        mocker.patch("a.third_party.language.get_translation", return_value="你好")
+        mocker.patch(
+            "a.third_party.language.get_pronunciation", return_value="ni3 hao3"
+        )
+
+        st = study_term.StudyTerm.build(translated_term="hello")
+        assert (
+            st.term,
+            st.translated_term,
+            st.pronunciation,
+        ) == ("你好", "hello", "ni3 hao3")
 
     def test_save_and_get(self):
         uuid1 = uuid.uuid4()
@@ -45,21 +57,6 @@ class TestStudyTerm:
         st.save()
         assert study_term.StudyTerm.get_by_id(uuid1) == st
         assert study_term.get_count() == 1
-
-    def test_build_from_translated_term(self, mocker):
-        mocker.patch("a.third_party.language.get_translation", return_value="你好")
-        mocker.patch(
-            "a.third_party.language.get_pronunciation", return_value="ni3 hao3"
-        )
-
-        st = study_term.StudyTerm.build_and_save_from_translated_term("hello")
-        assert (
-            st.term,
-            st.translated_term,
-            st.pronunciation,
-        ) == ("你好", "hello", "ni3 hao3")
-
-        assert study_term.StudyTerm.get_by_id(st.id) == st
 
     def test_update(self):
         uuid1 = uuid.uuid4()
@@ -86,18 +83,12 @@ class TestStudyTerm:
         st.delete()
         assert study_term.get_count() == 0
 
-    def test_save_from_string(self):
-        st = study_term.StudyTerm.save_from_string("你好 ni3 hao3 hello")
+    def test_from_string(self):
+        st = study_term.StudyTerm.from_string("你好 ni3 hao3 hello")
         assert (
             st.term,
             st.translated_term,
             st.pronunciation,
-        ) == ("你好", "hello", "ni3 hao3")
-        st_loaded = study_term.StudyTerm.get_by_id(st.id)
-        assert (
-            st_loaded.term,
-            st_loaded.translated_term,
-            st_loaded.pronunciation,
         ) == ("你好", "hello", "ni3 hao3")
 
     def test_from_dict(self):

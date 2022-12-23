@@ -1,3 +1,5 @@
+- unify language around cards
+- better testing script to setup, teardown, and say coverage
 - update if term exists
 - logo
 - better stats
