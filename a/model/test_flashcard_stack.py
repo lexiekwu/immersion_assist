@@ -43,29 +43,6 @@ class TestFlashcardStack:
         assert len(fcs2.stack) == 3
 
     def test_pop_card(self):
-        sts = [self._get_numbered_term(i) for i in range(12)]
-        [st.save() for st in sts]
-
-        # test initial population of stack, and that there aren't duplicates in the first 10 cards
-        fcs = flashcard_stack.FlashcardStack()
-        flashcard_stack.MIN_TIME_BETWEEN_REVIEWS_SEC = 1
-        time.sleep(1.0)
-        fcs = flashcard_stack.FlashcardStack()
-        assert len(fcs.stack) == flashcard_stack.DEFAULT_LIMIT
-        terms = [fc.study_term.term for fc in fcs.stack]
-        assert len(set(terms)) == len(terms)
-
-        # even if the limit can't be met, still don't have duplicates
-        fcs = flashcard_stack.FlashcardStack(limit=15)
-        assert len(fcs.stack) == 12
-        terms = [fc.study_term.term for fc in fcs.stack]
-        assert len(set(terms)) == len(terms)
-
-        # test passing in the stack
-        fcs = flashcard_stack.FlashcardStack(existing_stack=sts[:3])
-        assert len(fcs.stack) == 3
-
-    def test_pop_card(self):
         sts = [self._get_numbered_term(i) for i in range(10)]
         [st.save() for st in sts]
 
