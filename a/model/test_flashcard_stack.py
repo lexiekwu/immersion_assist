@@ -38,6 +38,10 @@ class TestFlashcardStack:
         fcs = flashcard_stack.FlashcardStack(existing_stack=sts[:3])
         assert len(fcs.stack) == 3
 
+        # test existing stack
+        fcs2 = flashcard_stack.FlashcardStack(existing_stack=fcs.stack)
+        assert len(fcs2.stack) == 3
+
     def test_pop_card(self):
         sts = [self._get_numbered_term(i) for i in range(12)]
         [st.save() for st in sts]
