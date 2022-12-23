@@ -1,5 +1,5 @@
 <head>
-  <title>Add Cards</title>
+  <title>Pick Terms to Save</title>
   <link
     type="text/css"
     rel="stylesheet"
@@ -22,7 +22,7 @@
       Click the words that you want to save, then hit "save."
     </div>
   </div>
-  <form action="/save_cards" method="POST" style="margin: 0">
+  <form action="/save_terms" method="POST" style="margin: 0">
     <div class="story_col">
       {% for story_term in story.story_terms %} {% if not story_term.is_word %}
       <span class="story_span">{{story_term.term}}</span>

@@ -1,4 +1,3 @@
-- unify language around cards
 - update if term exists
 - logo
 - better stats
@@ -60,3 +59,4 @@ done
 * tests LOL
 * more graceful db failures maybe
 * better testing script to setup, teardown, and say coverage
+* unify language around cards

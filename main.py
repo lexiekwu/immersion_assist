@@ -135,8 +135,8 @@ def select_words():
     return render_template("select_words.html", words=words)
 
 
-@app.route("/save_cards", methods=["POST", "GET"])
-def save_cards():
+@app.route("/save_terms", methods=["POST", "GET"])
+def save_terms():
     _reserved_keys = ["bulk_terms", "translated_term", "msg"]
 
     if not session.get("uid"):
