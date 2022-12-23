@@ -63,32 +63,6 @@ class TestFlashcard:
             "hello",
             "ni3 hao3",
         )
-        f = flashcard.Flashcard(st, "translation")
-        f.update_on_incorrect()
-        assert (ds.count_correct, ds.count_incorrect) == (0, 1)
-        assert (
-            db.sql_query_single(
-                f"""
-            SELECT knowledge_factor
-            FROM learning_log
-            WHERE
-                term_id = '{f.study_term.id}' AND
-                quiz_type = '{f.quiz_type}' AND
-                uid = '{self.test_user.uid}'
-        """
-            )["knowledge_factor"]
-            == 0.5
-        )
-
-    def test_update_on_incorrect(self):
-        ds = daily_stats.DailyStats.get_for_day()
-        assert (ds.count_correct, ds.count_incorrect) == (0, 0)
-        st = study_term.StudyTerm(
-            uuid.uuid4(),
-            "你好",
-            "hello",
-            "ni3 hao3",
-        )
         st.save()
         f = flashcard.Flashcard(st, "translation")
         f.update_on_incorrect()
