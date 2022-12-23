@@ -50,19 +50,20 @@ def signup():
     if request.method == "GET":
         return render_template("signup.html")
 
-    if a.model.user.User.get_by_email(request.form.get("email")):
-        flash("An account already exists for that email. Please log in.", "bad")
-        return render_template("login.html")
-
-    this_user = a.model.user.User.new(
-        name=request.form.get("name"),
-        email=request.form.get("email"),
-        password=request.form.get("password"),
+    is_success, failure_reason = a.controller.signup.try_signup(
+        request.form.get("email"),
+        request.form.get("password"),
+        request.form.get("name"),
     )
 
-    session["uid"] = this_user.uid
-    session["name"] = this_user.name
-    return render_template("index.html")
+    if is_success:
+        return render_template("index.html")
+    else:
+        if failure_reason == a.controller.signup.SignupFailureReason.USER_EXISTS:
+            flash("An account already exists for that email. Please log in.", "bad")
+        else:
+            flash("Unable to log you in.", "bad")
+        return render_template("login.html")
 
 
 @app.route("/terms")
