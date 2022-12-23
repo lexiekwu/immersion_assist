@@ -109,7 +109,7 @@ def story_time():
 
     try:
         raw_story = request.form.get("story")
-        story = a.model.story.Story.build(raw_story)
+        story = a.controller.story.Story.build(raw_story)
     except Exception as e:
         flash(f"Could not successfully generate story. Error was '{str(e)}'", "bad")
         return render_template("new.html")
@@ -302,7 +302,7 @@ def chat():
     if not session.get("uid"):
         return render_template("login.html")
 
-    initial_prompt_html = a.model.story.Story.build(
+    initial_prompt_html = a.controller.story.Story.build(
         a.third_party.chatbot.INITIAL_PROMPT
     ).to_dict()["terms_html"]
 
@@ -320,7 +320,7 @@ chatbot = a.third_party.chatbot.ChatBot()
 def chatbot_response():
     msg = request.form["msg"]
     response = chatbot.get_response(msg)
-    story = a.model.story.Story.build(response)
+    story = a.controller.story.Story.build(response)
     return {
         "runningCost": chatbot.get_cost(),
         "story": story.to_dict(),

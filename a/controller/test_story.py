@@ -1,4 +1,4 @@
-from a.model import story
+from a.controller import story
 
 
 class TestStory:
