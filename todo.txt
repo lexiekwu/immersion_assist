@@ -1,4 +1,5 @@
 - update if term exists
+- logo
 - better stats
 - more languages than Chinese
 - export CSV for cards

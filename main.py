@@ -22,21 +22,19 @@ def login():
     if request.method == "GET":
         return render_template("login.html")
 
+    is_user_found, is_correct_password = a.controller.login.try_login(
+        request.form.get("email"), request.form.get("password")
+    )
+
     # check if exists, if not, send to signup
-    this_user = a.model.user.User.get_by_email(request.form.get("email"))
-    if not this_user:
+    if not is_user_found:
         flash("No user exists for that email. Please sign up.", "bad")
         return render_template("signup.html")
 
     # incorrect password, try again
-    if not this_user.is_correct_password(request.form.get("password")):
+    if not is_correct_password:
         flash("That password is incorrect. Please try again.", "bad")
         return render_template("login.html")
-
-    # correct password, log in
-    session["uid"] = this_user.uid
-    session["name"] = this_user.name
-    flash("Login successful.", "good")
 
     # if you came from somewhere within the app, direct
     # back to what you were trying to do
