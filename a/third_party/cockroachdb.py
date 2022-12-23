@@ -8,7 +8,9 @@ DB_URL = "".join(
         environ.get("COCKROACHDB_USER"),
         ":",
         environ.get("COCKROACHDB_PW"),
-        "@free-tier4.aws-us-west-2.cockroachlabs.cloud:26257/defaultdb?sslmode=verify-full&options=--cluster%3D",
+        "@free-tier4.aws-us-west-2.cockroachlabs.cloud:26257/",
+        "testdb" if "PYTEST_CURRENT_TEST" in environ else "defaultdb",
+        "?sslmode=verify-full&options=--cluster%3D",
         environ.get("COCKROACHDB_CLUSTER"),
     ]
 )

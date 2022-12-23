@@ -5,3 +5,5 @@ __pycache__/*
 vars.txt
 scratchpad.py
 .coverage
+data_dumps/*
+

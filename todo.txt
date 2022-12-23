@@ -1,5 +1,4 @@
 - unify language around cards
-- better testing script to setup, teardown, and say coverage
 - update if term exists
 - logo
 - better stats
@@ -60,3 +59,4 @@ done
 * size most things based on vh instead of vw
 * tests LOL
 * more graceful db failures maybe
+* better testing script to setup, teardown, and say coverage
