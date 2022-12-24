@@ -43,7 +43,7 @@ class StudyTerm:
         logged_in_user = session_storage.logged_in_user()
         now = int(time.time())
         insert_term_sql = f"""
-            UPSERT INTO study_term (id, term, translated_term, pronunciation, uid, time_added)
+            INSERT INTO study_term (id, term, translated_term, pronunciation, uid, time_added)
             VALUES
                 (
                     '{self.id}',
@@ -53,6 +53,11 @@ class StudyTerm:
                     '{logged_in_user}',
                     '{now}'
                 )
+            ON CONFLICT (uid, term)
+            DO UPDATE SET
+                translated_term = '{self.translated_term}',
+                pronunciation = '{self.pronunciation}',
+                time_added = '{now}';
         """
         insert_learning_log_sql = f"""
             UPSERT INTO learning_log (id, term_id, quiz_type, knowledge_factor, last_review, uid)

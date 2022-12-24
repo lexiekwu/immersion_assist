@@ -58,6 +58,22 @@ class TestStudyTerm:
         assert study_term.StudyTerm.get_by_id(uuid1) == st
         assert study_term.get_count() == 1
 
+        # test on conflict update
+        st = study_term.StudyTerm(
+            uuid.uuid4(),
+            "你好",
+            "hi",
+            "ni2 hao3",
+        )
+        st.save()
+        assert study_term.StudyTerm.get_by_id(uuid1) == study_term.StudyTerm(
+            uuid1,
+            "你好",
+            "hi",
+            "ni2 hao3",
+        )
+        assert study_term.get_count() == 1
+
     def test_update(self):
         uuid1 = uuid.uuid4()
         st = study_term.StudyTerm(uuid1, "你好", "hello", "ni3 hao3")

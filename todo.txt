@@ -1,4 +1,3 @@
-- update if term exists
 - logo
 - better stats
 - more languages than Chinese
@@ -60,3 +59,4 @@ done
 * more graceful db failures maybe
 * better testing script to setup, teardown, and say coverage
 * unify language around cards
+* update if term exists
