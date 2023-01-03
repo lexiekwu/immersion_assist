@@ -1,5 +1,7 @@
-- clean up chat and add entrypoint
+- make login page more actionable
 - more languages than Chinese
+- store API-called items in dbs
+- help pages
 - export CSV for cards
 - subscriptions
 - use classes in frontend
@@ -62,3 +64,4 @@ done
 * logo
 * better stats
 * daily knowledge factor + populate in stats
+* clean up chat and add entrypoint

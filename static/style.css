@@ -253,10 +253,10 @@ input[type="checkbox"] {
 }
 
 .content_toggles {
-  font-size: 0.2em;
+  font-size: 0.5em;
   color: var(--medium-blue);
   text-align: right;
-  margin-right: 0.6em;
+  margin-right: 1.5em;
   cursor: pointer;
 }
 
