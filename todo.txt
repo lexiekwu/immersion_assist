@@ -1,4 +1,3 @@
-- better stats
 - clean up chat and add entrypoint
 - more languages than Chinese
 - export CSV for cards
@@ -61,3 +60,5 @@ done
 * unify language around cards
 * update if term exists
 * logo
+* better stats
+* daily knowledge factor + populate in stats

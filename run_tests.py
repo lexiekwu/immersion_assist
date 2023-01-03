@@ -21,6 +21,7 @@ def _setup_test_db():
         count_correct INT8 NULL,
         count_incorrect INT8 NOT NULL,
         uid UUID NULL,
+        avg_knowledge_factor FLOAT8 NULL,
         CONSTRAINT daily_stats_pkey PRIMARY KEY (dt ASC)
         )""",
             """

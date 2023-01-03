@@ -14,7 +14,7 @@ class TestFlashcard:
 
         # reset stats
         today = str(datetime.today().date())
-        daily_stats.DailyStats(today, 0, 0)._save()
+        daily_stats.DailyStats(today, 0, 0, None)._save()
 
     def test_get_prompt(self):
         st = study_term.StudyTerm(

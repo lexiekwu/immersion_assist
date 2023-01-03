@@ -17,50 +17,86 @@
     ></script>
     <script type="text/javascript">
       google.charts.load("current", { packages: ["line"] });
-      google.charts.setOnLoadCallback(drawChart);
+      google.charts.setOnLoadCallback(drawCharts);
 
-      function drawChart() {
-        var stats_json = {{ week_stats|tojson }}
-        for (let i in stats_json) {
-          s = stats_json[i];
-          s["Date"] = new Date(s["dt"]);
-        }
-        stats_arrs = stats_json.map((element) => {
-          if (element.count_correct + element.count_incorrect <= 0) {
-            return [new Date(element.dt), 0, 0];
+      function drawCharts() {
+
+        function drawDailyQuizStats(stats_json) {
+          for (let i in stats_json) {
+            s = stats_json[i];
+            s["Date"] = new Date(s["dt"]);
           }
-          return [
-            new Date(element.dt),
-            element.count_correct + element.count_incorrect,
-            element.count_correct /
-              (element.count_correct + element.count_incorrect),
-          ];
-        });
-        var data = google.visualization.arrayToDataTable(
-          [["Day", "Number Quizzed", "Accuracy"]].concat(stats_arrs)
-        );
-
-        var options = {
-          title: "Quiz Performance",
-          curveType: "function",
-          fontName: "Times New Roman",
-          legend: { position: "none" },
-          height: 500,
-          series: {
-            0: { axis: "CountAnswered", color: "#5b9cce" },
-            1: { axis: "Accuracy", color: "#c6def1" },
-          },
-          axes: {
-            y: {
-              CountAnswered: { label: "Count Answered" },
-              Accuracy: { label: "Accuracy" },
+          stats_arrs = stats_json.map((element) => {
+            if (element.count_correct + element.count_incorrect <= 0) {
+              return [new Date(element.dt), 0, 0];
+            }
+            return [
+              new Date(element.dt),
+              element.count_correct + element.count_incorrect,
+              element.count_correct /
+                (element.count_correct + element.count_incorrect),
+            ];
+          });
+          var data = google.visualization.arrayToDataTable(
+            [["Day", "Number Quizzed", "Accuracy"]].concat(stats_arrs)
+          );
+          var options = {
+            title: "Quiz Performance",
+            curveType: "function",
+            legend: { position: "none" },
+            height: 500,
+            series: {
+              0: { axis: "CountAnswered", color: "#5b9cce" },
+              1: { axis: "Accuracy", color: "#c6def1" },
             },
-          },
-        };
+            axes: {
+              y: {
+                CountAnswered: { label: "Count Answered" },
+                Accuracy: { label: "Accuracy" },
+              },
+            },
+          };
+          var chart = new google.charts.Line(document.getElementById("daily_chart"));
+          chart.draw(data, options);
+        }
 
-        var chart = new google.charts.Line(document.getElementById("chart"));
 
-        chart.draw(data, options);
+        function drawAvgKnowledgeFactorStats(stats_json) {
+          for (let i in stats_json) {
+            s = stats_json[i];
+            s["Date"] = new Date(s["dt"]);
+          }
+          stats_arrs = stats_json.map((element) => {
+            return [
+              new Date(element.dt),
+              element.avg_knowledge_factor
+            ];
+          });
+          console.log(stats_arrs)
+          var data = google.visualization.arrayToDataTable(
+            [["Day", "Knowledge Factor"]].concat(stats_arrs)
+          );
+          var options = {
+            title: "Knowledge Factor over time",
+            curveType: "function",
+            legend: { position: "none" },
+            height: 500,
+            series: {
+              0: { axis: "KnowledgeFactor", color: "#5b9cce" },
+            },
+            axes: {
+              y: {
+                KnowledgeFactor: { label: "Knowledge Factor" },
+              },
+            },
+          };
+          var chart = new google.charts.Line(document.getElementById("kf_chart"));
+          chart.draw(data, options);
+        }
+
+        var stats_json = {{ week_stats|tojson }}
+        drawDailyQuizStats(stats_json)
+        drawAvgKnowledgeFactorStats(stats_json)
       }
     </script>
   </head>
@@ -71,7 +107,17 @@
 
   <body>
     <h3>Your Stats</h3>
-    <div id="chart" style="width: 100%"></div>
+    <h5>Number answered and accuracy</h5>
+    <div id="daily_chart" style="width: 100%"></div>
+
+    <h5>
+      Knowledge index over time
+      <div style="font-size: 0.5em; font-weight: normal">
+        A measurement for your level of familiarity with all the flashcards in
+        your quiz set. Updates the first time you quiz on a given day.
+      </div>
+    </h5>
+    <div id="kf_chart" style="width: 100%"></div>
   </body>
 
   <div class="nav_footer">

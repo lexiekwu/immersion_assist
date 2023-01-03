@@ -96,6 +96,7 @@ def stats():
             "dt": s.dt,
             "count_correct": s.count_correct,
             "count_incorrect": s.count_incorrect,
+            "avg_knowledge_factor": s.avg_knowledge_factor,
         }
         for s in week_stats
     ]
