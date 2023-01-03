@@ -87,9 +87,17 @@ def stats():
         return render_template("login.html")
 
     today = datetime.today().date()
-    week_days = [today] + [today - timedelta(i) for i in range(1, 8)]
+    week_days = [today] + [today - timedelta(i) for i in range(1, 50)]
     week_stats = [
         a.model.daily_stats.DailyStats.get_for_day(dt=str(day)) for day in week_days
+    ]
+    week_stats = [
+        {
+            "dt": s.dt,
+            "count_correct": s.count_correct,
+            "count_incorrect": s.count_incorrect,
+        }
+        for s in week_stats
     ]
     return render_template("stats.html", week_stats=week_stats)
 

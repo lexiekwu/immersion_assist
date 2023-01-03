@@ -11,6 +11,58 @@
       rel="stylesheet"
     />
     <link rel="shortcut icon" type="image/x-icon" href="./static/favicon.ico" />
+    <script
+      type="text/javascript"
+      src="https://www.gstatic.com/charts/loader.js"
+    ></script>
+    <script type="text/javascript">
+      google.charts.load("current", { packages: ["line"] });
+      google.charts.setOnLoadCallback(drawChart);
+
+      function drawChart() {
+        var stats_json = {{ week_stats|tojson }}
+        for (let i in stats_json) {
+          s = stats_json[i];
+          s["Date"] = new Date(s["dt"]);
+        }
+        stats_arrs = stats_json.map((element) => {
+          if (element.count_correct + element.count_incorrect <= 0) {
+            return [new Date(element.dt), 0, 0];
+          }
+          return [
+            new Date(element.dt),
+            element.count_correct + element.count_incorrect,
+            element.count_correct /
+              (element.count_correct + element.count_incorrect),
+          ];
+        });
+        var data = google.visualization.arrayToDataTable(
+          [["Day", "Number Quizzed", "Accuracy"]].concat(stats_arrs)
+        );
+
+        var options = {
+          title: "Quiz Performance",
+          curveType: "function",
+          fontName: "Times New Roman",
+          legend: { position: "none" },
+          height: 500,
+          series: {
+            0: { axis: "CountAnswered", color: "#5b9cce" },
+            1: { axis: "Accuracy", color: "#c6def1" },
+          },
+          axes: {
+            y: {
+              CountAnswered: { label: "Count Answered" },
+              Accuracy: { label: "Accuracy" },
+            },
+          },
+        };
+
+        var chart = new google.charts.Line(document.getElementById("chart"));
+
+        chart.draw(data, options);
+      }
+    </script>
   </head>
 
   {% for category, message in get_flashed_messages(with_categories=True) %}
@@ -18,20 +70,8 @@
   {% endfor %}
 
   <body>
-    <table>
-      <tr>
-        <td>Date</td>
-        <td>Total reviewed</td>
-        <td>Accuracy</td>
-      </tr>
-      {% for stats in week_stats %}
-      <tr>
-        <td>{{stats.dt}}:</td>
-        <td>{{stats.count_correct + stats.count_incorrect}}</td>
-        <td>{{stats.get_accuracy()}}%</td>
-      </tr>
-      {% endfor %}
-    </table>
+    <h3>Your Stats</h3>
+    <div id="chart" style="width: 100%"></div>
   </body>
 
   <div class="nav_footer">

@@ -1,4 +1,5 @@
 - better stats
+- clean up chat and add entrypoint
 - more languages than Chinese
 - export CSV for cards
 - subscriptions
