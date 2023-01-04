@@ -2,7 +2,6 @@ from os import environ
 from google.cloud import translate_v2 as translate
 from a.third_party import session_storage
 import pinyin as pinyin_module
-import thulac
 import re
 import datamuse
 import jieba
@@ -44,27 +43,17 @@ def get_translation(term, to_learning_language=True):
 def segment_text(long_text, is_learning_language=True):
     "Splits into words and punctuation, returning [(segment, is_word),]."
     target_language_code = _get_language_code(is_learning_language)
-    if target_language_code == TW_CODE:
+    if target_language_code in CHINESE_CODES:
+        segments = jieba.lcut(long_text)
 
-        # use thulac if specifically told to
-        if environ.get("CHINESE_SEGMENTER") == "thulac":
-            segmenter = thulac.thulac()
-            segments = [
-                segment for segment, _ in segmenter.cut(long_text)
-            ]  # returns (word, part of speech)
+        def _is_word(segment):
+            return len(re.findall(r"[^!.?\s]", segment)) > 0
 
-        # otherwise jieba
-        else:
-            segments = jieba.lcut(long_text)
+        is_words = [_is_word(segment) for segment in segments]
+        return list(zip(segments, is_words))
     else:
         # segment non-chinese by spaces
-        segments = long_text.split(" ")
-
-    def _is_word(segment):
-        return len(re.findall(r"[^!.?\s]", segment)) > 0
-
-    is_words = [_is_word(segment) for segment in segments]
-    return zip(segments, is_words)
+        return _simple_segment(long_text)
 
 
 def _fix_translation_characters(translated_text):
@@ -92,6 +81,23 @@ def _get_language_code(is_learning_language):
     else:
         return session_storage.get("home_language")
 
+
+def _simple_segment(long_text):
+    segmented_terms = []
+    current_word = ""
+
+    for c in long_text:
+        if c in PUNCTUATION:
+            if current_word:
+                segmented_terms.append((current_word, True))
+            segmented_terms.append((c, False))
+            current_word = ""
+        else:
+            current_word += c
+    return segmented_terms
+
+
+PUNCTUATION = "!#$%&()*+,-./:;<=>?@[\]^_`{|}~ "
 
 TW_CODE = "zh-TW"  # TODO make flexible
 EN_CODE = "en"

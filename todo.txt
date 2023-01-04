@@ -1,7 +1,7 @@
 - more languages than Chinese
-    - fixes to segmentation
     - fixing chat
 - show most recent day on stats
+- escapes in dbs lol
 - fix logo to not have white background
 - store API-called items in dbs
 - help pages
@@ -81,3 +81,4 @@ done
     * fix bulk entry 
     * fix specifying language in UI where it doesn't actually matter
     * don't add pronunciation when not necessary
+    * fixes to segmentation
