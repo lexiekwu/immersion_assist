@@ -82,19 +82,28 @@ table {
   border-collapse: collapse;
 }
 
-td,
-tr {
-  border: 1px solid;
-  padding: 0.4em;
+.nav_footer a,
+.index_action a {
+  color: var(--medium-blue);
+  cursor: pointer;
+  text-decoration: none;
+}
+
+.index_action tr td {
+  border: 0px;
+  font-size: 1em;
+  padding-left: 1em;
+  text-align: left;
+}
+
+.index_action a {
+  font-size: 2em;
 }
 
 .nav_footer a {
-  color: var(--medium-blue);
   font-size: 5vh;
-  cursor: pointer;
-  padding: 0px 2vh;
   margin-top: 1.5vh;
-  text-decoration: none;
+  padding: 0px 2vh;
 }
 
 .nav_footer {

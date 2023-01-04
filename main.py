@@ -38,7 +38,11 @@ def login():
     # if you came from somewhere within the app, direct
     # back to what you were trying to do
     referrer_url = urlparse(request.referrer)
-    if referrer_url.hostname == request.host.split(":")[0]:
+    if (
+        referrer_url.hostname == request.host.split(":")[0]
+        and "login" not in request.referrer
+        and "signup" not in request.referrer
+    ):
         return redirect(request.referrer)
 
     return render_template("index.html")
