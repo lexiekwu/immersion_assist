@@ -43,7 +43,7 @@ def test_save(mocker):
 
     study_terms = study_term.save(
         terms=["dog", "cat"],
-        bulk_terms="\r\n獅子 shi1 zi0 lion\r\n烏龜 wu1 gui1 turtle\r\n",
+        bulk_terms="\r\n獅子,lion,shi1 zi0\r\n烏龜,turtle,wu1 gui1\r\n",
         term_dicts=[
             {"term": "鰻魚", "pronunciation": "man2 yu2"},
             {"term": "鯊魚", "pronunciation": "sha1 yu2"},

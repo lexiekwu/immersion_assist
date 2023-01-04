@@ -1,5 +1,4 @@
 - more languages than Chinese
-    - fix specifying language in UI where it doesn't actually matter
     - don't add pronunciation when not necessary
     - fixing chat
     - fixes to segmentation
@@ -81,3 +80,4 @@ done
     * allow in model
     * entry in signup
     * fix bulk entry 
+    * fix specifying language in UI where it doesn't actually matter

@@ -18,25 +18,25 @@
   {% endfor %}
 
   <h2>Add Terms 3 Ways</h2>
-  <a class="button_col_4" href="#single_word">Single Word</a>
-  <a class="button_col_4" href="#story">Story</a>
+  <a class="button_col_4" href="#single_word">Term</a>
+  <a class="button_col_4" href="#story">Sentences</a>
   <a class="button_col_4" href="#bulk">Bulk</a>
   <a class="button_col_4" href="#related">By Topic</a>
 
   <div class="new_terms_method">
-    <h3 id="single_word">Input a Single Word</h3>
+    <h3 id="single_word">Input a Single Term</h3>
     <form action="/save_terms" method="POST">
-      <p>English word <input type="text" name="translated_term" /></p>
+      <p>Term <input type="text" name="translated_term" /></p>
       <p><input type="submit" value="Submit" /></p>
     </form>
   </div>
 
   <div class="new_terms_method">
-    <h3 id="story">Input a Story</h3>
+    <h3 id="story">Input Sentences</h3>
     <form action="/story_time" method="POST">
       <p>
-        Input a story in the target language, select words to study on the next
-        screen
+        Input longer text in your learning or home language, select terms to
+        study on the next screen
       </p>
       <textarea
         style="width: 100%; height: 30%"
@@ -48,10 +48,10 @@
   </div>
 
   <div class="new_terms_method">
-    <h3 id="bulk">Bulk Add Words</h3>
+    <h3 id="bulk">Bulk Add Terms</h3>
     <form action="/save_terms" method="POST">
       <p>
-        Words in form "learning language term, home language term,
+        Terms in form "learning language term, home language term,
         pronunciation"
       </p>
       <textarea
@@ -68,10 +68,10 @@
     <form action="/select_words" method="POST">
       <p>
         Generate words related to a keyword or topic, select words to study on
-        the next screen
+        the next screen. Works best with English keywords.
       </p>
       <p>
-        Keyword in English
+        Keyword
         <input style="width: 40%" type="text" name="keyword" />
       </p>
       <p>

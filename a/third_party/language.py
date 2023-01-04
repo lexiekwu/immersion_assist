@@ -73,10 +73,6 @@ def _fix_translation_characters(translated_text):
 
 
 def get_related_words(keyword, limit, is_learning_language=False):
-    assert (
-        _get_language_code(is_learning_language) == EN_CODE
-    ), "Only english is supported for related word generation."
-
     words_puller = datamuse.Datamuse()
     scored_words = words_puller.words(rel_trg=keyword, max=limit)
     scored_sorted_words = sorted(scored_words, key=lambda d: -d["score"])
