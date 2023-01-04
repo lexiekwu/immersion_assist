@@ -113,6 +113,13 @@ class TestStudyTerm:
             st.pronunciation,
         ) == ("你好", "hello", "ni3 hao3")
 
+        st = study_term.StudyTerm.from_string("你好,hello")
+        assert (
+            st.term,
+            st.translated_term,
+            st.pronunciation,
+        ) == ("你好", "hello", "")
+
     def test_from_dict(self):
         uuid1 = uuid.uuid4()
         dct = {

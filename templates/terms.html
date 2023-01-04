@@ -43,7 +43,9 @@
         </span>
         <div class="card_title">{{study_term.term}}</div>
         <div>translation: {{study_term.translated_term}}</div>
+        {% if study_term.pronunciation %}
         <div>pronunciation: {{study_term.pronunciation}}</div>
+        {% endif %}
       </div>
       {% endfor %}
     </div>

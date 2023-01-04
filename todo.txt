@@ -1,7 +1,6 @@
 - more languages than Chinese
-    - don't add pronunciation when not necessary
-    - fixing chat
     - fixes to segmentation
+    - fixing chat
 - show most recent day on stats
 - fix logo to not have white background
 - store API-called items in dbs
@@ -81,3 +80,4 @@ done
     * entry in signup
     * fix bulk entry 
     * fix specifying language in UI where it doesn't actually matter
+    * don't add pronunciation when not necessary

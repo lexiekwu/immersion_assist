@@ -50,10 +50,15 @@ class StudyTerm:
                 pronunciation = '{self.pronunciation}',
                 time_added = '{now}';
         """
+        pronunciation_row_sql = (
+            f"('{uuid.uuid4()}', '{self.id}', 'pronunciation', 1.0, {now}, '{logged_in_user}'),"
+            if self.pronunciation
+            else ""
+        )
         insert_learning_log_sql = f"""
             UPSERT INTO learning_log (id, term_id, quiz_type, knowledge_factor, last_review, uid)
             VALUES
-                ('{uuid.uuid4()}', '{self.id}', 'pronunciation', 1.0, {now}, '{logged_in_user}'),
+                {pronunciation_row_sql}
                 ('{uuid.uuid4()}', '{self.id}', 'reverse_translation', 1.0, {now}, '{logged_in_user}'),
                 ('{uuid.uuid4()}', '{self.id}', 'translation', 1.0, {now}, '{logged_in_user}')
         """
@@ -116,10 +121,15 @@ class StudyTerm:
 
     @classmethod
     def from_string(cls, term_str):
-        term, translated_term, pronunciation = term_str.split(",")
-        assert (
-            term and translated_term and pronunciation
-        ), f"could not successfully split '{term_str}'"
+        split_term = term_str.split(",")
+        if len(split_term) == 2:
+            term, translated_term = split_term
+            pronunciation = ""
+        elif len(split_term) == 3:
+            term, translated_term, pronunciation = split_term
+        else:
+            assert False, f"could not successfully split '{term_str}'"
+
         study_term = cls(uuid.uuid4(), term, translated_term, pronunciation)
         return study_term
 

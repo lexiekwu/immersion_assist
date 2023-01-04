@@ -35,6 +35,7 @@
         value="{{study_term.translated_term}}"
       />
     </div>
+    {% if study_term.pronunciation %}
     <div>
       pronunciation:
       <input
@@ -43,6 +44,7 @@
         value="{{study_term.pronunciation}}"
       />
     </div>
+    {% endif %}
     <input type="submit" value="Submit" />
   </form>
 </body>

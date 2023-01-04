@@ -10,19 +10,18 @@ import jieba
 
 def get_pronunciation(translated_term, is_learning_language=True):
     target_language_code = _get_language_code(is_learning_language)
-    if target_language_code == TW_CODE:
+    if target_language_code in CHINESE_CODES:
         pronunciation = pinyin_module.get(
             translated_term, format="numerical", delimiter=" "
         ).replace("5", "0")
         return pronunciation
 
-    print("No pronunciation implemented, defaulting to nothing")
     return ""
 
 
 def get_pronunciation_dict(sentence, is_learning_language=True):
     target_language_code = _get_language_code(is_learning_language)
-    if target_language_code == TW_CODE:
+    if target_language_code in CHINESE_CODES:
         filtered_characters = re.sub(r"[^\u4e00-\u9fa5]", "", sentence)
         pronunciation = pinyin_module.get(
             filtered_characters, format="numerical", delimiter=" "
@@ -234,3 +233,5 @@ SUPPORTED_LANGUAGES_AND_CODES = [
     ("Javanese", "jv"),
     ("Chinese (Simplified)", "zh-CN"),
 ]
+
+CHINESE_CODES = ["zh-CN", "zh", "zh-TW"]

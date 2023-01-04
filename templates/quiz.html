@@ -35,7 +35,9 @@
       </span>
       <div class="card_title"> {{last_card.study_term.term}} </div>
       <div> translation: {{last_card.study_term.translated_term}} </div>
+      {% if last_card.study_term.pronunciation %}
       <div> pronunciation: {{last_card.study_term.pronunciation}} </div>
+      {% endif %}
   </div>
   <p> Type {{current_card.get_prompt()}} </p>
 
@@ -58,7 +60,9 @@
       </span>
       <div class="card_title"> {{last_card.study_term.term}} </div>
       <div> translation: {{last_card.study_term.translated_term}} </div>
+      {% if last_card.study_term.pronunciation %}
       <div> pronunciation: {{last_card.study_term.pronunciation}} </div>
+      {% endif %}
   </div>
   <p> Type {{current_card.get_prompt()}} to move on. </p>
 {% endif %}
