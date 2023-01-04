@@ -1,14 +1,19 @@
 - more languages than Chinese
     - fix specifying language in UI where it doesn't actually matter
-    - fix bulk entry 
     - don't add pronunciation when not necessary
     - fixing chat
     - fixes to segmentation
 - show most recent day on stats
+- fix logo to not have white background
 - store API-called items in dbs
 - help pages
-- export CSV for cards
+--- add friends ---
+- rate limit everything
+- export CSV for card
 - subscriptions
+- performance issues with load
+- about + feedback page
+--- beta? ---
 - make UI strings show non-english
 - use classes in frontend
 - import CSV for cards
@@ -75,3 +80,4 @@ done
 * more languages than Chinese
     * allow in model
     * entry in signup
+    * fix bulk entry 

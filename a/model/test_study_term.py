@@ -106,7 +106,7 @@ class TestStudyTerm:
         assert study_term.get_count() == 0
 
     def test_from_string(self):
-        st = study_term.StudyTerm.from_string("你好 ni3 hao3 hello")
+        st = study_term.StudyTerm.from_string("你好,hello,ni3 hao3")
         assert (
             st.term,
             st.translated_term,

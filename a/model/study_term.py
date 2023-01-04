@@ -116,11 +116,11 @@ class StudyTerm:
 
     @classmethod
     def from_string(cls, term_str):
-        characters, pronunciation, english = _split_term(term_str)
+        term, translated_term, pronunciation = term_str.split(",")
         assert (
-            characters and english and pronunciation
+            term and translated_term and pronunciation
         ), f"could not successfully split '{term_str}'"
-        study_term = cls(uuid.uuid4(), characters, english, pronunciation)
+        study_term = cls(uuid.uuid4(), term, translated_term, pronunciation)
         return study_term
 
     @classmethod
@@ -153,22 +153,6 @@ class StudyTerm:
 
     def __repr__(self):
         return f"{self.term}: {self.translated_term} {self.pronunciation}"
-
-
-def _split_term(term):
-    parts = term.split(" ")
-    characters = parts[0]
-    i = 1
-    while (
-        i < len(parts)
-        and len(parts[i]) > 1
-        and parts[i][0].isalpha()
-        and parts[i][-1].isnumeric()
-    ):
-        i += 1
-    pinyin = " ".join(parts[1:i])
-    english = " ".join(parts[i:])
-    return characters, pinyin, english
 
 
 def get_term_page(page_number, limit):
