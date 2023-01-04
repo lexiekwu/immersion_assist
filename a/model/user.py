@@ -97,6 +97,7 @@ class User:
     def login(self, guessed_password):
         if self.is_correct_password(guessed_password):
             session_storage.set("uid", self.uid)
+            session_storage.set("name", self.name)
             session_storage.set("home_language", self.home_language)
             session_storage.set("learning_language", self.learning_language)
 

@@ -1,8 +1,15 @@
 - more languages than Chinese
+    - fix specifying language in UI where it doesn't actually matter
+    - fix bulk entry 
+    - don't add pronunciation when not necessary
+    - fixing chat
+    - fixes to segmentation
+- show most recent day on stats
 - store API-called items in dbs
 - help pages
 - export CSV for cards
 - subscriptions
+- make UI strings show non-english
 - use classes in frontend
 - import CSV for cards
 
@@ -65,3 +72,6 @@ done
 * daily knowledge factor + populate in stats
 * clean up chat and add entrypoint
 * make login page more actionable
+* more languages than Chinese
+    * allow in model
+    * entry in signup

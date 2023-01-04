@@ -27,7 +27,10 @@ def login():
     # check if exists, if not, send to signup
     if not is_user_found:
         flash("No user exists for that email. Please sign up.", "bad")
-        return render_template("signup.html")
+        return render_template(
+            "signup.html",
+            supported_languages=a.third_party.language.SUPPORTED_LANGUAGES_AND_CODES,
+        )
 
     # incorrect password, try again
     if not is_correct_password:
@@ -50,14 +53,17 @@ def login():
 @app.route("/signup", methods=["POST", "GET"])
 def signup():
     if request.method == "GET":
-        return render_template("signup.html")
+        return render_template(
+            "signup.html",
+            supported_languages=a.third_party.language.SUPPORTED_LANGUAGES_AND_CODES,
+        )
 
     is_success, failure_reason = a.controller.signup.try_signup(
         request.form.get("email"),
         request.form.get("password"),
         request.form.get("name"),
-        home_language=a.third_party.language.EN_CODE,
-        learning_language=a.third_party.language.TW_CODE,
+        request.form.get("home_language"),
+        request.form.get("learning_language"),
     )
 
     if is_success:

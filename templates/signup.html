@@ -15,16 +15,49 @@
 
     <h1>Sign Up For Immersion Assist</h1>
     <form action="/signup" method="POST">
-      <p>Email <input type="text" name="email" /></p>
-      <p>Name <input type="text" name="name" /></p>
-      <p>Password <input name="password" type="password" /></p>
+      <table>
+        <tr>
+          <td class="signup_title">Email</td>
+          <td class="signup_input"><input type="text" name="email" /></td>
+        </tr>
+        <tr>
+          <td class="signup_title">Name</td>
+          <td class="signup_input"><input type="text" name="name" /></td>
+        </tr>
+        <tr>
+          <td class="signup_title">Password</td>
+          <td class="signup_input">
+            <input name="password" type="password" />
+          </td>
+        </tr>
+        <tr>
+          <td class="signup_title">Home language</td>
+          <td class="signup_input">
+            <select name="home_language">
+              <option value="en">English</option>
+              {% for language_name, language_code in supported_languages %}
+              <option value="{{ language_code }}">{{ language_name }}</option>
+              {% endfor %}
+            </select>
+          </td>
+        </tr>
+        <tr>
+          <td class="signup_title">Learning language</td>
+          <td class="signup_input">
+            <select name="learning_language">
+              <option value="zh-TW">Chinese (Traditional)</option>
+              {% for language_name, language_code in supported_languages %}
+              <option value="{{ language_code }}">{{ language_name }}</option>
+              {% endfor %}
+            </select>
+          </td>
+        </tr>
+      </table>
       <p><input type="submit" value="Submit" /></p>
       <p>
         Already have an account?
         <a href="/login"> Log in here. </a>
       </p>
-
-      <p></p>
     </form>
   </body>
 </html>

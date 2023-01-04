@@ -39,9 +39,25 @@ body {
   font-weight: bold;
 }
 
-input {
+input,
+select {
   font-size: inherit;
   font-family: inherit;
+}
+
+.signup_title {
+  font-size: 0.7em;
+  text-align: end;
+  padding-right: 0.5em;
+}
+
+.signup_input {
+  font-size: 0.7em;
+}
+
+.signup_input select,
+.signup_input input {
+  width: 100%;
 }
 
 button,
@@ -80,6 +96,7 @@ table {
   font-size: inherit;
   text-align: center;
   border-collapse: collapse;
+  width: 100%;
 }
 
 .nav_footer a,
