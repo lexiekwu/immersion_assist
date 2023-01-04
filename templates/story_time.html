@@ -25,7 +25,8 @@
   </div>
   <form action="/save_terms" method="POST" style="margin: 0">
     <div class="story_col">
-      {% for story_term in story.story_terms %} {% if not story_term.is_word %}
+      {% for story_term in story.story_terms %} {% if not
+      story_term.pronunciation %}
       <span class="story_span">{{story_term.term}}</span>
       {% else %}
       <label>

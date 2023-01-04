@@ -3,7 +3,6 @@ from flask import Flask, render_template, request, session, flash, json, redirec
 from os import environ
 from urllib.parse import urlparse
 import a
-import math
 
 app = Flask(__name__)
 app.secret_key = environ.get("SESSION_KEY")
@@ -57,6 +56,8 @@ def signup():
         request.form.get("email"),
         request.form.get("password"),
         request.form.get("name"),
+        home_language=a.third_party.language.EN_CODE,
+        learning_language=a.third_party.language.TW_CODE,
     )
 
     if is_success:
@@ -156,11 +157,11 @@ def save_terms():
         return render_template("login.html")
 
     try:
-        translated_terms = []
+        terms = []
         term_dicts = []
 
         if request.form.get("translated_term"):
-            translated_terms.append(request.form.get("translated_term"))
+            terms.append(request.form.get("translated_term"))
 
         # look for selected keys from story_time or select_words
         form_keys = set(request.form.keys())
@@ -175,10 +176,10 @@ def save_terms():
 
             # case of select_words
             else:
-                translated_terms.append(form_key)
+                terms.append(form_key)
 
         study_terms = a.controller.study_term.save(
-            translated_terms=translated_terms,
+            terms=terms,
             bulk_terms=request.form.get("bulk_terms"),
             term_dicts=term_dicts,
         )

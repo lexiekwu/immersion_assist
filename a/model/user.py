@@ -1,14 +1,16 @@
 import a.third_party.cockroachdb as db
 import uuid
 import bcrypt
-from a.third_party import session_storage
+from a.third_party import session_storage, language
 
 
 class User:
-    def __init__(self, uid, name, email):
+    def __init__(self, uid, name, email, home_language, learning_language):
         self.uid = uid
         self.name = name
         self.email = email
+        self.home_language = home_language
+        self.learning_language = learning_language
 
     @classmethod
     def get_by_id(cls, uid):
@@ -21,13 +23,19 @@ class User:
         )
         if not user_dict:
             return None
-        return cls(uid, user_dict["name"], user_dict["email"])
+        return cls(
+            uid,
+            user_dict["name"],
+            user_dict["email"],
+            user_dict["home_language"],
+            user_dict["learning_language"],
+        )
 
     @classmethod
     def get_by_email(cls, email):
         user_dict = db.sql_query_single(
             f"""
-            SELECT uid, name, email
+            SELECT uid, name, email, home_language, learning_language
             FROM users
             WHERE
                 email = '{email}'
@@ -35,10 +43,23 @@ class User:
         )
         if not user_dict:
             return None
-        return cls(user_dict["uid"], user_dict["name"], user_dict["email"])
+        return cls(
+            user_dict["uid"],
+            user_dict["name"],
+            user_dict["email"],
+            user_dict["home_language"],
+            user_dict["learning_language"],
+        )
 
     @classmethod
-    def new(cls, name, email, password):
+    def new(
+        cls,
+        name,
+        email,
+        password,
+        home_language=language.EN_CODE,
+        learning_language=language.TW_CODE,
+    ):
         uid = uuid.uuid4()
 
         # Hash the ecoded password and generate a salt:
@@ -47,11 +68,13 @@ class User:
 
         db.sql_update(
             f"""
-            INSERT INTO users (uid, name, email, hashed_password)
-            VALUES ('{uid}', '{name}', '{email}', '{hashed_password}')
+            INSERT INTO users (uid, name, email, 
+                hashed_password, home_language, learning_language)
+            VALUES ('{uid}', '{name}', '{email}', 
+                '{hashed_password}', '{home_language}', '{learning_language}')
             """
         )
-        return cls(uid, name, email)
+        return cls(uid, name, email, home_language, learning_language)
 
     def _get_hashed_password(self):
         return db.sql_query_single(
@@ -74,12 +97,22 @@ class User:
     def login(self, guessed_password):
         if self.is_correct_password(guessed_password):
             session_storage.set("uid", self.uid)
+            session_storage.set("home_language", self.home_language)
+            session_storage.set("learning_language", self.learning_language)
 
     def __eq__(self, other):
-        return type(self) == type(other) and (str(self.uid), self.name, self.email) == (
+        return type(self) == type(other) and (
+            str(self.uid),
+            self.name,
+            self.email,
+            self.home_language,
+            self.learning_language,
+        ) == (
             str(other.uid),
             other.name,
             other.email,
+            other.home_language,
+            other.learning_language,
         )
 
     def __repr__(self):

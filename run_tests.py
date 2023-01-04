@@ -51,6 +51,8 @@ def _setup_test_db():
         email VARCHAR(48) NOT NULL,
         hashed_password VARCHAR(100) NOT NULL,
         name VARCHAR(48) NOT NULL,
+        home_language VARCHAR(8) NOT NULL,
+        learning_language VARCHAR(8) NOT NULL,
         CONSTRAINT uid_pkey PRIMARY KEY (uid ASC),
         UNIQUE INDEX email_ukey (email ASC)
         )

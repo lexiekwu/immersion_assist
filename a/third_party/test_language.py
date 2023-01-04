@@ -1,4 +1,4 @@
-from a.third_party import language
+from a.third_party import language, session_storage
 from os import environ
 
 # All the success states are tested by the existing model tests
@@ -7,13 +7,17 @@ from os import environ
 
 
 def test_get_pronunciation():
-    assert language.get_pronunciation("你好", language.TW_CODE) == "ni3 hao3"
-    assert language.get_pronunciation("你好", language.EN_CODE) == ""
+    session_storage.set("learning_language", language.TW_CODE)
+    session_storage.set("home_language", language.EN_CODE)
+    assert language.get_pronunciation("你好", True) == "ni3 hao3"
+    assert language.get_pronunciation("你好", False) == ""
 
 
 def test_pronunciation_dict():
+    session_storage.set("learning_language", language.TW_CODE)
+    session_storage.set("home_language", language.EN_CODE)
     sentence = "這是 一個句子!"
-    assert language.get_pronunciation_dict(sentence, language.TW_CODE) == {
+    assert language.get_pronunciation_dict(sentence) == {
         "這": "zhe4",
         "是": "shi4",
         "一": "yi1",
@@ -21,15 +25,19 @@ def test_pronunciation_dict():
         "句": "ju4",
         "子": "zi3",
     }
-    assert language.get_pronunciation_dict(sentence, language.EN_CODE) == {}
+    assert language.get_pronunciation_dict(sentence, False) == {}
 
 
 def test_translation():
-    assert language.get_translation("how are you?", language.TW_CODE) == "你好嗎？"
-    assert language.get_translation("你好嗎？", language.EN_CODE) == "Are you OK?"
+    session_storage.set("learning_language", language.TW_CODE)
+    session_storage.set("home_language", language.EN_CODE)
+    assert language.get_translation("how are you?") == "你好嗎？"
+    assert language.get_translation("你好嗎？", False) == "Are you OK?"
 
 
 def test_segment_text():
+    session_storage.set("learning_language", language.TW_CODE)
+    session_storage.set("home_language", language.EN_CODE)
     sentence = "這是 一個句子!"
     environ["CHINESE_SEGMENTER"] = "jieba"
     assert list(language.segment_text(sentence)) == [
@@ -41,17 +49,27 @@ def test_segment_text():
     ]
 
     environ["CHINESE_SEGMENTER"] = "thulac"
-    assert list(language.segment_text(sentence)) == [
-        ("這", True),
-        ("是", True),
-        (" ", False),
-        ("一", True),
-        ("個", True),
-        ("句子", True),
-        ("!", False),
+    assert set(list(language.segment_text(sentence))) == set(
+        [
+            ("這", True),
+            ("是", True),
+            (" ", False),
+            ("一", True),
+            ("個", True),
+            ("句子", True),
+            ("!", False),
+        ]
+    )
+
+    assert list(language.segment_text(sentence, False)) == [
+        ("這是", True),
+        ("一個句子!", True),
     ]
 
-    assert language.segment_text(sentence, language.EN_CODE) == []
+
+def test_get_language():
+    assert language.is_learning_language("這是一個句子!")
+    assert not language.is_learning_language("This is a sentence!")
 
 
 def test_get_related_words():

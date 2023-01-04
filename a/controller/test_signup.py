@@ -4,9 +4,15 @@ import a
 
 def test_signup():
 
-    assert signup.try_signup("testley@aol.com", "iLikeTests", "Testley") == (True, None)
+    assert signup.try_signup(
+        "testley@aol.com",
+        "iLikeTests",
+        "Testley",
+        "en",
+        "zh-TW",
+    ) == (True, None)
     assert a.third_party.session_storage.logged_in_user() is not None
-    assert signup.try_signup("testley@aol.com", "", "") == (
+    assert signup.try_signup("testley@aol.com", "", "", "", "") == (
         False,
         a.controller.signup.SignupFailureReason.USER_EXISTS,
     )

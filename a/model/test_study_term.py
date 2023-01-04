@@ -3,6 +3,12 @@ import a
 import uuid
 
 
+def _mock_translate(text, to_learning_language):
+    if not to_learning_language:
+        return "hello"
+    return "你好"
+
+
 class TestStudyTerm:
     def setup_method(self):
         self.test_user = a.model.user.User.new(
@@ -12,7 +18,7 @@ class TestStudyTerm:
 
     def test_build(self, mocker):
 
-        mocker.patch("a.third_party.language.get_translation", return_value="hello")
+        mocker.patch("a.third_party.language.get_translation", _mock_translate)
         mocker.patch(
             "a.third_party.language.get_pronunciation", return_value="ni3 hao3"
         )
@@ -31,12 +37,12 @@ class TestStudyTerm:
             st.pronunciation,
         ) == ("你好", "hello", "ni2 hao3")
 
-        mocker.patch("a.third_party.language.get_translation", return_value="你好")
+        mocker.patch("a.third_party.language.get_translation", _mock_translate)
         mocker.patch(
             "a.third_party.language.get_pronunciation", return_value="ni3 hao3"
         )
 
-        st = study_term.StudyTerm.build(translated_term="hello")
+        st = study_term.StudyTerm.build(term="hello")
         assert (
             st.term,
             st.translated_term,
@@ -131,7 +137,6 @@ class TestStudyTerm:
             "term": "你好",
             "translated_term": "hello",
             "pronunciation": "ni3 hao3",
-            "target_language": a.third_party.language.TW_CODE,
         }
 
     def test_get_term_page(self):

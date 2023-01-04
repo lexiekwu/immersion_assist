@@ -1,6 +1,6 @@
 import uuid
 import time
-from a.third_party import session_storage, cockroachdb as db
+from a.third_party import session_storage, cockroachdb as db, language
 import a
 
 
@@ -11,31 +11,22 @@ class StudyTerm:
         term,
         translated_term,
         pronunciation,
-        target_language=a.third_party.language.TW_CODE,
     ):
         self.id = id
         self.term = term
-        self.target_language = target_language
         self.translated_term = translated_term
         self.pronunciation = pronunciation
 
     @classmethod
-    def build(cls, term=None, translated_term=None, pronunciation=None):
-        assert (
-            term or translated_term
-        ), "Cannot build a study term without either a term or a translated term given"
+    def build(cls, term, pronunciation=None):
+        if language.is_learning_language(term):
+            translated_term = language.get_translation(term, to_learning_language=False)
+        else:
+            translated_term = term
+            term = language.get_translation(translated_term, to_learning_language=True)
 
-        if not term:
-            term = a.third_party.language.get_translation(
-                translated_term, a.third_party.language.TW_CODE
-            )
-        if not translated_term:
-            translated_term = a.third_party.language.get_translation(
-                term, a.third_party.language.EN_CODE
-            )
-        pronunciation = pronunciation or a.third_party.language.get_pronunciation(
-            term, a.third_party.language.TW_CODE
-        )
+        pronunciation = pronunciation or language.get_pronunciation(term)
+
         id = uuid.uuid4()
         return cls(id, term, translated_term, pronunciation)
 
@@ -125,11 +116,11 @@ class StudyTerm:
 
     @classmethod
     def from_string(cls, term_str):
-        characters, pinyin, english = _split_term(term_str)
+        characters, pronunciation, english = _split_term(term_str)
         assert (
-            characters and english and pinyin
+            characters and english and pronunciation
         ), f"could not successfully split '{term_str}'"
-        study_term = cls(uuid.uuid4(), characters, english, pinyin)
+        study_term = cls(uuid.uuid4(), characters, english, pronunciation)
         return study_term
 
     @classmethod
@@ -139,14 +130,12 @@ class StudyTerm:
             d["term"],
             d["translated_term"],
             d["pronunciation"],
-            d.get("target_language", a.third_party.language.TW_CODE),
         )
 
     def to_dict(self):
         return {
             "id": self.id,
             "term": self.term,
-            "target_language": self.target_language,
             "translated_term": self.translated_term,
             "pronunciation": self.pronunciation,
         }
@@ -156,12 +145,10 @@ class StudyTerm:
             self.term,
             self.translated_term,
             self.pronunciation,
-            self.target_language,
         ) == (
             other.term,
             other.translated_term,
             other.pronunciation,
-            other.target_language,
         )
 
     def __repr__(self):

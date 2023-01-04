@@ -29,10 +29,10 @@ def test_get_term_page_and_num_pages():
 
 
 def test_save(mocker):
-    def _dict_translate(word, _):
+    def _dict_translate(word, to_learning_language=True):
         return {"cat": "貓", "dog": "狗", "鯊魚": "shark", "鰻魚": "eel"}[word]
 
-    def _dict_pronounce(word, _):
+    def _dict_pronounce(word, _=None):
         return {"狗": "gou1", "貓": "mao1"}[word]
 
     mocker.patch("a.third_party.language.get_translation", _dict_translate)
@@ -42,7 +42,7 @@ def test_save(mocker):
     user.login("iLikeTests")
 
     study_terms = study_term.save(
-        translated_terms=["dog", "cat"],
+        terms=["dog", "cat"],
         bulk_terms="\r\n獅子 shi1 zi0 lion\r\n烏龜 wu1 gui1 turtle\r\n",
         term_dicts=[
             {"term": "鰻魚", "pronunciation": "man2 yu2"},

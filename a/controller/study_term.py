@@ -11,14 +11,11 @@ def get_term_page_and_num_pages(page_number, limit=DEFAULT_PAGE_LIMIT):
     return terms, num_pages
 
 
-def save(translated_terms=None, bulk_terms=None, term_dicts=None):
+def save(terms=None, bulk_terms=None, term_dicts=None):
     study_terms = []
 
-    if translated_terms:
-        study_terms += [
-            a.model.study_term.StudyTerm.build(translated_term=translated_term)
-            for translated_term in translated_terms
-        ]
+    if terms:
+        study_terms += [a.model.study_term.StudyTerm.build(term=term) for term in terms]
 
     if bulk_terms:
         terms = bulk_terms.split("\r\n")

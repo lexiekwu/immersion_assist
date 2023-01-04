@@ -12,6 +12,13 @@ def try_login(email, password):
         return (True, False)
 
     # correct password, log in
-    a.third_party.session_storage.update({"uid": user.uid, "name": user.name})
+    a.third_party.session_storage.update(
+        {
+            "uid": user.uid,
+            "name": user.name,
+            "learning_language": user.learning_language,
+            "home_language": user.home_language,
+        }
+    )
 
     return (True, True)

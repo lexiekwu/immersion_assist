@@ -1,4 +1,4 @@
-import a.third_party.language as language
+from a.third_party import language, session_storage
 from flask import json, escape
 
 
@@ -9,11 +9,19 @@ class Story:
 
     @classmethod
     def build(cls, raw_story):
-        segmented_story = list(language.segment_text(raw_story))
-        pronunciation_lookup = language.get_pronunciation_dict(
-            raw_story, language.TW_CODE
-        )
-        translated_story = language.get_translation(raw_story, language.EN_CODE)
+        if language.is_learning_language(raw_story):
+            learning_language_story = raw_story
+            translated_story = language.get_translation(
+                raw_story, to_learning_language=False
+            )
+        else:
+            learning_language_story = language.get_translation(
+                raw_story, to_learning_language=True
+            )
+            translated_story = raw_story
+
+        segmented_story = list(language.segment_text(learning_language_story))
+        pronunciation_lookup = language.get_pronunciation_dict(learning_language_story)
 
         def _get_segment_pronunciation(segment, is_word):
             if not is_word:
