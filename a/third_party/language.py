@@ -47,7 +47,7 @@ def segment_text(long_text, is_learning_language=True):
         segments = jieba.lcut(long_text)
 
         def _is_word(segment):
-            return len(re.findall(r"[^!.?\s]", segment)) > 0
+            return len(re.findall(r"[\u4e00-\u9fff]+", segment)) > 0
 
         is_words = [_is_word(segment) for segment in segments]
         return list(zip(segments, is_words))

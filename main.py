@@ -322,14 +322,16 @@ def chat():
     if not session.get("uid"):
         return render_template("login.html")
 
-    initial_prompt_html = a.controller.story.Story.build(
+    initial_prompt_story = a.controller.story.Story.build(
         a.third_party.chatbot.INITIAL_PROMPT
-    ).to_dict()["terms_html"]
+    )
+    initial_prompt_html = initial_prompt_story.to_dict()["terms_html"]
+    initial_prompt_translation = initial_prompt_story.translation
 
     return render_template(
         "chat.html",
         initial_prompt_html=initial_prompt_html,
-        initial_prompt_translation=a.third_party.chatbot.EN_INITIAL_PROMPT,
+        initial_prompt_translation=initial_prompt_translation,
     )
 
 

@@ -40,7 +40,8 @@ body {
 }
 
 input,
-select {
+select,
+textarea {
   font-size: inherit;
   font-family: inherit;
 }

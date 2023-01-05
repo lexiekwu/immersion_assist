@@ -2,8 +2,7 @@ import openai
 from os import environ
 
 openai.api_key = environ.get("OPENAI_KEY")
-INITIAL_PROMPT = "你好！我是你的學習夥伴。我可以幫你練習聊天。你今天想討論什麼？"
-EN_INITIAL_PROMPT = "Hi! I am your study buddy. I can help you practice chatting. What would you like to discuss today?"
+INITIAL_PROMPT = "Hi! I am your study buddy. I can help you practice chatting. What would you like to discuss today?"
 COST_PER_TOKEN = 0.02 / 1000
 
 

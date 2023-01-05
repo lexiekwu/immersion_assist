@@ -1,5 +1,3 @@
-- more languages than Chinese
-    - fixing chat
 - show most recent day on stats
 - escapes in dbs lol
 - fix logo to not have white background
@@ -82,3 +80,4 @@ done
     * fix specifying language in UI where it doesn't actually matter
     * don't add pronunciation when not necessary
     * fixes to segmentation
+    * fix chat
