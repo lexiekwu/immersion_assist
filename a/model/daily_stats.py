@@ -1,4 +1,4 @@
-from datetime import datetime
+from datetime import datetime, timedelta
 from a.third_party import cockroachdb as db
 from a.third_party import session_storage
 
@@ -56,11 +56,13 @@ class DailyStats:
             """
         )
 
-        # make a row for this day if there wasn't one
         if not stats_dict:
-            new_stats_day = cls(dt, 0, 0, None)
-            new_stats_day._save()
-            return new_stats_day
+            # only create a new entry if it's today
+            if dt == today_dt:
+                new_stats_day = cls(dt, 0, 0, None)
+                new_stats_day._save()
+                return new_stats_day
+            return None
 
         if dt == today_dt:
             session_storage.update(
@@ -78,6 +80,28 @@ class DailyStats:
             stats_dict["count_incorrect"],
             stats_dict["avg_knowledge_factor"],
         )
+
+    @classmethod
+    def get_recent(cls, count):
+        min_dt = str((datetime.today() - timedelta(count)).date())
+        rows = db.sql_query(
+            f"""
+        SELECT *
+        FROM daily_stats
+        WHERE
+            uid = '{session_storage.logged_in_user()}' AND
+            dt >= '{min_dt}'
+        """
+        )
+        return [
+            cls(
+                row["dt"],
+                row["count_correct"],
+                row["count_incorrect"],
+                row["avg_knowledge_factor"],
+            )
+            for row in rows
+        ]
 
     def update(self, is_correct):
         self.count_correct += int(is_correct)

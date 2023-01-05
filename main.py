@@ -96,22 +96,18 @@ def terms():
 def stats():
     if not session.get("uid"):
         return render_template("login.html")
-
-    today = datetime.today().date()
-    week_days = [today] + [today - timedelta(i) for i in range(1, 50)]
-    week_stats = [
-        a.model.daily_stats.DailyStats.get_for_day(dt=str(day)) for day in week_days
-    ]
-    week_stats = [
+    recent_stats = a.model.daily_stats.DailyStats.get_recent(50)
+    recent_stats = [
         {
             "dt": s.dt,
             "count_correct": s.count_correct,
             "count_incorrect": s.count_incorrect,
             "avg_knowledge_factor": s.avg_knowledge_factor,
         }
-        for s in week_stats
+        for s in recent_stats
+        if s is not None
     ]
-    return render_template("stats.html", week_stats=week_stats)
+    return render_template("stats.html", recent_stats=recent_stats)
 
 
 @app.route("/new", methods=["GET"])

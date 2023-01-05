@@ -72,7 +72,6 @@
               element.avg_knowledge_factor
             ];
           });
-          console.log(stats_arrs)
           var data = google.visualization.arrayToDataTable(
             [["Day", "Knowledge Factor"]].concat(stats_arrs)
           );
@@ -94,7 +93,7 @@
           chart.draw(data, options);
         }
 
-        var stats_json = {{ week_stats|tojson }}
+        var stats_json = {{ recent_stats|tojson }}
         drawDailyQuizStats(stats_json)
         drawAvgKnowledgeFactorStats(stats_json)
       }

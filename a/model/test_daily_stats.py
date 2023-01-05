@@ -26,7 +26,7 @@ class TestDailyStats:
 
     def test_get_for_day(self):
         tds = daily_stats.DailyStats.get_for_day(self.test_dt)
-        assert (tds.count_correct, tds.count_incorrect, tds.dt) == (0, 0, self.test_dt)
+        assert tds is None
 
         daily_stats.DailyStats(self.test_dt, 5, 10, None).update(False)
         daily_stats.DailyStats(self.today_dt, 6, 8, None).update(True)
@@ -78,6 +78,14 @@ class TestDailyStats:
         _get_numbered_term(1)
         ds = daily_stats.DailyStats(self.test_dt, 5, 10, None)
         assert ds.avg_knowledge_factor == 0  # default to 1.0 after adding cards
+
+    def test_get_recent(self):
+        daily_stats.DailyStats(self.test_dt, 5, 10, None).update(False)
+        daily_stats.DailyStats(self.today_dt, 6, 8, None).update(True)
+
+        recent = daily_stats.DailyStats.get_recent(10)
+        assert len(recent) == 1
+        assert (recent[0].count_correct, recent[0].count_incorrect) == (7, 8)
 
     def teardown_method(self):
         self.test_user.delete_all_data_TESTS_ONLY()

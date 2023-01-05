@@ -1,4 +1,3 @@
-- show most recent day on stats
 - escapes in dbs lol
 - fix logo to not have white background
 - store API-called items in dbs
