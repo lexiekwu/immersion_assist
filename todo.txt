@@ -1,5 +1,4 @@
 - escapes in dbs lol
-- fix logo to not have white background
 - store API-called items in dbs
 - help pages
 --- add friends ---
@@ -80,3 +79,4 @@ done
     * don't add pronunciation when not necessary
     * fixes to segmentation
     * fix chat
+* fix logo to not have white background
