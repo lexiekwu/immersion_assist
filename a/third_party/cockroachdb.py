@@ -40,7 +40,8 @@ def sql_query_single(sql):
     return result[0] if result else None
 
 
-def sql_update(sql):
+def sql_update(sql, inputs_to_escape=[]):
+    sql = _simple_escape_inputs(sql, inputs_to_escape)
     with _get_cur() as cur:
         try:
             cur.execute(sql)
@@ -50,7 +51,8 @@ def sql_update(sql):
             raise e
 
 
-def sql_update_multi(sql_list):
+def sql_update_multi(sql_list, inputs_to_escape=[]):
+    sql_list = [_simple_escape_inputs(sql, inputs_to_escape) for sql in sql_list]
     with _get_cur() as cur:
         try:
             for sql in sql_list:
@@ -59,3 +61,13 @@ def sql_update_multi(sql_list):
         except Exception as e:
             conn.rollback()
             raise e
+
+
+def _simple_escape_str(str):
+    return str.replace("'", "''")
+
+
+def _simple_escape_inputs(sql, inputs_to_escape):
+    for input in inputs_to_escape:
+        sql = sql.replace(input, _simple_escape_str(input))
+    return sql

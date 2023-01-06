@@ -1,4 +1,3 @@
-- escapes in dbs lol
 - store API-called items in dbs
 - help pages
 --- add friends ---
@@ -80,3 +79,4 @@ done
     * fixes to segmentation
     * fix chat
 * fix logo to not have white background
+* some escapes in dbs

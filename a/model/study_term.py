@@ -62,7 +62,10 @@ class StudyTerm:
                 ('{uuid.uuid4()}', '{self.id}', 'reverse_translation', 1.0, {now}, '{logged_in_user}'),
                 ('{uuid.uuid4()}', '{self.id}', 'translation', 1.0, {now}, '{logged_in_user}')
         """
-        db.sql_update_multi([insert_term_sql, insert_learning_log_sql])
+        db.sql_update_multi(
+            [insert_term_sql, insert_learning_log_sql],
+            inputs_to_escape=[self.term, self.pronunciation, self.translated_term],
+        )
 
     @classmethod
     def get_by_id(cls, id):
@@ -100,7 +103,8 @@ class StudyTerm:
                     '{pronunciation}',
                     '{session_storage.logged_in_user()}'
                 )
-        """
+        """,
+            inputs_to_escape=[self.term, self.pronunciation, self.translated_term],
         )
 
     def delete(self):

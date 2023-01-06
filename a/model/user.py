@@ -72,7 +72,8 @@ class User:
                 hashed_password, home_language, learning_language)
             VALUES ('{uid}', '{name}', '{email}', 
                 '{hashed_password}', '{home_language}', '{learning_language}')
-            """
+            """,
+            inputs_to_escape=[name, email],
         )
         return cls(uid, name, email, home_language, learning_language)
 

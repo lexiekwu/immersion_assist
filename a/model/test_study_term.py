@@ -80,6 +80,16 @@ class TestStudyTerm:
         )
         assert study_term.get_count() == 1
 
+        # with escape
+        st = study_term.StudyTerm(
+            uuid1,
+            "你好",
+            "h'i",
+            "ni2 h'ao3",
+        )
+        st.save()
+        assert st == study_term.StudyTerm.get_by_id(uuid1)
+
     def test_update(self):
         uuid1 = uuid.uuid4()
         st = study_term.StudyTerm(uuid1, "你好", "hello", "ni3 hao3")
