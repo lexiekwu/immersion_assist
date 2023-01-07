@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>About Immersion Assist</title>
+    <link
+      type="text/css"
+      rel="stylesheet"
+      href="{{ url_for('static', filename='style.css') }}"
+    />
+    <link
+      href="https://fonts.googleapis.com/icon?family=Material+Icons"
+      rel="stylesheet"
+    />
+    <link rel="shortcut icon" type="image/x-icon" href="./static/favicon.ico" />
+  </head>
+
+  {% for category, message in get_flashed_messages(with_categories=True) %}
+  <div class="toast {{category}}">{{ message }}</div>
+  {% endfor %}
+
+  <body class="about_page">
+    <h1>Welcome to Immersion Assist, {{ session['name'] }}!</h1>
+    <div>
+      Feeling impatient?
+      <a href="/"> Get started here </a>
+    </div>
+    <h2>Philosophy</h2>
+    <h4>Immersion is the best way to learn a language.</h4>
+
+    That said, if you've ever tried to learn a language via immersion, you know
+    there are a few things that are frustrating about it. To list a few:
+
+    <ol class="about_page_list">
+      <li>
+        The first time you're in a situation, you often are underprepared for
+        the vocabulary it requires
+      </li>
+      <li>
+        When you come across new words, you often need many repetitions to
+        actually learn them, so you may get them wrong in real life even after
+        you’ve heard them once or twice
+      </li>
+      <li>It's easy to forget words that you haven't used for a while</li>
+    </ol>
+
+    While ultimately your growing brain is the powerhouse for your learning,
+    this tool is designed to help make your immersion as effective as possible
+    by making it easy for you to
+    <ol class="about_page_list">
+      <li><a href="#prepare">Prepare for upcoming scenarios</a></li>
+      <li><a href="#review">Save and review new words you come across</a></li>
+      <li><a href="#quiz">Keep all of your vocabulary fresh</a></li>
+    </ol>
+
+    <h2>A few suggestions how to use this app</h2>
+
+    <h3 id="quiz">Keep all of your vocabulary fresh</h3>
+
+    <div class="about_page_image_block"><img src="../static/quiz.gif" /></div>
+    Quiz yourself on all the words you’ve saved, and keep track of progress over
+    time! The more you answer a word correctly, the less often you will see it
+    over time, and vice versa.
+
+    <h3 id="prepare">Prepare for upcoming scenarios</h3>
+
+    <h5>Look up and save specific words</h5>
+    <div class="about_page_image_block">
+      <img src="../static/single_word.gif" />
+    </div>
+    <h5>Look up and save related words</h5>
+    <div class="about_page_image_block">
+      <img src="../static/keywords.gif" />
+    </div>
+    <h5>Practice chatting</h5>
+    Hit the chat icon and explore yourself!
+
+    <h5>Save words from sentences</h5>
+    You can look up articles and past them in or type your own sentences. Add
+    them in either your home language or your learning language!
+    <div class="about_page_image_block">
+      <img src="../static/sentences.gif" />
+    </div>
+
+    <h3 id="review">Save and review new words you come across</h3>
+
+    While immersing or after the fact, save what’s new to you, and study it
+    later. And more! These are just a few ideas for how to use these tools. You
+    know what works for your learning - do whatever is most useful for you!
+
+    <h2>Any questions or feedback?</h2>
+
+    Hi I’m Lexie, the sole creator of Immersion Assist. I’m looking forward to
+    hearing from you - email me at
+    <a href="mailto:immersionassist@gmail.com">immersionassist@gmail.com</a>!
+  </body>
+  <div class="nav_footer">
+    <a class="material-icons" href="/quiz">psychology_alt</a>
+    <a class="material-icons" href="/chat">forum</a>
+    <a class="material-icons" href="/new">add</a>
+    <a class="material-icons" href="/terms">dashboard</a>
+    <a class="material-icons" href="/stats">query_stats</a>
+  </div>
+</html>

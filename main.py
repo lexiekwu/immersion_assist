@@ -15,6 +15,11 @@ def root():
     return render_template("index.html")
 
 
+@app.route("/about")
+def about():
+    return render_template("about.html")
+
+
 @app.route("/login", methods=["POST", "GET"])
 def login():
     if request.method == "GET":
@@ -67,7 +72,7 @@ def signup():
     )
 
     if is_success:
-        return render_template("index.html")
+        return redirect("/about")
     else:
         if failure_reason == a.controller.signup.SignupFailureReason.USER_EXISTS:
             flash("An account already exists for that email. Please log in.", "bad")

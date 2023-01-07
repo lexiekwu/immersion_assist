@@ -1,4 +1,3 @@
-- help pages
 --- can do any time because I feel like it
 - make knowledge factor sum of logs
 - add number of cards to stats
@@ -87,3 +86,4 @@ done
 * some escapes in dbs
 * store API-called items in dbs
 * primitive email validation
+* about page

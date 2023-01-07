@@ -13,6 +13,36 @@ body {
   margin-bottom: 7vh;
 }
 
+.about_page {
+  text-align: left;
+  margin-left: 0.8em;
+  margin-right: 0.8em;
+  margin-top: 1em;
+  margin-bottom: 7vh;
+  font-size: min(4vw, 40px);
+}
+
+.about_page_list {
+  margin-left: 1.6em;
+}
+
+.about_page img {
+  display: block;
+  width: 80%;
+  box-shadow: 0px 0px 12px var(--medium-grey);
+  margin: 1em;
+}
+
+.about_page_image_block {
+  display: flex;
+  justify-content: center;
+}
+
+.about_page a {
+  color: var(--hover-medium-blue);
+  text-decoration: none;
+}
+
 .flashcard {
   background: var(--light-blue);
   border-radius: 0.6em;
