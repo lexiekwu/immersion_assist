@@ -1,18 +1,11 @@
-from os import environ
-from google.cloud import translate_v2 as translate
-from a.third_party import session_storage
-import pinyin as pinyin_module
+from a.third_party import session_storage, api_wrap as apis
 import re
-import datamuse
-import jieba
 
 
-def get_pronunciation(translated_term, is_learning_language=True):
+def get_pronunciation(term, is_learning_language=True):
     target_language_code = _get_language_code(is_learning_language)
     if target_language_code in CHINESE_CODES:
-        pronunciation = pinyin_module.get(
-            translated_term, format="numerical", delimiter=" "
-        ).replace("5", "0")
+        pronunciation = apis.call_api(apis.Apis.PINYIN, [term])
         return pronunciation
 
     return ""
@@ -22,9 +15,9 @@ def get_pronunciation_dict(sentence, is_learning_language=True):
     target_language_code = _get_language_code(is_learning_language)
     if target_language_code in CHINESE_CODES:
         filtered_characters = re.sub(r"[^\u4e00-\u9fa5]", "", sentence)
-        pronunciation = pinyin_module.get(
-            filtered_characters, format="numerical", delimiter=" "
-        ).split(" ")
+        pronunciation = apis.call_api(apis.Apis.PINYIN, [filtered_characters]).split(
+            " "
+        )
         return {char: p for char, p in zip(filtered_characters, pronunciation)}
 
     print("No pronunciation implemented, defaulting to nothing")
@@ -33,18 +26,15 @@ def get_pronunciation_dict(sentence, is_learning_language=True):
 
 def get_translation(term, to_learning_language=True):
     target_language_code = _get_language_code(to_learning_language)
-    response = translate.Client().translate(term, target_language=target_language_code)
-
-    translation = response["translatedText"]
-    fixed_translation = _fix_translation_characters(translation)
-    return fixed_translation
+    translation = apis.call_api(apis.Apis.TRANSLATE, [term, target_language_code])
+    return translation
 
 
 def segment_text(long_text, is_learning_language=True):
     "Splits into words and punctuation, returning [(segment, is_word),]."
     target_language_code = _get_language_code(is_learning_language)
     if target_language_code in CHINESE_CODES:
-        segments = jieba.lcut(long_text)
+        segments = apis.call_api(apis.Apis.ZH_SEGMENTER, [long_text])
 
         def _is_word(segment):
             return len(re.findall(r"[\u4e00-\u9fff]+", segment)) > 0
@@ -56,19 +46,12 @@ def segment_text(long_text, is_learning_language=True):
         return _simple_segment(long_text)
 
 
-def _fix_translation_characters(translated_text):
-    return translated_text.replace("&#39;", "'").replace("&quot;", '"')
-
-
-def get_related_words(keyword, limit, is_learning_language=False):
-    words_puller = datamuse.Datamuse()
-    scored_words = words_puller.words(rel_trg=keyword, max=limit)
-    scored_sorted_words = sorted(scored_words, key=lambda d: -d["score"])
-    return [d["word"] for d in scored_sorted_words]
+def get_related_words(keyword, limit):
+    return apis.call_api(apis.Apis.RELATED_WORDS, [keyword, limit])
 
 
 def is_learning_language(text):
-    response = translate.Client().detect_language(text)
+    response = apis.call_api(apis.Apis.LANGUAGE_DETECTION, [text])
     return (
         response["language"].split("-")[0]
         == session_storage.get("learning_language").split("-")[0]
@@ -97,7 +80,7 @@ def _simple_segment(long_text):
     return segmented_terms
 
 
-PUNCTUATION = "!#$%&()*+,-./:;<=>?@[\]^_`{|}~ "
+PUNCTUATION = "!#$%&()*+,-./:;<=>?@[]^_`{|}~\\ "
 
 TW_CODE = "zh-TW"  # TODO make flexible
 EN_CODE = "en"

@@ -1,4 +1,5 @@
-from a.third_party import language, session_storage
+from a.controller import language
+from a.third_party import session_storage
 from os import environ
 
 
@@ -35,7 +36,6 @@ def test_segment_text():
     session_storage.set("learning_language", language.TW_CODE)
     session_storage.set("home_language", language.EN_CODE)
     sentence = "這是 一個句子!"
-    environ["CHINESE_SEGMENTER"] = "jieba"
     assert language.segment_text(sentence) == [
         ("這是", True),
         (" ", False),

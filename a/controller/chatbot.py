@@ -1,7 +1,5 @@
-import openai
-from os import environ
+from a.third_party import api_wrap as apis
 
-openai.api_key = environ.get("OPENAI_KEY")
 INITIAL_PROMPT = "Hi! I am your study buddy. I can help you practice chatting. What would you like to discuss today?"
 COST_PER_TOKEN = 0.02 / 1000
 
@@ -19,16 +17,7 @@ class ChatBot:
 
     def _call_openai(self):
         prompt = self._format_thread()
-        response = openai.Completion.create(
-            model="text-davinci-003",
-            prompt=prompt,
-            temperature=0.5,
-            max_tokens=100,
-            top_p=1.0,
-            frequency_penalty=0.5,
-            presence_penalty=0.0,
-            stop=["You:"],
-        )
+        response = apis.call_api(apis.Apis.CHATBOT, [prompt])
         bot_text = response["choices"][0]["text"]
         self.tokens_spent += response["usage"]["total_tokens"]
         return bot_text

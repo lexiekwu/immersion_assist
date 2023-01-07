@@ -1,12 +1,12 @@
-from a.third_party import chatbot
-import openai
+from a.controller import chatbot
+from a.third_party import api_wrap
 
 
 class TestChatBot:
     def test_get_response(self, mocker):
         cb = chatbot.ChatBot()
         mocker.patch(
-            "openai.Completion.create",
+            "a.third_party.api_wrap.call_api",
             return_value={
                 "usage": {"total_tokens": 10},
                 "choices": [{"text": "hello back to you!"}],
@@ -18,7 +18,7 @@ class TestChatBot:
     def test_get_cost(self, mocker):
         cb = chatbot.ChatBot()
         mocker.patch(
-            "openai.Completion.create",
+            "a.third_party.api_wrap.call_api",
             return_value={
                 "usage": {"total_tokens": 200},
                 "choices": [{"text": "hello back to you!"}],

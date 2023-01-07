@@ -1,6 +1,5 @@
 from datetime import datetime, timedelta
-from a.third_party import cockroachdb as db
-from a.third_party import session_storage
+from a.third_party import session_storage, cockroachdb as db
 
 today_dt = str(datetime.today().date())
 

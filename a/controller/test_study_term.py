@@ -35,8 +35,8 @@ def test_save(mocker):
     def _dict_pronounce(word, _=None):
         return {"狗": "gou1", "貓": "mao1"}[word]
 
-    mocker.patch("a.third_party.language.get_translation", _dict_translate)
-    mocker.patch("a.third_party.language.get_pronunciation", _dict_pronounce)
+    mocker.patch("a.controller.language.get_translation", _dict_translate)
+    mocker.patch("a.controller.language.get_pronunciation", _dict_pronounce)
 
     user = a.model.user.User.new("Testley", "testley2@aol.com", "iLikeTests")
     user.login("iLikeTests")

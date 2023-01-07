@@ -57,6 +57,16 @@ def _setup_test_db():
         UNIQUE INDEX email_ukey (email ASC)
         )
         """,
+            """
+        CREATE TABLE IF NOT EXISTS api_wrap (
+        api_enum INT2 NULL,
+        args_json VARCHAR(128) NULL,
+        response_json VARCHAR(256) NULL,
+        rowid INT8 NOT VISIBLE NOT NULL DEFAULT unique_rowid(),
+        CONSTRAINT api_wrap_pkey PRIMARY KEY (rowid ASC),
+        UNIQUE INDEX lookup_unique (api_enum ASC, args_json ASC)
+        )
+        """,
         ]
     )
 

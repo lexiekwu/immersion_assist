@@ -18,10 +18,8 @@ class TestStudyTerm:
 
     def test_build(self, mocker):
 
-        mocker.patch("a.third_party.language.get_translation", _mock_translate)
-        mocker.patch(
-            "a.third_party.language.get_pronunciation", return_value="ni3 hao3"
-        )
+        mocker.patch("a.controller.language.get_translation", _mock_translate)
+        mocker.patch("a.controller.language.get_pronunciation", return_value="ni3 hao3")
 
         st = study_term.StudyTerm.build(term="你好")
         assert (
@@ -37,10 +35,8 @@ class TestStudyTerm:
             st.pronunciation,
         ) == ("你好", "hello", "ni2 hao3")
 
-        mocker.patch("a.third_party.language.get_translation", _mock_translate)
-        mocker.patch(
-            "a.third_party.language.get_pronunciation", return_value="ni3 hao3"
-        )
+        mocker.patch("a.controller.language.get_translation", _mock_translate)
+        mocker.patch("a.controller.language.get_pronunciation", return_value="ni3 hao3")
 
         st = study_term.StudyTerm.build(term="hello")
         assert (

@@ -29,7 +29,7 @@ def login():
         flash("No user exists for that email. Please sign up.", "bad")
         return render_template(
             "signup.html",
-            supported_languages=a.third_party.language.SUPPORTED_LANGUAGES_AND_CODES,
+            supported_languages=a.controller.language.SUPPORTED_LANGUAGES_AND_CODES,
         )
 
     # incorrect password, try again
@@ -55,7 +55,7 @@ def signup():
     if request.method == "GET":
         return render_template(
             "signup.html",
-            supported_languages=a.third_party.language.SUPPORTED_LANGUAGES_AND_CODES,
+            supported_languages=a.controller.language.SUPPORTED_LANGUAGES_AND_CODES,
         )
 
     is_success, failure_reason = a.controller.signup.try_signup(
@@ -143,7 +143,7 @@ def select_words():
         number = int(request.form.get("number"))
         if number > 5000:
             raise Exception("{number} is too many: try <5000.")
-        words = [keyword] + a.third_party.language.get_related_words(keyword, number)
+        words = [keyword] + a.controller.language.get_related_words(keyword, number)
     except Exception as e:
         flash(f"Could not successfully generate words. Error was '{str(e)}'", "bad")
         return render_template("new.html")
@@ -319,7 +319,7 @@ def chat():
         return render_template("login.html")
 
     initial_prompt_story = a.controller.story.Story.build(
-        a.third_party.chatbot.INITIAL_PROMPT
+        a.controller.chatbot.INITIAL_PROMPT
     )
     initial_prompt_html = initial_prompt_story.to_dict()["terms_html"]
     initial_prompt_translation = initial_prompt_story.translation
@@ -331,7 +331,7 @@ def chat():
     )
 
 
-chatbot = a.third_party.chatbot.ChatBot()
+chatbot = a.controller.chatbot.ChatBot()
 
 
 @app.route("/chatbot_response", methods=["GET", "POST"])

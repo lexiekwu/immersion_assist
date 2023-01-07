@@ -19,14 +19,14 @@ class TestStory:
         sentence = "這是 一個 句子 !"
         sentence_split = sentence.split(" ")
         mocker.patch(
-            "a.third_party.language.segment_text",
+            "a.controller.language.segment_text",
             return_value=zip(sentence_split, [True, True, True, False]),
         )
         mocker.patch(
-            "a.third_party.language.get_pronunciation_dict",
+            "a.controller.language.get_pronunciation_dict",
             return_value={c: f"_{i}" for i, c in enumerate(sentence)},
         )
-        mocker.patch("a.third_party.language.get_translation", _mock_translate)
+        mocker.patch("a.controller.language.get_translation", _mock_translate)
         s = story.Story.build(sentence)
         assert len(s.story_terms) == 4
         assert (
@@ -45,14 +45,14 @@ class TestStory:
         sentence = "這是 一個 句子 !"
         sentence_split = sentence.split(" ")
         mocker.patch(
-            "a.third_party.language.segment_text",
+            "a.controller.language.segment_text",
             return_value=zip(sentence_split, [True, True, True, False]),
         )
         mocker.patch(
-            "a.third_party.language.get_pronunciation_dict",
+            "a.controller.language.get_pronunciation_dict",
             return_value={c: f"_{i}" for i, c in enumerate(sentence)},
         )
-        mocker.patch("a.third_party.language.get_translation", _mock_translate)
+        mocker.patch("a.controller.language.get_translation", _mock_translate)
         s = story.Story.build(sentence)
         sd = s.to_dict()
         assert "這是" in sd["terms_html"]

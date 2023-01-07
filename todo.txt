@@ -1,8 +1,12 @@
-- store API-called items in dbs
 - help pages
+- primitive email validation
+--- can do any time because I feel like it
+- make knowledge factor sum of logs
+- add number of cards to stats
 --- add friends ---
 - rate limit everything
 - export CSV for card
+- confirm email
 - subscriptions
 - performance issues with load
 - about + feedback page
@@ -80,3 +84,4 @@ done
     * fix chat
 * fix logo to not have white background
 * some escapes in dbs
+* store API-called items in dbs
