@@ -1,4 +1,5 @@
 from a.third_party import api_wrap as apis
+from a.controller import language
 
 INITIAL_PROMPT = "Hi! I am your study buddy. I can help you practice chatting. What would you like to discuss today?"
 COST_PER_TOKEN = 0.02 / 1000
@@ -6,10 +7,14 @@ COST_PER_TOKEN = 0.02 / 1000
 
 class ChatBot:
     def __init__(self):
-        self.responses = ["You: " + INITIAL_PROMPT]
+        self.responses = []
         self.tokens_spent = 0
 
     def get_response(self, input_text):
+        if len(self.responses) == 0:
+            self.responses = [
+                language.get_translation(INITIAL_PROMPT, to_learning_language=False)
+            ]
         self.responses.append(input_text)
         bot_text = self._call_openai()
         self.responses.append(bot_text)
@@ -29,9 +34,9 @@ class ChatBot:
         )
         formatted = ""
         for i, response in enumerate(responses_to_format):
-            speaker = "Friend" if i % 2 == 0 else "You"
+            speaker = "Study Buddy" if i % 2 == 0 else "User"
             formatted += f"\n{speaker}: {response}"
-        formatted += "\nFriend:"
+        formatted += "\nStudy Buddy:"
         return formatted
 
     def get_cost(self):

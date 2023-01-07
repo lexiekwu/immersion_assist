@@ -281,7 +281,10 @@ def quiz():
         new_card = flashcard_stack.pop_card()
 
         if not new_card:
-            flash(f"No cards available for quizzing. Try adding more.", "good")
+            flash(
+                f"No cards available for quizzing. Try adding more! If you just added some, they will be available in 2 minutes.",
+                "good",
+            )
             return render_template("new.html")
 
         session["current_card"] = new_card.to_dict()
