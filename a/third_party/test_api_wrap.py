@@ -117,7 +117,7 @@ class TestApiWrap:
         assert mock.call_count == 1
 
     def test_language_detection(self, mocker):
-        mock_value = "zh-TW"
+        mock_value = {"language": "zh-TW"}
         mock = mocker.patch(
             "google.cloud.translate_v2.Client.detect_language",
             return_value=mock_value,
@@ -125,9 +125,9 @@ class TestApiWrap:
         assert mock.call_count == 0
 
         response = apis.call_api(apis.Apis.LANGUAGE_DETECTION, [self.zh_text])
-        assert response == mock_value
+        assert response == "zh-TW"
         assert mock.call_count == 1
 
         response = apis.call_api(apis.Apis.LANGUAGE_DETECTION, [self.zh_text])
-        assert response == mock_value
+        assert response == "zh-TW"
         assert mock.call_count == 1

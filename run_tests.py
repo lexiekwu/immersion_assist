@@ -75,13 +75,19 @@ def _teardown_test_db():
     assert "testdb" in db.DB_URL, "STOPPING -- attempted to drop tables from real db"
     db.sql_update_multi(
         [
-            f"DROP TABLE {table}"
-            for table in ["users", "study_term", "learning_log", "daily_stats"]
+            f"DROP TABLE IF EXISTS {table}"
+            for table in [
+                "users",
+                "study_term",
+                "learning_log",
+                "daily_stats",
+                "api_wrap",
+            ]
         ]
     )
 
 
 _setup_test_db()
-_run_command("coverage run -m pytest")
+_run_command("coverage run -m pytest -x")
 _run_command("coverage report")
 _teardown_test_db()

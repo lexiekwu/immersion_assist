@@ -5,6 +5,30 @@ import a
 def test_signup():
 
     assert signup.try_signup(
+        "tes.tley@.aol.com",
+        "iLikeTests",
+        "Testley",
+        "en",
+        "zh-TW",
+    ) == (False, a.controller.signup.SignupFailureReason.INVALID_EMAIL)
+
+    assert signup.try_signup(
+        "tes.tley@@.aol.com",
+        "iLikeTests",
+        "Testley",
+        "en",
+        "zh-TW",
+    ) == (False, a.controller.signup.SignupFailureReason.INVALID_EMAIL)
+
+    assert signup.try_signup(
+        "tim.com",
+        "iLikeTests",
+        "Testley",
+        "en",
+        "zh-TW",
+    ) == (False, a.controller.signup.SignupFailureReason.INVALID_EMAIL)
+
+    assert signup.try_signup(
         "testley@aol.com",
         "iLikeTests",
         "Testley",

@@ -71,6 +71,17 @@ def signup():
     else:
         if failure_reason == a.controller.signup.SignupFailureReason.USER_EXISTS:
             flash("An account already exists for that email. Please log in.", "bad")
+
+        elif failure_reason == a.controller.signup.SignupFailureReason.INVALID_EMAIL:
+            flash(
+                f"{request.form.get('email')} Is not a valid email address. Please try again.",
+                "bad",
+            )
+            return render_template(
+                "signup.html",
+                supported_languages=a.controller.language.SUPPORTED_LANGUAGES_AND_CODES,
+            )
+
         else:
             flash("Unable to log you in.", "bad")
         return render_template("login.html")

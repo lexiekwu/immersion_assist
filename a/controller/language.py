@@ -51,10 +51,9 @@ def get_related_words(keyword, limit):
 
 
 def is_learning_language(text):
-    response = apis.call_api(apis.Apis.LANGUAGE_DETECTION, [text])
+    language = apis.call_api(apis.Apis.LANGUAGE_DETECTION, [text])
     return (
-        response["language"].split("-")[0]
-        == session_storage.get("learning_language").split("-")[0]
+        language.split("-")[0] == session_storage.get("learning_language").split("-")[0]
     )
 
 

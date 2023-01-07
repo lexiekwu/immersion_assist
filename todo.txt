@@ -1,8 +1,9 @@
 - help pages
-- primitive email validation
 --- can do any time because I feel like it
 - make knowledge factor sum of logs
 - add number of cards to stats
+- stats split by type
+- edit vs delete highlighting
 --- add friends ---
 - rate limit everything
 - export CSV for card
@@ -85,3 +86,4 @@ done
 * fix logo to not have white background
 * some escapes in dbs
 * store API-called items in dbs
+* primitive email validation

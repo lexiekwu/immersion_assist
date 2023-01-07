@@ -69,7 +69,7 @@ def call_api(api_enum, args):
 
     elif api_enum == Apis.LANGUAGE_DETECTION:
         text = args[0]
-        response = translate.Client().detect_language(text)
+        response = translate.Client().detect_language(text)["language"]
 
     _store_response(api_enum, args, response)
     return response
