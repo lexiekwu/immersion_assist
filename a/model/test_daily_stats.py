@@ -67,17 +67,19 @@ class TestDailyStats:
         ds.update(False)
         assert (ds.count_correct, ds.count_incorrect) == (4, 4)
 
-    def test_avg_knowledge_factor(self):
+    def test_avg_knowledge_factor_and_num_terms(self):
         ds = daily_stats.DailyStats(self.test_dt, 5, 10, None)
         assert ds.avg_knowledge_factor == 0  # default to 0
+        assert ds.num_terms == 0  # none added
 
         def _get_numbered_term(i):
             return study_term.StudyTerm(uuid.uuid4(), f"你好{i}", f"hello{i}", "ni3 hao3")
 
-        _get_numbered_term(0)
-        _get_numbered_term(1)
-        ds = daily_stats.DailyStats(self.test_dt, 5, 10, None)
-        assert ds.avg_knowledge_factor == 0  # default to 1.0 after adding cards
+        _get_numbered_term(0).save()
+        _get_numbered_term(1).save()
+        ds = daily_stats.DailyStats(self.today_dt, 5, 10)
+        assert ds.avg_knowledge_factor == 0
+        assert ds.num_terms == 2
 
     def test_get_recent(self):
         daily_stats.DailyStats(self.test_dt, 5, 10, None).update(False)

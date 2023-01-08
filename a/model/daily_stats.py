@@ -1,11 +1,19 @@
 from datetime import datetime, timedelta
 from a.third_party import session_storage, cockroachdb as db
+from a.model.study_term import get_count
 
 today_dt = str(datetime.today().date())
 
 
 class DailyStats:
-    def __init__(self, dt, count_correct, count_incorrect, avg_knowledge_factor):
+    def __init__(
+        self,
+        dt,
+        count_correct,
+        count_incorrect,
+        avg_knowledge_factor=None,
+        num_terms=None,
+    ):
         self.dt = dt
         self.count_correct = count_correct
         self.count_incorrect = count_incorrect
@@ -14,6 +22,7 @@ class DailyStats:
             if avg_knowledge_factor is None
             else avg_knowledge_factor
         )
+        self.num_terms = get_count() if num_terms is None else num_terms
 
     def get_accuracy(self):
         return (
@@ -34,20 +43,19 @@ class DailyStats:
             and session_storage.get("count_incorrect")
             and session_storage.get("dt") == dt
             and session_storage.get("avg_knowledge_factor")
+            and session_storage.get("num_terms")
         ):
             return cls(
                 dt,
                 session_storage.get("count_correct"),
                 session_storage.get("count_incorrect"),
                 session_storage.get("avg_knowledge_factor"),
+                session_storage.get("num_terms"),
             )
 
         stats_dict = db.sql_query_single(
             f"""
-                SELECT
-                    count_incorrect,
-                    count_correct,
-                    avg_knowledge_factor
+                SELECT *
                 FROM daily_stats
                 WHERE
                     dt = '{dt}' AND
@@ -70,6 +78,7 @@ class DailyStats:
                     "count_correct": stats_dict["count_correct"],
                     "count_incorrect": stats_dict["count_incorrect"],
                     "avg_knowledge_factor": stats_dict["avg_knowledge_factor"],
+                    "num_terms": stats_dict["num_terms"],
                 }
             )
 
@@ -78,6 +87,7 @@ class DailyStats:
             stats_dict["count_correct"],
             stats_dict["count_incorrect"],
             stats_dict["avg_knowledge_factor"],
+            stats_dict["num_terms"],
         )
 
     @classmethod
@@ -98,6 +108,7 @@ class DailyStats:
                 row["count_correct"],
                 row["count_incorrect"],
                 row["avg_knowledge_factor"],
+                row["num_terms"],
             )
             for row in rows
         ]
@@ -110,13 +121,21 @@ class DailyStats:
     def _save(self):
         db.sql_update(
             f"""
-            UPSERT INTO daily_stats (dt, uid, count_correct, count_incorrect, avg_knowledge_factor)
+            UPSERT INTO daily_stats (
+                dt, 
+                uid, 
+                count_correct, 
+                count_incorrect, 
+                avg_knowledge_factor,
+                num_terms
+            )
             VALUES (
                 '{self.dt}',
                 '{session_storage.logged_in_user()}',
                 {self.count_correct},
                 {self.count_incorrect},
-                {self.avg_knowledge_factor}
+                {self.avg_knowledge_factor},
+                {self.num_terms}
             )
         """
         )
@@ -127,6 +146,7 @@ class DailyStats:
                     "count_correct": self.count_correct,
                     "count_incorrect": self.count_incorrect,
                     "avg_knowledge_factor": self.avg_knowledge_factor,
+                    "num_terms": self.num_terms,
                 }
             )
 
@@ -134,7 +154,7 @@ class DailyStats:
         entry = db.sql_query_single(
             f"""
             SELECT
-                SUM(
+                AVG(
                     LOG(2, knowledge_factor)
                 ) AS akf
             FROM learning_log

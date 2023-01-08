@@ -20,6 +20,7 @@ def _setup_test_db():
         dt VARCHAR(20) NOT NULL,
         count_correct INT8 NULL,
         count_incorrect INT8 NOT NULL,
+        num_terms INT8 NULL,
         uid UUID NULL,
         avg_knowledge_factor FLOAT8 NULL,
         CONSTRAINT daily_stats_pkey PRIMARY KEY (uid ASC, dt ASC)

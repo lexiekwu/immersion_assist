@@ -119,6 +119,7 @@ def stats():
             "count_correct": s.count_correct,
             "count_incorrect": s.count_incorrect,
             "avg_knowledge_factor": s.avg_knowledge_factor,
+            "num_terms": s.num_terms,
         }
         for s in recent_stats
         if s is not None

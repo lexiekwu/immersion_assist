@@ -69,23 +69,26 @@
           stats_arrs = stats_json.map((element) => {
             return [
               new Date(element.dt),
-              element.avg_knowledge_factor
+              element.avg_knowledge_factor,
+              element.num_terms,
             ];
           });
           var data = google.visualization.arrayToDataTable(
-            [["Day", "Knowledge Factor"]].concat(stats_arrs)
+            [["Day", "Knowledge Factor", "Number of Cards"]].concat(stats_arrs)
           );
           var options = {
-            title: "Knowledge Factor over time",
+            title: "Knowledge Over Time",
             curveType: "function",
             legend: { position: "none" },
             height: 500,
             series: {
               0: { axis: "KnowledgeFactor", color: "#5b9cce" },
+              1: { axis: "NumCards", color: "#c6def1" }
             },
             axes: {
               y: {
                 KnowledgeFactor: { label: "Knowledge Factor" },
+                NumCards: {label: "Number of Cards" }
               },
             },
           };
