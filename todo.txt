@@ -1,8 +1,3 @@
---- can do any time because I feel like it
-- make knowledge factor sum of logs
-- add number of cards to stats
-- stats split by type
-- edit vs delete highlighting
 --- add friends ---
 - rate limit everything
 - export CSV for card
@@ -14,6 +9,10 @@
 - make UI strings show non-english
 - use classes in frontend
 - import CSV for cards
+--- can do any time because I feel like it
+- add number of cards to stats
+- stats split by type
+- edit vs delete highlighting
 
 done
 * move onto correct google project
@@ -87,3 +86,4 @@ done
 * store API-called items in dbs
 * primitive email validation
 * about page
+* make knowledge factor sum of logs

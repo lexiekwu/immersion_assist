@@ -134,7 +134,9 @@ class DailyStats:
         entry = db.sql_query_single(
             f"""
             SELECT
-                AVG(knowledge_factor) AS akf
+                SUM(
+                    LOG(2, knowledge_factor)
+                ) AS akf
             FROM learning_log
             WHERE uid = '{session_storage.logged_in_user()}'
             """
