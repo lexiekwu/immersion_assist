@@ -19,9 +19,13 @@
   {% endfor %}
 
   <body class="about_page">
+    {% if session['name'] %}
     <h1>Welcome to Immersion Assist, {{ session['name'] }}!</h1>
+    {% else %}
+    <h1>Welcome to Immersion Assist!</h1>
+    {% endif %}
     <div>
-      Feeling impatient?
+      Ready to get learning?
       <a href="/"> Get started here </a>
     </div>
     <h2>Philosophy</h2>
