@@ -68,6 +68,15 @@ def _setup_test_db():
         UNIQUE INDEX lookup_unique (api_enum ASC, args_json ASC)
         )
         """,
+            """
+        CREATE TABLE public.rate_limit (
+        count INT8 NOT NULL,
+        bucket_type INT8 NOT NULL,
+        bucket INT8 NOT NULL,
+        action VARCHAR(36) NOT NULL,
+        uid UUID NOT NULL,
+        CONSTRAINT pkey PRIMARY KEY (uid ASC, action ASC, bucket_type ASC, bucket ASC)
+        )""",
         ]
     )
 
