@@ -1,5 +1,5 @@
 --- add friends ---
-- rate limit everything
+- logging
 - export CSV for card
 - confirm email
 - subscriptions
@@ -87,3 +87,4 @@ done
 * about page
 * make knowledge factor sum of logs
 * add number of cards to stats
+* rate limit everything

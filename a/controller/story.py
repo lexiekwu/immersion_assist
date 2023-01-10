@@ -1,4 +1,5 @@
 from a.controller import language
+from a.model.rate_limit import rate_limited_action
 from flask import json, escape
 
 
@@ -9,6 +10,7 @@ class Story:
 
     @classmethod
     def build(cls, raw_story):
+        rate_limited_action("build_story", "daily", 100)
         if language.is_learning_language(raw_story):
             learning_language_story = raw_story
             translated_story = language.get_translation(

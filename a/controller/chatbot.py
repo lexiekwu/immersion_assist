@@ -1,4 +1,5 @@
 from a.third_party import api_wrap as apis
+from a.model.rate_limit import rate_limited_action
 from a.controller import language
 
 INITIAL_PROMPT = "Hi! I am your study buddy. I can help you practice chatting. What would you like to discuss today?"
@@ -11,6 +12,7 @@ class ChatBot:
         self.tokens_spent = 0
 
     def get_response(self, input_text):
+        rate_limited_action("chatbot_response", "daily", 50)
         if len(self.responses) == 0:
             self.responses = [
                 language.get_translation(INITIAL_PROMPT, to_learning_language=False)

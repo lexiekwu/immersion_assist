@@ -1,4 +1,3 @@
-from datetime import datetime, timedelta
 from flask import Flask, render_template, request, session, flash, json, redirect
 from os import environ
 from urllib.parse import urlparse
@@ -97,6 +96,8 @@ def terms():
     if not session.get("uid"):
         return render_template("login.html")
 
+    a.model.rate_limit.rate_limited_action("request", "secondly", 10)
+
     page_number = int(request.args.get("page_no", 1))
     terms, num_pages = a.controller.study_term.get_term_page_and_num_pages(page_number)
 
@@ -112,6 +113,9 @@ def terms():
 def stats():
     if not session.get("uid"):
         return render_template("login.html")
+
+    a.model.rate_limit.rate_limited_action("request", "secondly", 10)
+
     recent_stats = a.model.daily_stats.DailyStats.get_recent(50)
     recent_stats = [
         {
@@ -132,6 +136,8 @@ def new():
     if not session.get("uid"):
         return render_template("login.html")
 
+    a.model.rate_limit.rate_limited_action("request", "secondly", 10)
+
     return render_template("new.html")
 
 
@@ -139,6 +145,8 @@ def new():
 def story_time():
     if not session.get("uid"):
         return render_template("login.html")
+
+    a.model.rate_limit.rate_limited_action("request", "secondly", 10)
 
     try:
         raw_story = request.form.get("story")
@@ -155,6 +163,8 @@ def select_words():
     if not session.get("uid"):
         return render_template("login.html")
 
+    a.model.rate_limit.rate_limited_action("request", "secondly", 10)
+
     try:
         keyword = request.form.get("keyword")
         number = int(request.form.get("number"))
@@ -170,6 +180,11 @@ def select_words():
 
 @app.route("/save_terms", methods=["POST", "GET"])
 def save_terms():
+    if not session.get("uid"):
+        return render_template("login.html")
+
+    a.model.rate_limit.rate_limited_action("request", "secondly", 10)
+
     _reserved_keys = ["bulk_terms", "translated_term", "msg"]
 
     if not session.get("uid"):
@@ -213,8 +228,11 @@ def save_terms():
 
 @app.route("/edit", methods=["GET"])
 def edit():
+
     if not session.get("uid"):
         return render_template("login.html")
+
+    a.model.rate_limit.rate_limited_action("request", "secondly", 10)
 
     study_term = a.model.study_term.StudyTerm.get_by_id(
         request.args.get("study_term_id_to_edit")
@@ -234,6 +252,8 @@ def edit():
 def delete():
     if not session.get("uid"):
         return render_template("login.html")
+
+    a.model.rate_limit.rate_limited_action("request", "secondly", 10)
 
     study_term = a.model.study_term.StudyTerm.get_by_id(
         request.args.get("study_term_id_to_delete")
@@ -256,6 +276,7 @@ def update():
     if not session.get("uid"):
         return render_template("login.html")
 
+    a.model.rate_limit.rate_limited_action("request", "secondly", 10)
     try:
         study_term = a.model.study_term.StudyTerm.get_by_id(
             request.form.get("study_term_id_to_edit")
@@ -277,6 +298,8 @@ def update():
 def quiz():
     if not session.get("uid"):
         return render_template("login.html")
+
+    a.model.rate_limit.rate_limited_action("request", "secondly", 10)
 
     flashcard_stack = a.model.flashcard_stack.FlashcardStack.from_dicts(
         session.get("flashcard_stack", [])
@@ -338,6 +361,7 @@ def chat():
     if not session.get("uid"):
         return render_template("login.html")
 
+    a.model.rate_limit.rate_limited_action("request", "secondly", 10)
     initial_prompt_story = a.controller.story.Story.build(
         a.controller.chatbot.INITIAL_PROMPT
     )
@@ -356,6 +380,8 @@ chatbot = a.controller.chatbot.ChatBot()
 
 @app.route("/chatbot_response", methods=["GET", "POST"])
 def chatbot_response():
+    a.model.rate_limit.rate_limited_action("request", "secondly", 10)
+
     msg = request.form["msg"]
     response = chatbot.get_response(msg)
     story = a.controller.story.Story.build(response)

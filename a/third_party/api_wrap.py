@@ -10,6 +10,7 @@ from enum import Enum
 from flask import json
 from os import environ
 import a.third_party.cockroachdb as db
+import a
 
 MAX_ARGS_LENGTH = 128
 MAX_RESPONSE_LENGTH = 256
@@ -28,6 +29,9 @@ openai.api_key = environ.get("OPENAI_KEY")
 
 
 def call_api(api_enum, args):
+    a.model.rate_limit.rate_limited_action("call_api", "minutely", 100)
+    a.model.rate_limit.rate_limited_action("call_api", "daily", 1000)
+
     stored_response = _lookup_call(api_enum, args)
     if stored_response:
         return stored_response

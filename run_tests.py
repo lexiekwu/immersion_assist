@@ -69,7 +69,7 @@ def _setup_test_db():
         )
         """,
             """
-        CREATE TABLE public.rate_limit (
+        CREATE TABLE IF NOT EXISTS rate_limit (
         count INT8 NOT NULL,
         bucket_type INT8 NOT NULL,
         bucket INT8 NOT NULL,
