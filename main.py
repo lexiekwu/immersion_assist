@@ -1,4 +1,5 @@
 from flask import Flask, render_template, request, session, flash, json, redirect
+import flask_excel
 from os import environ
 from urllib.parse import urlparse
 import a
@@ -107,6 +108,16 @@ def terms():
         page_number=page_number,
         num_pages=num_pages,
     )
+
+
+@app.route("/download_terms")
+def download_terms():
+    flask_excel.init_excel(app)
+    data = a.model.study_term.get_all_records()
+    output = flask_excel.make_response_from_records(data, "csv")
+    output.headers["Content-Disposition"] = "attachment; filename=my_terms.csv"
+    output.headers["Content-type"] = "text/csv"
+    return output
 
 
 @app.route("/stats")

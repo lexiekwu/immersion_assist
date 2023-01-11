@@ -177,5 +177,17 @@ class TestStudyTerm:
             term.save()
         assert study_term.get_count() == 3
 
+    def test_get_all_records(self):
+        def _get_numbered_term(i):
+            return study_term.StudyTerm(uuid.uuid4(), f"你好{i}", f"hello{i}", "ni3 hao3")
+
+        for i in range(3):
+            term = _get_numbered_term(i)
+            term.save()
+
+        arr = study_term.get_all_records()
+        assert len(arr) == 3
+        assert list(arr[0].keys()) == ["term", "translated_term", "pronunciation"]
+
     def teardown_method(self):
         self.test_user.delete_all_data_TESTS_ONLY()

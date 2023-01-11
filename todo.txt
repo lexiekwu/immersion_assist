@@ -1,6 +1,5 @@
 --- add friends ---
 - logging
-- export CSV for card
 - confirm email
 - subscriptions
 - performance issues with load
@@ -8,7 +7,6 @@
 --- beta? ---
 - make UI strings show non-english
 - use classes in frontend
-- import CSV for cards
 --- can do any time because I feel like it
 - stats split by type
 - edit vs delete highlighting
@@ -88,3 +86,4 @@ done
 * make knowledge factor sum of logs
 * add number of cards to stats
 * rate limit everything
+* export CSV for terms

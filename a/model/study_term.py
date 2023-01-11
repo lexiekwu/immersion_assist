@@ -206,3 +206,17 @@ def get_count():
             uid = '{session_storage.logged_in_user()}'
         """
     )["cnt"]
+
+
+def get_all_records():
+    rate_limited_action("get_csv", "daily", 3)
+    rows = db.sql_query(
+        f"""
+        SELECT 
+            term, translated_term, pronunciation
+        FROM study_term
+        WHERE
+            uid = '{session_storage.logged_in_user()}'
+        """
+    )
+    return rows

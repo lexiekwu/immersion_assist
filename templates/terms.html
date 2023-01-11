@@ -17,7 +17,20 @@
   <div class="toast {{category}}">{{ message }}</div>
   {% endfor %}
 
-  <h2>Your study terms</h2>
+  <h2>
+    Your study terms
+    <a
+      style="
+        font-size: 0.4em;
+        color: var(--medium-blue);
+        font-weight: normal;
+        display: block;
+      "
+      class="download_terms"
+      href="/download_terms"
+      >download all</a
+    >
+  </h2>
 
   <body>
     {% if not terms %}
