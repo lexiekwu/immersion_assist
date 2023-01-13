@@ -13,11 +13,18 @@ email_regex = re.compile(
 )
 
 
-def try_signup(email, password, name, home_language, learning_language):
+def can_email_signup(email):
     if not _is_valid_email(email):
         return False, SignupFailureReason.INVALID_EMAIL
     elif a.model.user.User.get_by_email(email):
         return False, SignupFailureReason.USER_EXISTS
+    return True, None
+
+
+def try_signup(email, password, name, home_language, learning_language):
+    email_signup_ok, issue = can_email_signup(email)
+    if not email_signup_ok:
+        return False, issue
 
     user = a.model.user.User.new(
         name=name,

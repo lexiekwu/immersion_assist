@@ -1,6 +1,5 @@
 --- add friends ---
 - logging
-- confirm email
 - subscriptions
 - performance issues with load
 - about + feedback page
@@ -87,3 +86,4 @@ done
 * add number of cards to stats
 * rate limit everything
 * export CSV for terms
+* confirm email

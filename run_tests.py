@@ -77,6 +77,13 @@ def _setup_test_db():
         uid UUID NOT NULL,
         CONSTRAINT pkey PRIMARY KEY (uid ASC, action ASC, bucket_type ASC, bucket ASC)
         )""",
+            """
+        CREATE TABLE IF NOT EXISTS email_confirmation (
+        email VARCHAR(48) NOT NULL,
+        hashed_code VARCHAR(100) NOT NULL,
+        expiry_time INT8 NOT NULL,
+        CONSTRAINT pkey PRIMARY KEY (email ASC)
+        )""",
         ]
     )
 

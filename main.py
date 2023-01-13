@@ -92,6 +92,76 @@ def signup():
         return render_template("login.html")
 
 
+@app.route("/start_signup", methods=["POST", "GET"])
+def start_signup():
+    if request.method == "GET":
+        return redirect("/signup")
+
+    email = request.form.get("email")
+
+    # check that there's not an issue with the email address
+    email_ok, issue = a.controller.signup.can_email_signup(email)
+
+    if not email_ok:
+        if issue == a.controller.signup.SignupFailureReason.USER_EXISTS:
+            flash("An account already exists for that email. Please log in.", "bad")
+            return redirect("/login")
+
+        elif issue == a.controller.signup.SignupFailureReason.INVALID_EMAIL:
+            flash(
+                f"{request.form.get('email')} Is not a valid email address. Please try again.",
+                "bad",
+            )
+            return render_template(
+                "signup.html",
+                supported_languages=a.controller.language.SUPPORTED_LANGUAGES_AND_CODES,
+            )
+
+    # send confirmation code
+    email_succeeded = a.model.confirm_email.send_email_confirmation_code(email)
+    if not email_succeeded:
+        flash(
+            f"Issues sending email. Please try again later.",
+            "bad",
+        )
+        return render_template(
+            "signup.html",
+            supported_languages=a.controller.language.SUPPORTED_LANGUAGES_AND_CODES,
+        )
+
+    return render_template(
+        "confirm_email.html",
+        email=email,
+        name=request.form.get("name"),
+        home_language=request.form.get("home_language"),
+        learning_language=request.form.get("learning_language"),
+    )
+
+
+@app.route("/email_confirmation", methods=["POST", "GET"])
+def email_confirmation():
+    if request.method == "GET":
+        return redirect("/signup")
+
+    email = request.form.get("email")
+    code = request.form.get("code")
+
+    if a.model.confirm_email.confirm_email(email, code):
+        return render_template(
+            "add_password.html",
+            email=email,
+            name=request.form.get("name"),
+            home_language=request.form.get("home_language"),
+            learning_language=request.form.get("learning_language"),
+        )
+    else:
+        flash(
+            f"Incorrect confirmation code. Please try again.",
+            "bad",
+        )
+        return redirect("/signup")
+
+
 @app.route("/terms")
 def terms():
     if not session.get("uid"):

@@ -3,31 +3,6 @@ import a
 
 
 def test_signup():
-
-    assert signup.try_signup(
-        "tes.tley@.aol.com",
-        "iLikeTests",
-        "Testley",
-        "en",
-        "zh-TW",
-    ) == (False, a.controller.signup.SignupFailureReason.INVALID_EMAIL)
-
-    assert signup.try_signup(
-        "tes.tley@@.aol.com",
-        "iLikeTests",
-        "Testley",
-        "en",
-        "zh-TW",
-    ) == (False, a.controller.signup.SignupFailureReason.INVALID_EMAIL)
-
-    assert signup.try_signup(
-        "tim.com",
-        "iLikeTests",
-        "Testley",
-        "en",
-        "zh-TW",
-    ) == (False, a.controller.signup.SignupFailureReason.INVALID_EMAIL)
-
     assert signup.try_signup(
         "testley@aol.com",
         "iLikeTests",
@@ -42,3 +17,22 @@ def test_signup():
     )
 
     a.model.user.User.get_by_email("testley@aol.com").delete_all_data_TESTS_ONLY()
+
+
+def test_can_email_signup():
+    assert signup.can_email_signup("tes.tley@.aol.com") == (
+        False,
+        a.controller.signup.SignupFailureReason.INVALID_EMAIL,
+    )
+
+    assert signup.can_email_signup("tes.tley@@.aol.com") == (
+        False,
+        a.controller.signup.SignupFailureReason.INVALID_EMAIL,
+    )
+
+    assert signup.can_email_signup("tim.com") == (
+        False,
+        a.controller.signup.SignupFailureReason.INVALID_EMAIL,
+    )
+
+    assert signup.can_email_signup("testley@aol.com") == (True, None)

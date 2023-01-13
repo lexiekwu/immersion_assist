@@ -1,0 +1,47 @@
+<html>
+  <head>
+    <title>Confirm Email for Immersion Assist</title>
+    <link
+      type="text/css"
+      rel="stylesheet"
+      href="{{ url_for('static', filename='style.css') }}"
+    />
+    <link rel="shortcut icon" type="image/x-icon" href="./static/favicon.ico" />
+  </head>
+  <body>
+    {% for category, message in get_flashed_messages(with_categories=True) %}
+    <div class="toast {{category}}">{{ message }}</div>
+    {% endfor %}
+
+    <h3>Please enter the code sent to your {{ email }}:</h3>
+    <div>
+      Please allow up to 15 minutes for the code to arrive.
+      <br />
+    </div>
+    <form action="/email_confirmation" method="POST">
+      <table>
+        <tr>
+          <td class="signup_title">Code</td>
+          <td class="signup_input"><input type="number" name="code" /></td>
+        </tr>
+        <input
+          type="hidden"
+          name="learning_language"
+          value="{{learning_language}}"
+        />
+        <input type="hidden" name="home_language" value="{{home_language}}" />
+        <input type="hidden" name="name" value="{{name}}" />
+        <input type="hidden" name="email" value="{{email}}" />
+      </table>
+      <p>
+        <input type="submit" value="Submit" />
+        <button
+          onclick="event.preventDefault(); window.location.reload();"
+          style="background-color: var(--medium-grey); font-size: 0.4em"
+        >
+          Send another code
+        </button>
+      </p>
+    </form>
+  </body>
+</html>
