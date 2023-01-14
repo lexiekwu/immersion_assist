@@ -118,6 +118,14 @@ input[type="submit"] {
   margin: 0.2em;
 }
 
+.bot_hide_translation > .translation {
+  display: none;
+}
+
+.bot_hide_pronunciation .story_word_pronunciation {
+  display: none;
+}
+
 button:hover,
 input[type="submit"]:hover {
   background: var(--hover-medium-blue);
@@ -310,11 +318,17 @@ input[type="checkbox"] {
 }
 
 .content_toggles {
-  font-size: 0.5em;
+  font-size: 0.3em;
   color: var(--medium-blue);
   text-align: right;
+  display: inline-block;
   margin-right: 1.5em;
   cursor: pointer;
+  width: 100%;
+}
+
+.content_toggles .toggle_translation {
+  margin-left: 0.3em;
 }
 
 .translation {

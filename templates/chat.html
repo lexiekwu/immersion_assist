@@ -22,12 +22,17 @@
           Click any terms you don't know, then when you're finished, click "save
           terms" to add all of them to your study terms.
         </p>
+        <div style="font-size: 0.25em">
+          [debug] cost of conversation: <span id="cost">$0.00</span>
+        </div>
         <div class="ml-auto mr-auto">
           <p class="botText">
-            <span class="chatText botTextOuterSpan">
+            <span class="chatText botTextOuterSpan bot_hide_translation">
               {{initial_prompt_html | safe}}
-              <span class="translation" style="display: none">
-                {{initial_prompt_translation}}
+              <span class="translation"> {{initial_prompt_translation}} </span>
+              <span class="content_toggles">
+                <a class="toggle_pronunciation">Toggle pronunciation</a>
+                <a class="toggle_translation">Toggle translation</a>
               </span>
             </span>
           </p>
@@ -35,11 +40,6 @@
       </div>
       <div id="userInput" class="above_footer">
         <div>
-          <div class="content_toggles">
-            <a id="toggle_pronunciation">Toggle pronunciation</a>
-            <a id="toggle_translation">Toggle translation</a>
-          </div>
-          <div>cost of conversation: <span id="cost">$0.00</span></div>
           <input
             id="text"
             type="text"
@@ -62,12 +62,16 @@
           $(this).data("clicked", true);
         });
 
-        $("#toggle_pronunciation").click(function () {
-          $(".story_word_pronunciation").toggle();
+        $(".toggle_translation").click(function () {
+          this.parentElement.parentElement.classList.toggle(
+            "bot_hide_translation"
+          );
         });
 
-        $("#toggle_translation").click(function () {
-          $(".translation").toggle();
+        $(".toggle_pronunciation").click(function () {
+          this.parentElement.parentElement.classList.toggle(
+            "bot_hide_pronunciation"
+          );
         });
 
         $("#chat-form").on("submit", function (event) {
@@ -97,10 +101,18 @@
             var botHtml =
               '<p id="chatId-' +
               chatId +
-              '" class="botText"><span class="chatText botTextOuterSpan">' +
+              '" class="botText"><span class="chatText botTextOuterSpan bot_hide_translation">' +
               data.story.terms_html +
-              '<span class="translation" style="display:none">' +
+              '<span class="translation">' +
               data.story.translation +
+              "</span>" +
+              '<span class="content_toggles">' +
+              '<a class="toggle_pronunciation" onclick="' +
+              "this.parentElement.parentElement.classList.toggle('bot_hide_pronunciation')" +
+              '">Toggle pronunciation</a>' +
+              '<a class="toggle_translation" onclick="' +
+              "this.parentElement.parentElement.classList.toggle('bot_hide_translation')" +
+              '"> Toggle translation</a>' +
               "</span></span></p>";
             $("#chatbox").append($.parseHTML(botHtml));
             $("#cost").text(data.runningCost);

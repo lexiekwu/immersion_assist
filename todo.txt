@@ -3,12 +3,13 @@
 - subscriptions
 - performance issues with load
 - about + feedback page
+- "get the app" links
+- UI polish
 --- beta? ---
 - make UI strings show non-english
 - use classes in frontend
 --- can do any time because I feel like it
 - stats split by type
-- edit vs delete highlighting
 
 done
 * move onto correct google project
