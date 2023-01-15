@@ -2,10 +2,24 @@ from flask import Flask, render_template, request, session, flash, json, redirec
 import flask_excel
 from os import environ
 from urllib.parse import urlparse
+from flask_mail import Mail, Message
 import a
 
 app = Flask(__name__)
 app.secret_key = environ.get("SESSION_KEY")
+
+GMAIL_SENDER = environ.get("GMAIL_USER")
+app.config.update(
+    {
+        "MAIL_SERVER": "smtp.gmail.com",
+        "MAIL_PORT": 465,
+        "MAIL_USERNAME": GMAIL_SENDER,
+        "MAIL_PASSWORD": environ.get("GMAIL_PW"),
+        "MAIL_USE_TLS": False,
+        "MAIL_USE_SSL": True,
+    }
+)
+mail = Mail(app)
 
 
 @app.route("/")
@@ -118,16 +132,7 @@ def start_signup():
             )
 
     # send confirmation code
-    email_succeeded = a.model.confirm_email.send_email_confirmation_code(email)
-    if not email_succeeded:
-        flash(
-            f"Issues sending email. Please try again later.",
-            "bad",
-        )
-        return render_template(
-            "signup.html",
-            supported_languages=a.controller.language.SUPPORTED_LANGUAGES_AND_CODES,
-        )
+    a.model.confirm_email.send_email_confirmation_code(email, mail)
 
     return render_template(
         "confirm_email.html",

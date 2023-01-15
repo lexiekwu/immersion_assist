@@ -3,11 +3,10 @@ import random
 import bcrypt
 import time
 from os import environ
-from sendgrid import SendGridAPIClient
-from sendgrid.helpers.mail import Mail
+from flask_mail import Message, Mail
 
 
-def send_email_confirmation_code(email):
+def send_email_confirmation_code(email, mailer: Mail):
     code = random.randrange(100000, 999999)
     expiry_time = int(time.time()) + 60 * 5  # 5 minutes
     hashed_code = bcrypt.hashpw(str(code).encode("utf-8"), bcrypt.gensalt()).decode(
@@ -19,8 +18,7 @@ def send_email_confirmation_code(email):
         VALUES ('{email}', '{hashed_code}', {expiry_time})
         """
     )
-    success = _send_confirmation_email(email, code)
-    return success
+    _send_confirmation_email(email, code, mailer)
 
 
 def confirm_email(email, code):
@@ -43,19 +41,15 @@ def confirm_email(email, code):
     return True
 
 
-def _send_confirmation_email(email, code):
-
-    message = Mail(
-        from_email="immersionassist@gmail.com",
-        to_emails=[email],
-        subject="Immersion Assist - Confirm your email",
-        html_content=f"""
+def _send_confirmation_email(email, code, mailer: Mail):
+    msg = Message(
+        "Immersion Assist - Confirm your email",
+        sender=environ.get("GMAIL_USER"),
+        recipients=[email],
+        html=f"""
         <h1>Welcome to Immersion Assist!</h1>
         <p>Use this code to confirm your email: </p>
         <h2> {code} </h2>
     """,
     )
-
-    sg = SendGridAPIClient(environ.get("SENDGRID_KEY"))
-    response = sg.send(message)
-    return response.status_code == 202
+    mailer.send(msg)
