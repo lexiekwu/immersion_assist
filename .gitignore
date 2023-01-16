@@ -6,4 +6,4 @@ vars.txt
 scratchpad.py
 .coverage
 data_dumps/*
-
+translate-key.json
