@@ -14,12 +14,15 @@ DB_URL = "".join(
         environ.get("COCKROACHDB_CLUSTER"),
     ]
 )
-
-# init client
-conn = psycopg2.connect(DB_URL, sslmode="prefer")
+global conn
+conn = None
 
 
 def _get_cur():
+    global conn
+    if conn is None:
+        conn = psycopg2.connect(DB_URL, sslmode="prefer")
+
     return conn.cursor(cursor_factory=psycopg2.extras.RealDictCursor)
 
 

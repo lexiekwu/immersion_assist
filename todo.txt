@@ -1,13 +1,13 @@
 --- add friends ---
 - logging
-- subscriptions
-- performance issues with load
 - about + feedback page
 - "get the app" links
 - UI polish
+- smoother NUX
 --- beta? ---
 - make UI strings show non-english
 - use classes in frontend
+- subscriptions
 --- can do any time because I feel like it
 - stats split by type
 
