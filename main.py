@@ -24,19 +24,12 @@ mail = Mail(app)
 
 
 def _log_request():
-    form = {key: value for key, value in request.form.items() if key != "password"}
-    print(
-        {
-            "form": form,
-            "url": request.url,
-            "args": dict(request.args),
-            "method": request.method,
-        }
-    )
     log(
         "request",
         {
-            "form": form,
+            "form": {
+                key: value for key, value in request.form.items() if key != "password"
+            },
             "url": request.url,
             "args": dict(request.args),
             "method": request.method,
