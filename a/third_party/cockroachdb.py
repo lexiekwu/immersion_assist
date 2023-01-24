@@ -4,7 +4,7 @@ import psycopg2.extras
 import time
 from threading import Thread
 from a.third_party import session_storage
-from flask import request
+from flask import request, copy_current_request_context
 
 DB_URL = "".join(
     [
@@ -101,7 +101,15 @@ def log(action, data):
             inputs_to_escape=[data, user_agent],
         )
 
-    Thread(target=_log, args=(action, data)).start()
+    if "PYTEST_CURRENT_TEST" in environ:
+        Thread(target=_log, args=(action, data)).start()
+    else:
+
+        @copy_current_request_context
+        def _log_with_context(action, data):
+            _log(action, data)
+
+        Thread(target=_log_with_context, args=(action, data)).start()
 
 
 def _simple_escape_str(str):

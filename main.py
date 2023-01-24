@@ -3,6 +3,7 @@ import flask_excel
 from os import environ
 from urllib.parse import urlparse
 from flask_mail import Mail, Message
+from a.third_party.cockroachdb import log
 import a
 
 app = Flask(__name__)
@@ -22,20 +23,48 @@ app.config.update(
 mail = Mail(app)
 
 
+def _log_request():
+    form = {key: value for key, value in request.form.items() if key != "password"}
+    print(
+        {
+            "form": form,
+            "url": request.url,
+            "args": dict(request.args),
+            "method": request.method,
+        }
+    )
+    log(
+        "request",
+        {
+            "form": form,
+            "url": request.url,
+            "args": dict(request.args),
+            "method": request.method,
+        },
+    )
+
+
 @app.route("/")
 def root():
+    _log_request()
+
     if not session.get("uid"):
         return render_template("login.html")
+
     return render_template("index.html")
 
 
 @app.route("/about")
 def about():
+    _log_request()
+
     return render_template("about.html")
 
 
 @app.route("/login", methods=["POST", "GET"])
 def login():
+    _log_request()
+
     if request.method == "GET":
         return render_template("login.html")
 
@@ -71,6 +100,8 @@ def login():
 
 @app.route("/signup", methods=["POST", "GET"])
 def signup():
+    _log_request()
+
     if request.method == "GET":
         return render_template(
             "signup.html",
@@ -108,6 +139,8 @@ def signup():
 
 @app.route("/start_signup", methods=["POST", "GET"])
 def start_signup():
+    _log_request()
+
     if request.method == "GET":
         return redirect("/signup")
 
@@ -145,6 +178,8 @@ def start_signup():
 
 @app.route("/email_confirmation", methods=["POST", "GET"])
 def email_confirmation():
+    _log_request()
+
     if request.method == "GET":
         return redirect("/signup")
 
@@ -169,6 +204,8 @@ def email_confirmation():
 
 @app.route("/terms")
 def terms():
+    _log_request()
+
     if not session.get("uid"):
         return render_template("login.html")
 
@@ -187,6 +224,8 @@ def terms():
 
 @app.route("/download_terms")
 def download_terms():
+    _log_request()
+
     flask_excel.init_excel(app)
     data = a.model.study_term.get_all_records()
     output = flask_excel.make_response_from_records(data, "csv")
@@ -197,6 +236,8 @@ def download_terms():
 
 @app.route("/stats")
 def stats():
+    _log_request()
+
     if not session.get("uid"):
         return render_template("login.html")
 
@@ -219,6 +260,8 @@ def stats():
 
 @app.route("/new", methods=["GET"])
 def new():
+    _log_request()
+
     if not session.get("uid"):
         return render_template("login.html")
 
@@ -229,6 +272,8 @@ def new():
 
 @app.route("/story_time", methods=["GET", "POST"])
 def story_time():
+    _log_request()
+
     if not session.get("uid"):
         return render_template("login.html")
 
@@ -246,6 +291,8 @@ def story_time():
 
 @app.route("/select_words", methods=["GET", "POST"])
 def select_words():
+    _log_request()
+
     if not session.get("uid"):
         return render_template("login.html")
 
@@ -266,6 +313,8 @@ def select_words():
 
 @app.route("/save_terms", methods=["POST", "GET"])
 def save_terms():
+    _log_request()
+
     if not session.get("uid"):
         return render_template("login.html")
 
@@ -314,6 +363,7 @@ def save_terms():
 
 @app.route("/edit", methods=["GET"])
 def edit():
+    _log_request()
 
     if not session.get("uid"):
         return render_template("login.html")
@@ -336,6 +386,8 @@ def edit():
 
 @app.route("/delete", methods=["GET"])
 def delete():
+    _log_request()
+
     if not session.get("uid"):
         return render_template("login.html")
 
@@ -359,6 +411,8 @@ def delete():
 
 @app.route("/update", methods=["POST"])
 def update():
+    _log_request()
+
     if not session.get("uid"):
         return render_template("login.html")
 
@@ -382,6 +436,8 @@ def update():
 
 @app.route("/quiz", methods=["POST", "GET"])
 def quiz():
+    _log_request()
+
     if not session.get("uid"):
         return render_template("login.html")
 
@@ -444,6 +500,8 @@ def quiz():
 
 @app.route("/chat", methods=["POST", "GET"])
 def chat():
+    _log_request()
+
     if not session.get("uid"):
         return render_template("login.html")
 
@@ -466,6 +524,8 @@ chatbot = a.controller.chatbot.ChatBot()
 
 @app.route("/chatbot_response", methods=["GET", "POST"])
 def chatbot_response():
+    _log_request()
+
     a.model.rate_limit.rate_limited_action("request", "secondly", 10)
 
     msg = request.form["msg"]
