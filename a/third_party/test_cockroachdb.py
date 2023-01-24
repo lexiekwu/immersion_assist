@@ -1,4 +1,4 @@
-from a.third_party import cockroachdb
+from a.third_party import cockroachdb, session_storage
 import pytest
 import uuid
 
@@ -47,3 +47,9 @@ def test_escape():
     pulled = cockroachdb.sql_query_single(f"SELECT name FROM users WHERE uid='{uid}'")
     assert name == pulled["name"]
     cockroachdb.sql_update(f"DELETE FROM users WHERE uid='{uid}'")
+
+
+def test_log():
+    session_storage.set("uid", uuid.uuid4())
+    # just a check it doesn't break
+    cockroachdb.log("test", {"cows": 10})

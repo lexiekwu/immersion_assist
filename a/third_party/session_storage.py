@@ -1,5 +1,6 @@
 from os import environ
 from flask import session
+import uuid
 
 _TEST_SESSION_DICT = {}
 
@@ -30,3 +31,17 @@ def logged_in_user():
         return _TEST_SESSION_DICT.get("uid")
     else:
         return session.get("uid")
+
+
+def get_identifier():
+    "Logged in user or an identifier for browser id"
+    uid = logged_in_user()
+    if uid:
+        return uid
+
+    elif get("browser_id"):
+        return get("browser_id")
+
+    browser_id = uuid.uuid4()
+    set("browser_id", browser_id)
+    return browser_id

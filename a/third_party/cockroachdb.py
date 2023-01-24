@@ -1,6 +1,10 @@
 from os import environ
 import psycopg2
 import psycopg2.extras
+import time
+from threading import Thread
+from a.third_party import session_storage
+from flask import request
 
 DB_URL = "".join(
     [
@@ -64,6 +68,40 @@ def sql_update_multi(sql_list, inputs_to_escape=[]):
         except Exception as e:
             conn.rollback()
             raise e
+
+
+def log(action, data):
+    def _get_user_agent():
+        try:
+            return request.user_agent.string
+        except RuntimeError:
+            return "no_user_agent"
+
+    def _log(action, data):
+        now = time.time()
+        user_agent = _get_user_agent()
+        data = str(data)
+        sql_update(
+            f"""
+            INSERT INTO log (
+                action,
+                time,
+                uid,
+                user_agent,
+                extra_data
+            )
+            VALUES (
+                '{action}',
+                {now},
+                '{session_storage.get_identifier()}',
+                '{user_agent}',
+                '{data}'
+            )
+        """,
+            inputs_to_escape=[data, user_agent],
+        )
+
+    Thread(target=_log, args=(action, data)).start()
 
 
 def _simple_escape_str(str):

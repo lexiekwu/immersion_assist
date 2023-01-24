@@ -14,7 +14,7 @@ def rate_limited_action(action, timespan, limit):
         FROM rate_limit
         WHERE
             action = '{action}' AND
-            uid = '{session_storage.logged_in_user()}' AND
+            uid = '{session_storage.get_identifier()}' AND
             bucket_type = {time_span_secs} AND
             bucket = {time_span_bucket}
     """
@@ -30,7 +30,7 @@ def rate_limited_action(action, timespan, limit):
             SET count = count + 1
             WHERE
                 action = '{action}' AND
-                uid = '{session_storage.logged_in_user()}' AND
+                uid = '{session_storage.get_identifier()}' AND
                 bucket_type = {time_span_secs} AND
                 bucket = {time_span_bucket}
         """
@@ -48,7 +48,7 @@ def rate_limited_action(action, timespan, limit):
             VALUES
                 (
                     '{action}',
-                    '{session_storage.logged_in_user()}',
+                    '{session_storage.get_identifier()}',
                     {time_span_secs},
                     {time_span_bucket},
                     1
