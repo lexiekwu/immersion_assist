@@ -23,27 +23,32 @@
   <body>
     <h3>What would you like to do?</h3>
 
-    <table class="index_action">
-      <tr>
-        <td><a class="material-icons" href="/quiz">psychology_alt</a></td>
-        <td>Quiz yourself on your cards</td>
-      </tr>
-      <tr>
-        <td><a class="material-icons" href="/chat">forum</a></td>
-        <td>Practice chatting</td>
-      </tr>
-      <tr>
-        <td><a class="material-icons" href="/new">add</a></td>
-        <td>Add more terms to study</td>
-      </tr>
-      <tr>
-        <td><a class="material-icons" href="/terms">dashboard</a></td>
-        <td>View and edit your saved terms</td>
-      </tr>
-      <tr>
-        <td><a class="material-icons" href="/stats">query_stats</a></td>
-        <td>Check your progress over time</td>
-      </tr>
-    </table>
+    <div class="action_card">
+      <div class="action_card_title">Prepare for immersion</div>
+      <a class="action_card_action col_2" href="/chat">
+        <div class="big_icon material-icons">forum</div>
+        <div>Practice chatting</div>
+      </a>
+      <a class="action_card_action col_2" href="/new">
+        <div class="big_icon material-icons">add</div>
+        <div>Save relevant vocabulary</div>
+      </a>
+    </div>
+
+    <div class="action_card">
+      <div class="action_card_title">Stay fresh on vocabulary</div>
+      <a class="action_card_action col_3" href="/quiz">
+        <div class="big_icon material-icons">psychology_alt</div>
+        <div>Quiz yourself on your terms</div>
+      </a>
+      <a class="action_card_action col_3" href="/terms">
+        <div class="big_icon material-icons">dashboard</div>
+        <div>View and edit your saved terms</div>
+      </a>
+      <a class="action_card_action col_3" href="/stats">
+        <div class="big_icon material-icons">query_stats</div>
+        <div>Check your progress over time</div>
+      </a>
+    </div>
   </body>
 </html>

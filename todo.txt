@@ -1,5 +1,4 @@
 --- add friends ---
-- segmentation by phrase
 - about + feedback page
 - "get the app" links
 - UI polish
