@@ -1,5 +1,4 @@
 --- add friends ---
-- about + feedback page
 - "get the app" links
 - blocking for expensive features
 --- beta? ---
