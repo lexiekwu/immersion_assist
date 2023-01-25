@@ -2,7 +2,7 @@ from flask import Flask, render_template, request, session, flash, json, redirec
 import flask_excel
 from os import environ
 from urllib.parse import urlparse
-from flask_mail import Mail, Message
+from flask_mail import Mail
 from a.third_party.cockroachdb import log
 import a
 
@@ -509,6 +509,7 @@ def chat():
         "chat.html",
         initial_prompt_html=initial_prompt_html,
         initial_prompt_translation=initial_prompt_translation,
+        is_debug_view=a.model.gating.is_feature_enabled("debug_view"),
     )
 
 

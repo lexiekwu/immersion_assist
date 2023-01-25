@@ -22,9 +22,11 @@
           Click any terms you don't know, then when you're finished, click "save
           terms" to add all of them to your study terms.
         </p>
-        <div style="font-size: 0.25em">
+        {% if is_debug_view %}
+        <div style="font-size: 0.5em">
           [debug] cost of conversation: <span id="cost">$0.00</span>
         </div>
+        {% endif %}
         <div class="ml-auto mr-auto">
           <p class="botText">
             <span class="chatText botTextOuterSpan bot_hide_translation">
