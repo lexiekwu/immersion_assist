@@ -1,8 +1,7 @@
 --- add friends ---
 - about + feedback page
 - "get the app" links
-- UI polish
-- smoother NUX
+- blocking for expensive features
 --- beta? ---
 - make UI strings show non-english
 - use classes in frontend

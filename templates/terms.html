@@ -40,19 +40,17 @@
     <div style="column-count: 2; column-gap: 0px">
       {% for study_term in terms %}
       <div class="flashcard">
-        <span class="edit_button">
-          <span
-            class="material-icons"
-            onclick="window.location.href = '/edit?study_term_id_to_edit={{study_term.id}}';"
-          >
-            edit
-          </span>
-          <span
-            class="material-icons"
-            onclick="window.location.href = '/delete?study_term_id_to_delete={{study_term.id}}';"
-          >
-            delete
-          </span>
+        <span
+          class="material-icons edit_button"
+          onclick="window.location.href = '/edit?study_term_id_to_edit={{study_term.id}}';"
+        >
+          edit
+        </span>
+        <span
+          class="material-icons delete_button"
+          onclick="window.location.href = '/delete?study_term_id_to_delete={{study_term.id}}';"
+        >
+          delete
         </span>
         <div class="card_title">{{study_term.term}}</div>
         <div>translation: {{study_term.translated_term}}</div>

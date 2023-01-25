@@ -21,17 +21,15 @@
     <div class="stats"> Today's stats {{session['count_correct']}}:{{session['count_incorrect']}} correct:incorrect </div>
   </p>
   <div class="flashcard">
-      <span class="edit_button">
-        <span
-            class="material-icons" 
-            onclick="window.location.href = '/edit?study_term_id_to_edit={{last_card.study_term.id}}';">
-            edit
-        </span>
-        <span
-            class="material-icons" 
-            onclick="window.location.href = '/delete?study_term_id_to_delete={{last_card.study_term.id}}';">
-            delete
-        </span>
+      <span
+          class="material-icons edit_button" 
+          onclick="window.location.href = '/edit?study_term_id_to_edit={{last_card.study_term.id}}';">
+          edit
+      </span>
+      <span
+          class="material-icons delete_button" 
+          onclick="window.location.href = '/delete?study_term_id_to_delete={{last_card.study_term.id}}';">
+          delete
       </span>
       <div class="card_title"> {{last_card.study_term.term}} </div>
       <div> translation: {{last_card.study_term.translated_term}} </div>
@@ -46,17 +44,15 @@
       <div class="stats"> Today's stats {{session['count_correct']}}:{{session['count_incorrect']}} correct:incorrect </div>
   </p>
   <div class="flashcard">
-      <span class="edit_button">
-        <span
-            class="material-icons" 
-            onclick="window.location.href = '/edit?study_term_id_to_edit={{last_card.study_term.id}}';">
-            edit
-        </span>
-        <span
-            class="material-icons" 
-            onclick="window.location.href = '/delete?study_term_id_to_delete={{last_card.study_term.id}}';">
-            delete
-        </span>
+      <span
+          class="material-icons edit_button" 
+          onclick="window.location.href = '/edit?study_term_id_to_edit={{last_card.study_term.id}}';">
+          edit
+      </span>
+      <span
+          class="material-icons delete_button" 
+          onclick="window.location.href = '/delete?study_term_id_to_delete={{last_card.study_term.id}}';">
+          delete
       </span>
       <div class="card_title"> {{last_card.study_term.term}} </div>
       <div> translation: {{last_card.study_term.translated_term}} </div>

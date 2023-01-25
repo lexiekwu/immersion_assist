@@ -88,7 +88,7 @@ def _setup_test_db():
         action VARCHAR(36) NOT NULL,
         "time" INT8 NOT NULL,
         uid UUID NOT NULL,
-        user_agent VARCHAR(128) NOT NULL,
+        user_agent VARCHAR(1024) NOT NULL,
         extra_data VARCHAR(2048) NOT NULL,
         rowid INT8 NOT VISIBLE NOT NULL DEFAULT unique_rowid(),
         CONSTRAINT log_pkey PRIMARY KEY (rowid ASC)
