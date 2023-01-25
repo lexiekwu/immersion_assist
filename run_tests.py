@@ -93,6 +93,12 @@ def _setup_test_db():
         rowid INT8 NOT VISIBLE NOT NULL DEFAULT unique_rowid(),
         CONSTRAINT log_pkey PRIMARY KEY (rowid ASC)
         )""",
+            """
+        CREATE TABLE IF NOT EXISTS gating (
+        uid UUID NOT NULL,
+        feature_name VARCHAR(256) NOT NULL,
+        value VARCHAR(2048) NOT NULL
+        )""",
         ]
     )
 

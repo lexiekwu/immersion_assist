@@ -4,7 +4,6 @@
 - blocking for expensive features
 --- beta? ---
 - make UI strings show non-english
-- use classes in frontend
 - subscriptions
 --- can do any time because I feel like it
 - stats split by type
