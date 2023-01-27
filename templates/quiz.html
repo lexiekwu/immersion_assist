@@ -1,87 +1,104 @@
 <html>
-
-<head>
+  <head>
     <title>Quiz</title>
-    <link type="text/css" rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
-    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <link
+      type="text/css"
+      rel="stylesheet"
+      href="{{ url_for('static', filename='style.css') }}"
+    />
+    <link
+      href="https://fonts.googleapis.com/icon?family=Material+Icons"
+      rel="stylesheet"
+    />
     <link rel="shortcut icon" type="image/x-icon" href="./static/favicon.ico" />
-</head>
+  </head>
 
-<body>
-
-{% for category, message in get_flashed_messages(with_categories=True) %}
-<div class="toast {{category}}">{{ message }}</div>
-{% endfor %}
-
-{% if last_card is none %}
-  <p> Type {{current_card.get_prompt()}} </p>
-
-{% elif was_correct %}
-  <p> Correct! 
-    <div class="stats"> Today's stats {{session['count_correct']}}:{{session['count_incorrect']}} correct:incorrect </div>
-  </p>
-  <div class="flashcard">
+  <body class="quiz_body">
+    {% for category, message in get_flashed_messages(with_categories=True) %}
+    <div class="toast {{category}}">{{ message }}</div>
+    {% endfor %} {% if last_card is none %} {% elif was_correct %}
+    <h2 class="quiz_header correct">Correct!</h2>
+    <div class="flashcard">
       <span
-          class="material-icons edit_button" 
-          onclick="window.location.href = '/edit?study_term_id_to_edit={{last_card.study_term.id}}';">
-          edit
+        class="material-icons edit_button"
+        onclick="window.location.href = '/edit?study_term_id_to_edit={{last_card.study_term.id}}';"
+      >
+        edit
       </span>
       <span
-          class="material-icons delete_button" 
-          onclick="window.location.href = '/delete?study_term_id_to_delete={{last_card.study_term.id}}';">
-          delete
+        class="material-icons delete_button"
+        onclick="window.location.href = '/delete?study_term_id_to_delete={{last_card.study_term.id}}';"
+      >
+        delete
       </span>
-      <div class="card_title"> {{last_card.study_term.term}} </div>
-      <div> translation: {{last_card.study_term.translated_term}} </div>
+      <div class="card_title">{{last_card.study_term.term}}</div>
+      <div>translation: {{last_card.study_term.translated_term}}</div>
       {% if last_card.study_term.pronunciation %}
-      <div> pronunciation: {{last_card.study_term.pronunciation}} </div>
+      <div>pronunciation: {{last_card.study_term.pronunciation}}</div>
       {% endif %}
-  </div>
-  <p> Type {{current_card.get_prompt()}} </p>
+    </div>
 
-{% else %}
-  <p> Incorrect. 
-      <div class="stats"> Today's stats {{session['count_correct']}}:{{session['count_incorrect']}} correct:incorrect </div>
-  </p>
-  <div class="flashcard">
+    {% else %}
+    <h2 class="quiz_header incorrect">Incorrect.</h2>
+    <div class="flashcard">
       <span
-          class="material-icons edit_button" 
-          onclick="window.location.href = '/edit?study_term_id_to_edit={{last_card.study_term.id}}';">
-          edit
+        class="material-icons edit_button"
+        onclick="window.location.href = '/edit?study_term_id_to_edit={{last_card.study_term.id}}';"
+      >
+        edit
       </span>
       <span
-          class="material-icons delete_button" 
-          onclick="window.location.href = '/delete?study_term_id_to_delete={{last_card.study_term.id}}';">
-          delete
+        class="material-icons delete_button"
+        onclick="window.location.href = '/delete?study_term_id_to_delete={{last_card.study_term.id}}';"
+      >
+        delete
       </span>
-      <div class="card_title"> {{last_card.study_term.term}} </div>
-      <div> translation: {{last_card.study_term.translated_term}} </div>
+      <div class="card_title">{{last_card.study_term.term}}</div>
+      <div>translation: {{last_card.study_term.translated_term}}</div>
       {% if last_card.study_term.pronunciation %}
-      <div> pronunciation: {{last_card.study_term.pronunciation}} </div>
+      <div>pronunciation: {{last_card.study_term.pronunciation}}</div>
       {% endif %}
+    </div>
+    {% endif %}
+
+    <form action="/quiz" method="POST">
+      <input
+        type="hidden"
+        name="last_term_id"
+        value="{{current_card.study_term.id}}"
+      />
+      <input
+        type="hidden"
+        name="quiz_type"
+        value="{{current_card.quiz_type}}"
+      />
+      <input type="hidden" name="is_first_try" value="{{is_first_try}}" />
+      <p>
+        Type {{current_card.get_prompt()}}:
+        <input
+          type="text"
+          name="guess"
+          autofocus
+          placeholder="{{ current_card.quiz_type.replace('_',' ').replace('reverse ','') }}"
+          autocomplete="off"
+        />
+      </p>
+      <p><input type="submit" value="Submit" /></p>
+    </form>
+
+    <p class="stats">
+      Today's quiz stats
+      {{session['count_correct']}}:{{session['count_incorrect']}}
+      correct:incorrect
+    </p>
+  </body>
+
+  <div class="nav_footer">
+    <a class="material-icons" href="/quiz">psychology_alt</a>
+    <a class="material-icons" href="/chat">forum</a>
+    <a class="material-icons" href="/new">add</a>
+    <a class="material-icons" href="/terms">dashboard</a>
+    <a class="material-icons" href="/stats">query_stats</a>
+    <a class="material-icons" href="/about">help</a>
   </div>
-  <p> Type {{current_card.get_prompt()}} to move on. </p>
-{% endif %}
-
-<form action="/quiz" method = "POST">
-    <input type="hidden" name="last_term_id" value="{{current_card.study_term.id}}"/>
-    <input type="hidden" name="quiz_type" value="{{current_card.quiz_type}}" />
-    <input type="hidden" name="is_first_try" value="{{is_first_try}}" />
-    <p> Answer: <input type = "text" name = "guess" autofocus 
-      placeholder="{{ current_card.quiz_type.replace('_',' ') }}" autocomplete="off"/></p>
-    <p><input type = "submit" value = "Submit" /></p>
-</form>
-
-</body>
-
-<div class="nav_footer">
-  <a class="material-icons" href="/quiz">psychology_alt</a>
-  <a class="material-icons" href="/chat">forum</a>
-  <a class="material-icons" href = "/new">add</a>
-  <a class="material-icons" href = "/terms">dashboard</a>
-  <a class="material-icons" href = "/stats">query_stats</a>
-  <a class="material-icons" href="/about">help</a>
-
-</div>
-
 </html>

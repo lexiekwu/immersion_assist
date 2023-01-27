@@ -85,3 +85,4 @@ done
 * export CSV for terms
 * confirm email
 * basic request logging
+* polish quiz view

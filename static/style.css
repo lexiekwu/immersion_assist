@@ -14,6 +14,10 @@ body {
   margin-bottom: 7vh;
 }
 
+.quiz_body {
+  font-size: min(7vw, 70px) !important;
+}
+
 .about_page {
   text-align: left;
   margin-left: 0.8em;
@@ -270,7 +274,7 @@ input[type="checkbox"] {
 }
 
 .stats {
-  font-size: 0.6em;
+  font-size: 1em;
 }
 
 .textarea {
@@ -381,4 +385,16 @@ input[type="checkbox"] {
 
 .big_icon {
   font-size: 2em !important;
+}
+
+.quiz_header {
+  margin-top: 5vh;
+}
+
+.quiz_header.correct {
+  color: rgb(3, 85, 3);
+}
+
+.quiz_header.incorrect {
+  color: rgb(113, 3, 3);
 }
