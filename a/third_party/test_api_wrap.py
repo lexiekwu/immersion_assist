@@ -33,23 +33,23 @@ class TestApiWrap:
     def test_chatbot(self, mocker):
         mock_value = {
             "usage": {"total_tokens": 10},
-            "choices": [{"text": "hiya!"}],
+            "choices": [{"message": {"content": "hiya!"}}],
         }
         mock = mocker.patch(
-            "openai.Completion.create",
+            "openai.ChatCompletion.create",
             return_value=mock_value,
         )
         assert mock.call_count == 0
 
-        response = apis.call_api(apis.Apis.CHATBOT, [self.chatbot_str_1])
+        response = apis.call_api(apis.Apis.CHATBOT_V2, [self.chatbot_str_1])
         assert response == mock_value
         assert mock.call_count == 1
 
-        response = apis.call_api(apis.Apis.CHATBOT, [self.chatbot_str_1])
+        response = apis.call_api(apis.Apis.CHATBOT_V2, [self.chatbot_str_1])
         assert response == mock_value
         assert mock.call_count == 1
 
-        response = apis.call_api(apis.Apis.CHATBOT, [self.chatbot_str_2])
+        response = apis.call_api(apis.Apis.CHATBOT_V2, [self.chatbot_str_2])
         assert mock.call_count == 2
 
     def test_segmenter(self, mocker):

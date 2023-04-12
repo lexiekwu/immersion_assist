@@ -23,6 +23,7 @@ class Apis(Enum):
     RELATED_WORDS = 4
     TRANSLATE = 5
     LANGUAGE_DETECTION = 6
+    CHATBOT_V2 = 7
 
 
 openai.api_key = environ.get("OPENAI_KEY")
@@ -38,16 +39,13 @@ def call_api(api_enum, args):
 
     response = None
     if api_enum == Apis.CHATBOT:
-        prompt = args[0]
-        response = openai.Completion.create(
-            model="text-davinci-003",
-            prompt=prompt,
-            temperature=0.5,
-            max_tokens=100,
-            top_p=1.0,
-            frequency_penalty=0.5,
-            presence_penalty=0.0,
-            stop=["You:"],
+        raise NotImplementedError("Use CHATBOT_V2 instead")
+
+    elif api_enum == Apis.CHATBOT_V2:
+        messages = args
+        response = openai.ChatCompletion.create(
+            model="gpt-3.5-turbo",
+            messages=messages,
         )
     elif api_enum == Apis.ZH_SEGMENTER:
         text = args[0]

@@ -13,7 +13,7 @@ class TestChatBot:
             "a.third_party.api_wrap.call_api",
             return_value={
                 "usage": {"total_tokens": 10},
-                "choices": [{"text": "hello back to you!"}],
+                "choices": [{"message": {"content": "hello back to you!"}}],
             },
         )
 
@@ -25,7 +25,7 @@ class TestChatBot:
             "a.third_party.api_wrap.call_api",
             return_value={
                 "usage": {"total_tokens": 200},
-                "choices": [{"text": "hello back to you!"}],
+                "choices": [{"message": {"content": "hello back to you!"}}],
             },
         )
 

@@ -13,33 +13,24 @@ class ChatBot:
 
     def get_response(self, input_text):
         rate_limited_action("chatbot_response", "daily", 50)
+
         if len(self.responses) == 0:
-            self.responses = [
-                language.get_translation(INITIAL_PROMPT, to_learning_language=False)
-            ]
-        self.responses.append(input_text)
+            self._add_msg(language.get_translation(INITIAL_PROMPT), "assistant")
+
+        self._add_msg(input_text, "user")
         bot_text = self._call_openai()
-        self.responses.append(bot_text)
+        self._add_msg(bot_text, "assistant")
         return bot_text
+
+    def _add_msg(self, msg, role):
+        message = {"role": role, "content": msg}
+        self.responses.append(message)
 
     def _call_openai(self):
-        prompt = self._format_thread()
-        response = apis.call_api(apis.Apis.CHATBOT, [prompt])
-        bot_text = response["choices"][0]["text"]
+        response = apis.call_api(apis.Apis.CHATBOT_V2, self.responses)
+        bot_text = response["choices"][0]["message"]["content"]
         self.tokens_spent += response["usage"]["total_tokens"]
         return bot_text
-
-    def _format_thread(self):
-        # take the last 4 messages
-        responses_to_format = (
-            self.responses if len(self.responses) < 4 else self.responses[-4:]
-        )
-        formatted = ""
-        for i, response in enumerate(responses_to_format):
-            speaker = "Study Buddy" if i % 2 == 0 else "User"
-            formatted += f"\n{speaker}: {response}"
-        formatted += "\nStudy Buddy:"
-        return formatted
 
     def get_cost(self):
         return f"${round(self.tokens_spent*COST_PER_TOKEN,3)}"
