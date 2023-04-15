@@ -2,6 +2,7 @@
   --medium-blue: #65ace4;
   --hover-medium-blue: #5b9cce;
   --medium-grey: #647c8e;
+  --dark-grey: #394651;
   --light-blue: #c6def1;
   --light-grey: #f5f5f5;
   --very-light-blue: #e7f0f7;
@@ -134,6 +135,10 @@ input[type="submit"] {
   display: none;
 }
 
+.bot_hide_translation > .story_word_translated_term {
+  display: none;
+}
+
 .bot_hide_pronunciation .story_word_pronunciation {
   display: none;
 }
@@ -247,6 +252,12 @@ input[type="checkbox"] {
   display: block;
   font-size: 0.4em;
   color: var(--medium-grey);
+}
+
+.story_word_translated_term {
+  display: block;
+  font-size: 0.4em;
+  color: var(--dark-grey);
 }
 
 .story_col {

@@ -28,6 +28,7 @@ def save(terms=None, bulk_terms=None, term_dicts=None):
             a.model.study_term.StudyTerm.build(
                 term=term_dict["term"],
                 pronunciation=term_dict["pronunciation"],
+                translated_term=term_dict.get("translated_term"),
             )
             for term_dict in term_dicts
         ]

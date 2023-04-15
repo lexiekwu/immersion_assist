@@ -19,14 +19,19 @@ class StudyTerm:
         self.pronunciation = pronunciation
 
     @classmethod
-    def build(cls, term, pronunciation=None):
+    def build(cls, term, pronunciation=None, translated_term=None):
         rate_limited_action("build_study_term", "minutely", 200)
         rate_limited_action("build_study_term", "daily", 1000)
-        if language.is_learning_language(term):
-            translated_term = language.get_translation(term, to_learning_language=False)
-        else:
-            translated_term = term
-            term = language.get_translation(translated_term, to_learning_language=True)
+        if not translated_term:
+            if language.is_learning_language(term):
+                translated_term = language.get_translation(
+                    term, to_learning_language=False
+                )
+            else:
+                translated_term = term
+                term = language.get_translation(
+                    translated_term, to_learning_language=True
+                )
 
         pronunciation = pronunciation or language.get_pronunciation(term)
 

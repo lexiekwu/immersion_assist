@@ -32,37 +32,12 @@ def test_translation():
     assert language.get_translation("你好嗎？", False) == "Are you OK?"
 
 
-def test_segment_text():
+def test_segment_text_and_translate_to_english():
     session_storage.set("learning_language", language.TW_CODE)
     session_storage.set("home_language", language.EN_CODE)
     sentence = "這是 一個句子!"
-    assert language.segment_text(sentence) == [
-        ("這是", True),
-        (" ", False),
-        ("一個", True),
-        ("句子", True),
-        ("!", False),
-    ]
-
-    assert language.segment_text(sentence, False) == [
-        ("這是", True),
-        (" ", False),
-        ("一個句子", True),
-        ("!", False),
-    ]
-
-    session_storage.set("learning_language", "es")
-    session_storage.set("home_language", language.EN_CODE)
-    sentence = "hoy es viernes."
-    assert language.segment_text(sentence, True) == [
-        ("hoy", True),
-        (" ", False),
-        ("es", True),
-        (" ", False),
-        ("viernes", True),
-        (".", False),
-    ]
-    session_storage.set("learning_language", "zh-TW")
+    assert ("句子", "sentence") in language.segment_and_translate_to_english(sentence)
+    assert ("一個", "a") in language.segment_and_translate_to_english(sentence)
 
 
 def test_get_language():

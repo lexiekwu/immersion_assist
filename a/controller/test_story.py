@@ -19,7 +19,7 @@ class TestStory:
         sentence = "這是 一個 句子 !"
         sentence_split = sentence.split(" ")
         mocker.patch(
-            "a.controller.language.segment_text",
+            "a.controller.language.segment_and_translate_to_english",
             return_value=zip(sentence_split, [True, True, True, False]),
         )
         mocker.patch(
@@ -38,14 +38,14 @@ class TestStory:
             s.story_terms[3].term,
             s.story_terms[3].is_word,
             s.story_terms[3].pronunciation,
-        ) == ("!", False, "")
+        ) == ("!", False, None)
         assert s.translation == "This is a sentence!"
 
     def test_to_dict(self, mocker):
         sentence = "這是 一個 句子 !"
         sentence_split = sentence.split(" ")
         mocker.patch(
-            "a.controller.language.segment_text",
+            "a.controller.language.segment_and_translate_to_english",
             return_value=zip(sentence_split, [True, True, True, False]),
         )
         mocker.patch(

@@ -30,20 +30,38 @@ def get_translation(term, to_learning_language=True):
     return translation
 
 
-def segment_text(long_text, is_learning_language=True):
-    "Splits into words and punctuation, returning [(segment, is_word),]."
-    target_language_code = _get_language_code(is_learning_language)
-    if target_language_code in CHINESE_CODES:
-        segments = apis.call_api(apis.Apis.ZH_SEGMENTER, [long_text])
+def segment_and_translate_to_english(long_text):
+    prompt = f"""Segment the statement at the end of this message
+    into individual terms that can be studied on flashcards. 
+    Terms can be any part of speech. Then,
+    output a line for each term, along with a translation given the
+    context. Before you output the
+    list of terms, output "START:". Output each term on it's own line.
+    Output each line in the format "non-english, english".
+    Exclude any punctuation from the terms, apart from commas in between
+    the term and its translation. Do not add a period after each term,
+    and do not capitalize anything other than proper nouns. Output a line
+    for every term in the statement.
+    {long_text}"""
 
-        def _is_word(segment):
-            return len(re.findall(r"[\u4e00-\u9fff]+", segment)) > 0
+    response = apis.call_api(
+        apis.Apis.CHATBOT_V2, [{"role": "user", "content": prompt}]
+    )
+    raw_terms = response["choices"][0]["message"]["content"]
+    print(raw_terms)
+    segments = []
+    for line in raw_terms.split("\n")[1:]:
+        term = line.split(", ")[0]
+        english = line.split(", ")[1]
 
-        is_words = [_is_word(segment) for segment in segments]
-        return list(zip(segments, is_words))
-    else:
-        # segment non-chinese by spaces
-        return _simple_segment(long_text)
+        # take the term out from the beginning of the long text
+        i = long_text.find(term)
+        if i > 0:
+            segments.append((long_text[:i], ""))
+
+        long_text = long_text[i + len(term) :]
+        segments.append((term, english))
+    return segments
 
 
 def get_related_words(keyword, limit):
