@@ -19,7 +19,7 @@ class FlashcardStack:
 
     def pop_card(self):
         rate_limited_action("pop_card", "minutely", 50)
-        if len(self.stack) < 1:
+        while len(self.stack) < 1:
             self._refresh()
         card = self.stack[0]
         self.stack = self.stack[1:]
@@ -63,7 +63,7 @@ class FlashcardStack:
                     learning_log.uid = '{session_storage.logged_in_user()}'
 
                 ORDER BY 6 DESC
-                LIMIT {self.limit * 3}
+                LIMIT {self.limit * 10}
             ),
 
             learning_log_ordered_min_idx AS (
