@@ -18,7 +18,7 @@ class FlashcardStack:
             self._refresh()  # fill cards up to limit
 
     def pop_card(self):
-        rate_limited_action("pop_card", "minutely", 50)
+        # rate_limited_action("pop_card", "minutely", 50) commented for performance
         while len(self.stack) < 1:
             self._refresh()
         card = self.stack[0]

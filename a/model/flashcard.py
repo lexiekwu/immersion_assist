@@ -3,7 +3,8 @@ from a.third_party import cockroachdb as db, session_storage
 import re
 from .study_term import StudyTerm
 from .daily_stats import DailyStats
-from .rate_limit import rate_limited_action
+
+# from .rate_limit import rate_limited_action commented for performance
 from flask import session
 
 
@@ -40,7 +41,7 @@ class Flashcard:
         )
 
     def update_on_incorrect(self):
-        rate_limited_action("update_card", "minutely", 50)
+        # rate_limited_action("update_card", "minutely", 50) commented for performance
         now = int(time.time())
         db.sql_update(
             f"""
@@ -57,7 +58,7 @@ class Flashcard:
         self.daily_stats.update(False)
 
     def update_on_correct(self):
-        rate_limited_action("update_card", "minutely", 50)
+        # rate_limited_action("update_card", "minutely", 50) commented for performance
         now = int(time.time())
         db.sql_update(
             f"""

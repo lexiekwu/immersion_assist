@@ -429,12 +429,12 @@ def update():
 
 @app.route("/quiz", methods=["POST", "GET"])
 def quiz():
-    _log_request()
+    # _log_request() commented out for performance
 
     if not session.get("uid"):
         return render_template("login.html")
 
-    a.model.rate_limit.rate_limited_action("request", "secondly", 10)
+    # a.model.rate_limit.rate_limited_action("request", "secondly", 10) commented out for performance
 
     flashcard_stack = a.model.flashcard_stack.FlashcardStack.from_dicts(
         session.get("flashcard_stack", [])
@@ -464,17 +464,18 @@ def quiz():
     is_first_try = request.form.get("is_first_try") == "True"
 
     if was_correct:
-        current_card = flashcard_stack.pop_card()
-
         # only update knowledge factor after the first try
         if is_first_try:
             last_card.update_on_correct()
+
+        current_card = flashcard_stack.pop_card()
     else:
-        current_card = last_card
 
         # only update knowledge factor after the first try
         if is_first_try:
             last_card.update_on_incorrect()
+
+        current_card = last_card
 
     if not current_card:
         flash(f"No cards available for quizzing. Try adding more.", "good")
