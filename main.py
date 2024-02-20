@@ -3,7 +3,6 @@ import flask_excel
 from os import environ
 from urllib.parse import urlparse
 from flask_mail import Mail
-from a.third_party.cockroachdb import log
 import a
 
 app = Flask(__name__)
@@ -23,23 +22,8 @@ app.config.update(
 mail = Mail(app)
 
 
-def _log_request():
-    log(
-        "request",
-        {
-            "form": {
-                key: value for key, value in request.form.items() if key != "password"
-            },
-            "url": request.url,
-            "args": dict(request.args),
-            "method": request.method,
-        },
-    )
-
-
 @app.route("/")
 def root():
-    _log_request()
 
     if not session.get("uid"):
         return render_template("login.html")
@@ -49,14 +33,12 @@ def root():
 
 @app.route("/about")
 def about():
-    _log_request()
 
     return render_template("about.html")
 
 
 @app.route("/login", methods=["POST", "GET"])
 def login():
-    _log_request()
 
     if request.method == "GET":
         return render_template("login.html")
@@ -93,7 +75,6 @@ def login():
 
 @app.route("/signup", methods=["POST", "GET"])
 def signup():
-    _log_request()
 
     if request.method == "GET":
         return render_template(
@@ -132,7 +113,6 @@ def signup():
 
 @app.route("/start_signup", methods=["POST", "GET"])
 def start_signup():
-    _log_request()
 
     if request.method == "GET":
         return redirect("/signup")
@@ -171,7 +151,6 @@ def start_signup():
 
 @app.route("/email_confirmation", methods=["POST", "GET"])
 def email_confirmation():
-    _log_request()
 
     if request.method == "GET":
         return redirect("/signup")
@@ -197,12 +176,9 @@ def email_confirmation():
 
 @app.route("/terms")
 def terms():
-    _log_request()
 
     if not session.get("uid"):
         return render_template("login.html")
-
-    a.model.rate_limit.rate_limited_action("request", "secondly", 10)
 
     page_number = int(request.args.get("page_no", 1))
     terms, num_pages = a.controller.study_term.get_term_page_and_num_pages(page_number)
@@ -217,7 +193,6 @@ def terms():
 
 @app.route("/download_terms")
 def download_terms():
-    _log_request()
 
     flask_excel.init_excel(app)
     data = a.model.study_term.get_all_records()
@@ -229,12 +204,9 @@ def download_terms():
 
 @app.route("/stats")
 def stats():
-    _log_request()
 
     if not session.get("uid"):
         return render_template("login.html")
-
-    a.model.rate_limit.rate_limited_action("request", "secondly", 10)
 
     recent_stats = a.model.daily_stats.DailyStats.get_recent(50)
     recent_stats = [
@@ -253,24 +225,18 @@ def stats():
 
 @app.route("/new", methods=["GET"])
 def new():
-    _log_request()
 
     if not session.get("uid"):
         return render_template("login.html")
-
-    a.model.rate_limit.rate_limited_action("request", "secondly", 10)
 
     return render_template("new.html")
 
 
 @app.route("/story_time", methods=["GET", "POST"])
 def story_time():
-    _log_request()
 
     if not session.get("uid"):
         return render_template("login.html")
-
-    a.model.rate_limit.rate_limited_action("request", "secondly", 10)
 
     try:
         raw_story = request.form.get("story")
@@ -284,12 +250,9 @@ def story_time():
 
 @app.route("/select_words", methods=["GET", "POST"])
 def select_words():
-    _log_request()
 
     if not session.get("uid"):
         return render_template("login.html")
-
-    a.model.rate_limit.rate_limited_action("request", "secondly", 10)
 
     try:
         keyword = request.form.get("keyword")
@@ -306,12 +269,9 @@ def select_words():
 
 @app.route("/save_terms", methods=["POST", "GET"])
 def save_terms():
-    _log_request()
 
     if not session.get("uid"):
         return render_template("login.html")
-
-    a.model.rate_limit.rate_limited_action("request", "secondly", 10)
 
     _reserved_keys = ["bulk_terms", "translated_term", "msg"]
 
@@ -356,12 +316,9 @@ def save_terms():
 
 @app.route("/edit", methods=["GET"])
 def edit():
-    _log_request()
 
     if not session.get("uid"):
         return render_template("login.html")
-
-    a.model.rate_limit.rate_limited_action("request", "secondly", 10)
 
     study_term = a.model.study_term.StudyTerm.get_by_id(
         request.args.get("study_term_id_to_edit")
@@ -379,12 +336,9 @@ def edit():
 
 @app.route("/delete", methods=["GET"])
 def delete():
-    _log_request()
 
     if not session.get("uid"):
         return render_template("login.html")
-
-    a.model.rate_limit.rate_limited_action("request", "secondly", 10)
 
     study_term = a.model.study_term.StudyTerm.get_by_id(
         request.args.get("study_term_id_to_delete")
@@ -404,12 +358,10 @@ def delete():
 
 @app.route("/update", methods=["POST"])
 def update():
-    _log_request()
 
     if not session.get("uid"):
         return render_template("login.html")
 
-    a.model.rate_limit.rate_limited_action("request", "secondly", 10)
     try:
         study_term = a.model.study_term.StudyTerm.get_by_id(
             request.form.get("study_term_id_to_edit")
@@ -429,12 +381,9 @@ def update():
 
 @app.route("/quiz", methods=["POST", "GET"])
 def quiz():
-    # _log_request() commented out for performance
 
     if not session.get("uid"):
         return render_template("login.html")
-
-    # a.model.rate_limit.rate_limited_action("request", "secondly", 10) commented out for performance
 
     flashcard_stack = a.model.flashcard_stack.FlashcardStack.from_dicts(
         session.get("flashcard_stack", [])
@@ -494,12 +443,10 @@ def quiz():
 
 @app.route("/chat", methods=["POST", "GET"])
 def chat():
-    _log_request()
 
     if not session.get("uid"):
         return render_template("login.html")
 
-    a.model.rate_limit.rate_limited_action("request", "secondly", 10)
     initial_prompt_story = a.controller.story.Story.build(
         a.controller.chatbot.INITIAL_PROMPT
     )
@@ -519,9 +466,6 @@ chatbot = a.controller.chatbot.ChatBot()
 
 @app.route("/chatbot_response", methods=["GET", "POST"])
 def chatbot_response():
-    _log_request()
-
-    a.model.rate_limit.rate_limited_action("request", "secondly", 10)
 
     msg = request.form["msg"]
     response = chatbot.get_response(msg)

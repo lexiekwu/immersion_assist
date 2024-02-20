@@ -69,15 +69,6 @@ def _setup_test_db():
         )
         """,
             """
-        CREATE TABLE IF NOT EXISTS rate_limit (
-        count INT8 NOT NULL,
-        bucket_type INT8 NOT NULL,
-        bucket INT8 NOT NULL,
-        action VARCHAR(36) NOT NULL,
-        uid UUID NOT NULL,
-        CONSTRAINT pkey PRIMARY KEY (uid ASC, action ASC, bucket_type ASC, bucket ASC)
-        )""",
-            """
         CREATE TABLE IF NOT EXISTS email_confirmation (
         email VARCHAR(48) NOT NULL,
         hashed_code VARCHAR(100) NOT NULL,

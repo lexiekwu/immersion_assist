@@ -27,8 +27,6 @@ class Apis(Enum):
 
 
 def call_api(api_enum, args):
-    # a.model.rate_limit.rate_limited_action("call_api", "minutely", 100)
-    # a.model.rate_limit.rate_limited_action("call_api", "daily", 1000)
 
     stored_response = _lookup_call(api_enum, args)
     if stored_response:

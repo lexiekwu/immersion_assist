@@ -1,4 +1,3 @@
-from a.model.rate_limit import rate_limited_action
 from a.controller import language
 from openai import OpenAI
 from os import environ
@@ -13,7 +12,6 @@ class ChatBot:
         self.tokens_spent = 0
 
     def get_response(self, input_text):
-        rate_limited_action("chatbot_response", "daily", 50)
 
         if len(self.responses) == 0:
             self._add_msg(language.get_translation(INITIAL_PROMPT), "assistant")

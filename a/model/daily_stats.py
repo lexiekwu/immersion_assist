@@ -1,6 +1,5 @@
 from datetime import datetime, timedelta
 from a.third_party import session_storage, cockroachdb as db
-from a.model.rate_limit import rate_limited_action
 from a.model.study_term import get_count
 
 today_dt = str(datetime.today().date())
@@ -54,7 +53,6 @@ class DailyStats:
                 session_storage.get("num_terms"),
             )
 
-        rate_limited_action("get_stats_for_day", "minutely", 200)
         stats_dict = db.sql_query_single(
             f"""
                 SELECT *
@@ -94,7 +92,6 @@ class DailyStats:
 
     @classmethod
     def get_recent(cls, count):
-        rate_limited_action("get_recent_stats", "minutely", 10)
         min_dt = str((datetime.today() - timedelta(count)).date())
         rows = db.sql_query(
             f"""
@@ -117,7 +114,6 @@ class DailyStats:
         ]
 
     def update(self, is_correct):
-        rate_limited_action("update_stats", "minutely", 50)
         self.count_correct += int(is_correct)
         self.count_incorrect += 1 - int(is_correct)
         self._save()
@@ -155,7 +151,6 @@ class DailyStats:
             )
 
     def _calculate_avg_knowledge_factor(self):
-        rate_limited_action("calculate_avg_knowledge_factor_stats", "minutely", 10)
         entry = db.sql_query_single(
             f"""
             SELECT

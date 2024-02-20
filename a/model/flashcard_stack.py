@@ -2,7 +2,6 @@ import time
 from a.third_party import cockroachdb as db, session_storage
 from .study_term import StudyTerm
 from .flashcard import Flashcard
-from .rate_limit import rate_limited_action
 
 MIN_TIME_BETWEEN_REVIEWS_SEC = 60 * 2  # two minutes
 DEFAULT_LIMIT = 10
@@ -18,7 +17,6 @@ class FlashcardStack:
             self._refresh()  # fill cards up to limit
 
     def pop_card(self):
-        # rate_limited_action("pop_card", "minutely", 50) commented for performance
         while len(self.stack) < 1:
             self._refresh()
         card = self.stack[0]
