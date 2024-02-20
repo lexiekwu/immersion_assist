@@ -1,6 +1,7 @@
-from a.third_party import api_wrap as apis
 from a.model.rate_limit import rate_limited_action
 from a.controller import language
+from openai import OpenAI
+from os import environ
 
 INITIAL_PROMPT = "Hi! I am your study buddy. I can help you practice chatting. What would you like to discuss today?"
 COST_PER_TOKEN = 0.02 / 1000
@@ -27,9 +28,16 @@ class ChatBot:
         self.responses.append(message)
 
     def _call_openai(self):
-        response = apis.call_api(apis.Apis.CHATBOT_V2, self.responses)
-        bot_text = response["choices"][0]["message"]["content"]
-        self.tokens_spent += response["usage"]["total_tokens"]
+        client = OpenAI(
+            # This is the default and can be omitted
+            api_key=environ.get("OPENAI_KEY"),
+        )
+        response = client.chat.completions.create(
+            model="gpt-3.5-turbo",
+            messages=self.responses,
+        )
+        bot_text = response.choices[0].message.content
+        self.tokens_spent += response.usage.total_tokens
         return bot_text
 
     def get_cost(self):

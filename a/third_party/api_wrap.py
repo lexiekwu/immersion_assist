@@ -1,11 +1,11 @@
 """
 When ya cheap af so you avoid calling APIs
 """
-import openai
 import jieba
 import pinyin
 import datamuse
 from google.cloud import translate_v2 as translate
+from openai import OpenAI
 from enum import Enum
 from flask import json
 from os import environ
@@ -17,16 +17,13 @@ MAX_RESPONSE_LENGTH = 256
 
 
 class Apis(Enum):
-    CHATBOT = 1
+    CHATBOT = 1  # deprecated
     ZH_SEGMENTER = 2
     PINYIN = 3
     RELATED_WORDS = 4
     TRANSLATE = 5
     LANGUAGE_DETECTION = 6
-    CHATBOT_V2 = 7
-
-
-openai.api_key = environ.get("OPENAI_KEY")
+    CHATBOT_V2 = 7  # deprecated
 
 
 def call_api(api_enum, args):
@@ -38,15 +35,9 @@ def call_api(api_enum, args):
         return stored_response
 
     response = None
-    if api_enum == Apis.CHATBOT:
-        raise NotImplementedError("Use CHATBOT_V2 instead")
+    if api_enum in (Apis.CHATBOT, Apis.CHATBOT_V2):
+        raise NotImplementedError("Use openai directly, API wrap is deprecated for it.")
 
-    elif api_enum == Apis.CHATBOT_V2:
-        messages = args
-        response = openai.ChatCompletion.create(
-            model="gpt-3.5-turbo",
-            messages=messages,
-        )
     elif api_enum == Apis.ZH_SEGMENTER:
         text = args[0]
         response = jieba.lcut(text)

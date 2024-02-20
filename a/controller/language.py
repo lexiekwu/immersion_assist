@@ -1,4 +1,6 @@
 from a.third_party import session_storage, api_wrap as apis
+from os import environ
+from openai import OpenAI
 import re
 
 
@@ -44,11 +46,16 @@ def segment_and_translate_to_english(long_text):
     for every term in the statement.
     {long_text}"""
 
-    response = apis.call_api(
-        apis.Apis.CHATBOT_V2, [{"role": "user", "content": prompt}]
+    client = OpenAI(
+        # This is the default and can be omitted
+        api_key=environ.get("OPENAI_KEY"),
     )
-    raw_terms = response["choices"][0]["message"]["content"]
-    print(raw_terms)
+    response = client.chat.completions.create(
+        model="gpt-3.5-turbo",
+        messages=[{"role": "user", "content": prompt}],
+    )
+
+    raw_terms = response.choices[0].message.content
     segments = []
     for line in raw_terms.split("\n")[1:]:
         term = line.split(", ")[0]

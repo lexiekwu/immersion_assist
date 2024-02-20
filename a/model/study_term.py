@@ -2,7 +2,6 @@ import uuid
 import time
 from a.controller import language
 from a.third_party import session_storage, cockroachdb as db
-from a.model.rate_limit import rate_limited_action
 
 
 class StudyTerm:
@@ -20,8 +19,6 @@ class StudyTerm:
 
     @classmethod
     def build(cls, term, pronunciation=None, translated_term=None):
-        rate_limited_action("build_study_term", "minutely", 200)
-        rate_limited_action("build_study_term", "daily", 1000)
         if not translated_term:
             if language.is_learning_language(term):
                 translated_term = language.get_translation(
@@ -39,8 +36,6 @@ class StudyTerm:
         return cls(id, term, translated_term, pronunciation)
 
     def save(self):
-        rate_limited_action("save_study_term", "minutely", 200)
-        rate_limited_action("save_study_term", "daily", 1000)
         logged_in_user = session_storage.logged_in_user()
         now = int(time.time())
         insert_term_sql = f"""
@@ -79,7 +74,6 @@ class StudyTerm:
 
     @classmethod
     def get_by_id(cls, id):
-        rate_limited_action("get_by_id_study_term", "minutely", 1000)
         card_dict = db.sql_query_single(
             f"""
             SELECT *
@@ -100,7 +94,6 @@ class StudyTerm:
         )
 
     def update(self, term, translated_term, pronunciation):
-        rate_limited_action("update_study_term", "daily", 200)
         self.term = term
         self.translated_term = translated_term
         self.pronunciation = pronunciation
@@ -120,7 +113,6 @@ class StudyTerm:
         )
 
     def delete(self):
-        rate_limited_action("delete_study_term", "daily", 500)
         logged_in_user = session_storage.logged_in_user()
         delete_term_sql = f"""
             DELETE FROM study_term
@@ -183,7 +175,6 @@ class StudyTerm:
 
 
 def get_term_page(page_number, limit):
-    rate_limited_action("get_term_page", "minutely", 10)
     ds = db.sql_query(
         f"""
         SELECT *
@@ -201,7 +192,6 @@ def get_term_page(page_number, limit):
 
 
 def get_count():
-    rate_limited_action("get_term_count", "minutely", 10)
     return db.sql_query_single(
         f"""
         SELECT 
@@ -214,7 +204,6 @@ def get_count():
 
 
 def get_all_records():
-    rate_limited_action("get_csv", "daily", 3)
     rows = db.sql_query(
         f"""
         SELECT 

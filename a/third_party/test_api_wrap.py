@@ -30,28 +30,6 @@ class TestApiWrap:
             """
             )
 
-    def test_chatbot(self, mocker):
-        mock_value = {
-            "usage": {"total_tokens": 10},
-            "choices": [{"message": {"content": "hiya!"}}],
-        }
-        mock = mocker.patch(
-            "openai.ChatCompletion.create",
-            return_value=mock_value,
-        )
-        assert mock.call_count == 0
-
-        response = apis.call_api(apis.Apis.CHATBOT_V2, [self.chatbot_str_1])
-        assert response == mock_value
-        assert mock.call_count == 1
-
-        response = apis.call_api(apis.Apis.CHATBOT_V2, [self.chatbot_str_1])
-        assert response == mock_value
-        assert mock.call_count == 1
-
-        response = apis.call_api(apis.Apis.CHATBOT_V2, [self.chatbot_str_2])
-        assert mock.call_count == 2
-
     def test_segmenter(self, mocker):
         mock_value = ["你好", "我是", "一隻烏龜"]
         mock = mocker.patch(
