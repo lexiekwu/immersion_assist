@@ -208,7 +208,7 @@ def stats():
     if not session.get("uid"):
         return render_template("login.html")
 
-    recent_stats = a.model.daily_stats.DailyStats.get_recent(50)
+    recent_stats = a.model.daily_stats.DailyStats.get_recent(150)
     recent_stats = [
         {
             "dt": s.dt,
